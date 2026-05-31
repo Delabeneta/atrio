@@ -6,12 +6,120 @@ datasource db {
   provider = "postgresql"
 }
 
+model Pessoa {
+  id                   String              @id @default(cuid())
+  nomeCompleto         String
+  dataNascimento       DateTime
+  email                String?             @unique
+  telefone             String?
+  bairro               String?
+  cidade               String?
+  cep                  String?
+  comunidadeParticipa  String?
+  comunidadeContribui  String?
+  ehDizimista          Boolean             @default(false)
+  estadoCivil          EstadoCivil         @default(Solteiro)
+  conjugeId            String?             @unique
+  batizado             Boolean             @default(false)
+  desejaBatismo        Boolean             @default(false)
+  catequista           Boolean             @default(false)
+  desejaCatequese      Boolean             @default(false)
+  confessaRegularmente Boolean             @default(false)
+  frequenciaMissa      FrequenciaMissa     @default(Eventual)
+  temEucaristia        Boolean             @default(false)
+  temCrisma            Boolean             @default(false)
+  temMatrimonio        Boolean             @default(false)
+  outrosMovimentos     String?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  filhosCadastrados    Filho?              @relation("PessoaFilho")
+  filhos               Filho[]
+  conjuge              Pessoa?             @relation("Conjuges", fields: [conjugeId], references: [id])
+  conjugeDe            Pessoa?             @relation("Conjuges")
+  movimentosPastorais  PessoasMovimentos[]
 
-enum Estadocivil{
-    solteiro
-    casado
-    viuvo
-    divorciado
+  @@index([nomeCompleto])
+  @@index([email])
+  @@index([comunidadeParticipa])
+  @@index([createdAt])
+  @@index([ehDizimista])
+}
+
+model Filho {
+  id             String   @id @default(cuid())
+  nomeCompleto   String
+  dataNascimento DateTime
+  pessoaId       String?  @unique
+  responsavelId  String
+  ehDizimista    Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  pessoa         Pessoa?  @relation("PessoaFilho", fields: [pessoaId], references: [id])
+  responsavel    Pessoa   @relation(fields: [responsavelId], references: [id], onDelete: Cascade)
+
+  @@index([responsavelId])
+  @@index([pessoaId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  role      String   @default("member")
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([username])
+}
+
+model PessoasMovimentos {
+  pessoaId  String
+  movimento MovimentoPastoral
+  pessoa    Pessoa            @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+
+  @@id([pessoaId, movimento])
+}
+
+model Log {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String?
+  entityId  String?
+  details   Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+model Backup {
+  id        String   @id @default(cuid())
+  filename  String
+  size      Int
+  status    String
+  error     String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+enum EstadoCivil {
+  Solteiro
+  Casado
+  Viuvo
+  Divorciado
 }
 
 enum FrequenciaMissa {
@@ -20,90 +128,14 @@ enum FrequenciaMissa {
   Eventual
 }
 
-model Pessoa {
-  id                    String         @id @default(cuid())
-  nomeCompleto          String
-  dataNascimento        DateTime
-  email                 String?        @unique
-  telefone              String?
-  comunidadeParticipa   String?
-  comunidadeContribui   String?
-  contribuiDizimo       Boolean        @default(true)
-  estadoCivil           EstadoCivil    @default(solteiro)
-  
-  // Campos JSON (flexíveis para dados complexos)
-  conjuge               Json?          // { nome, dataNascimento, dizimista }
-  filhos                Json?          // [{ nome, dataNascimento }]
-  sacramentos           Json?          // { eucaristia, crisma, matrimonio }
-  
-  // Campos booleanos de vida espiritual
-  batizado              Boolean        @default(false)
-  desejaBatismo         Boolean        @default(false)
-  catequista            Boolean        @default(false)
-  desejaCatequese       Boolean        @default(false)
-  confessaRegularmente  Boolean        @default(false)
-  
-  // Campos de prática religiosa
-  frequenciaMissa       FrequenciaMissa @default(Eventual)
-  movimentosPastorais   String[]       // Array de strings
-  
-  // Datas de controle
-  createdAt             DateTime       @default(now())
-  updatedAt             DateTime       @updatedAt
-  
-  // Índices para buscas rápidas
-  @@index([nomeCompleto])
-  @@index([email])
-  @@index([comunidadeParticipa])
-  @@index([createdAt])
-}
-
-// Model para Usuários (Autenticação)
-model User {
-  id        String   @id @default(cuid())
-  username  String   @unique
-  password  String   // Será armazenado com hash (bcrypt)
-  role      String   @default("member") // admin ou member
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  @@index([username])
-}
-
-// Model para Logs (opcional - auditoria)
-model Log {
-  id        String   @id @default(cuid())
-  userId    String?
-  action    String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
-  entity    String?  // PESSOA, USER
-  entityId  String?
-  details   Json?    // Mudanças feitas
-  ip        String?
-  userAgent String?
-  createdAt DateTime @default(now())
-  
-  @@index([createdAt])
-  @@index([userId])
-}
-
-// Model para Configurações do Sistema
-model Setting {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  value     Json
-  description String?
-  updatedAt DateTime @updatedAt
-}
-
-// Model para Backup (registro)
-model Backup {
-  id        String   @id @default(cuid())
-  filename  String
-  size      Int      // Tamanho em bytes
-  status    String   // SUCCESS, FAILED, PENDING
-  error     String?
-  createdAt DateTime @default(now())
-  
-  @@index([createdAt])
+enum MovimentoPastoral {
+  PastoralFamiliar
+  PastoralDizimista
+  GrupoOracao
+  Liturgia
+  Catequese
+  Coral
+  Acolitos
+  MinistroEucaristico
+  LegiaoMaria
 }
