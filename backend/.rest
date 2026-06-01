@@ -1,0 +1,84 @@
+### LISTAR TODAS AS PESSOAS
+GET http://localhost:3000/pessoas
+
+
+### BUSCAR PESSOA POR ID
+GET http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
+
+
+### CRIAR PESSOA
+POST http://localhost:3000/pessoas
+Content-Type: application/json
+
+{
+  "nomeCompleto": "aaJoão da Silva",
+  "dataNascimento": "2000-05-10",
+
+  "telefone": "(21)99999-9999",
+  "email": "joaaso@email.com",
+
+  "bairro": "Centro",
+  "cidade": "Magé",
+  "cep": "25900-000",
+
+  "comunidadeParticipa": "Matriz",
+  "comunidadeContribui": "Matriz",
+
+  "ehDizimista": true,
+  "codigoDizimista": "006",
+
+  "estadoCivil": "Casado",
+
+  "conjuge": {
+    "nome": "Maria da Silva",
+    "dataNascimento": "1992-08-10",
+    "dizimista": true
+  },
+
+  "filhos": [
+    {
+      "nome": "Pedro",
+      "dataNascimento": "2015-03-20"
+    },
+    {
+      "nome": "Ana",
+      "dataNascimento": "2018-07-15"
+    }
+  ],
+
+  "movimentosPastorais": [
+    "Liturgia",
+    "Coral"
+  ],
+
+  "batizado": true,
+  "temEucaristia": true,
+  "temCrisma": true,
+  "temMatrimonio": true,
+
+  "confessaRegularmente": true,
+  "frequenciaMissa": "Semanal",
+
+  "observacoes": "Família participa da comunidade há muitos anos.",
+
+  "ativo": true
+}
+
+
+### ATUALIZAR PESSOA
+PATCH http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
+Content-Type: application/json
+
+{
+  "telefone": "(21)98888-7777",
+  "bairro": "Piabetá",
+  "movimentosPastorais": [
+    "Liturgia",
+    "Catequese"
+  ]
+}
+
+
+### REMOVER PESSOA
+DELETE http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
+

@@ -1,5 +1,7 @@
 generator client {
   provider = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
 }
 
 datasource db {
@@ -19,7 +21,6 @@ model Pessoa {
   comunidadeContribui  String?
   ehDizimista          Boolean             @default(false)
   estadoCivil          EstadoCivil         @default(Solteiro)
-  conjugeId            String?             @unique
   batizado             Boolean             @default(false)
   desejaBatismo        Boolean             @default(false)
   catequista           Boolean             @default(false)
@@ -29,36 +30,18 @@ model Pessoa {
   temEucaristia        Boolean             @default(false)
   temCrisma            Boolean             @default(false)
   temMatrimonio        Boolean             @default(false)
-  outrosMovimentos     String?
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
-  filhosCadastrados    Filho?              @relation("PessoaFilho")
-  filhos               Filho[]
-  conjuge              Pessoa?             @relation("Conjuges", fields: [conjugeId], references: [id])
-  conjugeDe            Pessoa?             @relation("Conjuges")
-  movimentosPastorais  PessoasMovimentos[]
+  ativo                Boolean             @default(true)
+  codigoDizimista      String?             @unique
+  conjuge              Json?
+  filhos               Json?
+  movimentosPastorais  MovimentoPastoral[]
+  observacoes          String?
 
   @@index([nomeCompleto])
-  @@index([email])
   @@index([comunidadeParticipa])
   @@index([createdAt])
-  @@index([ehDizimista])
-}
-
-model Filho {
-  id             String   @id @default(cuid())
-  nomeCompleto   String
-  dataNascimento DateTime
-  pessoaId       String?  @unique
-  responsavelId  String
-  ehDizimista    Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  pessoa         Pessoa?  @relation("PessoaFilho", fields: [pessoaId], references: [id])
-  responsavel    Pessoa   @relation(fields: [responsavelId], references: [id], onDelete: Cascade)
-
-  @@index([responsavelId])
-  @@index([pessoaId])
 }
 
 model User {
@@ -71,14 +54,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@index([username])
-}
-
-model PessoasMovimentos {
-  pessoaId  String
-  movimento MovimentoPastoral
-  pessoa    Pessoa            @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-
-  @@id([pessoaId, movimento])
 }
 
 model Log {
