@@ -4,12 +4,12 @@ import { Injectable } from '@nestjs/common';
 // Usuários fixos
 const USERS = {
   admin: {
-    password: '1234',
+    password: process.env.ADMIN_PASSWORD,
     role: 'admin',
     name: 'Administrador',
   },
   membro: {
-    password: '1234',
+    password: process.env.ADMIN_PASSWORD,
     role: 'member',
     name: 'Membro',
   },

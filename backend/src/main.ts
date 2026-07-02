@@ -16,7 +16,12 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: true,
+    origin: [
+      'http://127.0.0.1:5500',
+      'http://localhost:5500',
+      'http://localhost:3000',
+      'https://atrio-frontend.vercel.app',
+    ],
     // ['http://localhost:3001'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
