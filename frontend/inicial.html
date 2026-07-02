@@ -690,8 +690,10 @@ a.btn {
   <div>© 2026 · Sistema Átrio · Gestão de Dizimistas</div>
 </footer>
 
+<script src="config.js"></script>
+
 <script>
-const API_URL = 'http://localhost:3000';
+const API_URL = CONFIG.API_URL;
 
 // ── UTILS ──
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
