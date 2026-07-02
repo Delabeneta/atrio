@@ -19,7 +19,6 @@
     "generate": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy"
-
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -37,6 +36,7 @@
     "exceljs": "^4.3.0",
     "express-session": "^1.17.3",
     "pg": "^8.21.0",
+    "postgres": "^3.4.9",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },
