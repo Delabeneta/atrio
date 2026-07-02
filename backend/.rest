@@ -1,40 +1,31 @@
-### LISTAR TODAS AS PESSOAS
+### LISTAR TODAS AS PESSOAS (ativas)
 GET http://localhost:3000/pessoas
 
+### LISTAR TODAS AS PESSOAS (incluindo inativas)
+GET http://localhost:3000/pessoas?incluirInativos=true
 
 ### BUSCAR PESSOA POR ID
 GET http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
-
 
 ### CRIAR PESSOA
 POST http://localhost:3000/pessoas
 Content-Type: application/json
 
 {
-  "nomeCompleto": "aaJoão da Silva",
+  "nomeCompleto": "João da Silva",
   "dataNascimento": "2000-05-10",
-
   "telefone": "(21)99999-9999",
-  "email": "joaaso@email.com",
-
+  "endereco": "Rua Magé, 123 - Centro",
   "bairro": "Centro",
-  "cidade": "Magé",
   "cep": "25900-000",
-
   "comunidadeParticipa": "Matriz",
   "comunidadeContribui": "Matriz",
-
   "ehDizimista": true,
-  "codigoDizimista": "006",
-
   "estadoCivil": "Casado",
-
   "conjuge": {
     "nome": "Maria da Silva",
-    "dataNascimento": "1992-08-10",
-    "dizimista": true
+    "dataNascimento": "1992-08-10"
   },
-
   "filhos": [
     {
       "nome": "Pedro",
@@ -45,40 +36,35 @@ Content-Type: application/json
       "dataNascimento": "2018-07-15"
     }
   ],
-
-  "movimentosPastorais": [
-    "Liturgia",
-    "Coral"
-  ],
-
+  "movimentosPastorais": ["Liturgia", "Coral"],
   "batizado": true,
   "temEucaristia": true,
   "temCrisma": true,
   "temMatrimonio": true,
-
   "confessaRegularmente": true,
   "frequenciaMissa": "Semanal",
-
   "observacoes": "Família participa da comunidade há muitos anos.",
-
   "ativo": true
 }
 
-
-### ATUALIZAR PESSOA
+### ATUALIZAR PESSOA (APENAS campos enviados)
 PATCH http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
 Content-Type: application/json
 
 {
   "telefone": "(21)98888-7777",
   "bairro": "Piabetá",
-  "movimentosPastorais": [
-    "Liturgia",
-    "Catequese"
-  ]
+  "movimentosPastorais": ["Liturgia", "Catequese"],
+  "ativo": false
 }
 
-
-### REMOVER PESSOA
+### REMOVER PESSOA (soft delete - apenas inativa)
 DELETE http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
 
+### REATIVAR PESSOA
+PATCH http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI/reativar
+Content-Type: application/json
+
+{
+  "ativo": true
+}

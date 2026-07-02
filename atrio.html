@@ -1,0 +1,1974 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Átrio · Gestão</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5f0e8;
+      --card: #fffdf8;
+      --ink: #1a1208;
+      --ink2: #5a5040;
+      --accent: #c8431a;
+      --accent2: #e8a020;
+      --line: #e0d8c8;
+      --green: #2d7a4f;
+      --radius: 12px;
+      --shadow: 0 2px 20px rgba(26, 18, 8, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      font-size: 15px;
+    }
+
+    /* ===== TOAST SYSTEM ===== */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 400;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 240px;
+      max-width: 360px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: auto;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { border-left: 4px solid var(--green); }
+    .toast.error   { border-left: 4px solid var(--accent); }
+    .toast.info    { border-left: 4px solid var(--accent2); }
+    .toast-icon { font-size: 1rem; flex-shrink: 0; }
+
+    /* ===== CONFIRM DIALOG ===== */
+    #confirm-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,18,8,0.45);
+      backdrop-filter: blur(2px);
+      z-index: 8000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #confirm-overlay.hidden { display: none; }
+    #confirm-box {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px 28px 22px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+    }
+    #confirm-box h3 {
+      font-family: "Fraunces", serif;
+      font-weight: 300;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    #confirm-box p { font-size: 14px; color: var(--ink2); line-height: 1.5; }
+    #confirm-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
+
+    /* ===== LOGIN ===== */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1208 0%, #2a1f12 100%);
+      padding: 24px;
+    }
+    .login-box {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .login-icon { margin-bottom: 20px; }
+    .login-box h1 {
+      font-family: "Fraunces", serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .login-box p.sub { color: var(--ink2); font-size: 14px; margin-bottom: 32px; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: var(--radius);
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s;
+      position: relative;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary  { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled)  { background: #a83515; }
+    .btn-outline  { background: transparent; border: 1.5px solid var(--line); color: var(--ink2); }
+    .btn-outline:hover:not(:disabled)  { border-color: var(--accent); color: var(--accent); }
+    .btn-ghost    { background: transparent; color: var(--ink2); padding: 8px 14px; border: none; }
+    .btn-ghost:hover { color: var(--accent); }
+    .btn-sm       { padding: 6px 12px; font-size: 13px; }
+    .btn-danger   { background: #fde8e4; color: var(--accent); border: 1.5px solid #f5c5bc; }
+    .btn-danger:hover:not(:disabled) { background: var(--accent); color: #fff; }
+    .btn-green    { background: var(--green); color: #fff; }
+    .btn-green:hover:not(:disabled) { background: #245f3d; }
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* ===== FIELDS ===== */
+    .field-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+    .field-group label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 15px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200,67,26,0.08);
+    }
+    .field-group input.error { border-color: var(--accent); }
+    .field-error { font-size: 12px; color: var(--accent); margin-top: 3px; display: none; }
+    .field-error.show { display: block; }
+
+    /* ===== APP SHELL ===== */
+    #app { display: none; flex-direction: column; min-height: 100vh; }
+
+    header {
+      background: var(--ink);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header .logo {
+      font-family: "Fraunces", serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    header .logo span { color: var(--accent2); }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .user-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.7); }
+    .role-pill { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+    .role-pill.admin  { background: var(--accent2); color: var(--ink); }
+    .role-pill.member { background: rgba(255,255,255,0.15); color: #fff; }
+
+    nav {
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      padding: 0 24px;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 14px 18px;
+      border: none;
+      background: transparent;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      color: var(--ink2);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-tab.active    { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+    .nav-tab:hover:not(.active) { color: var(--ink); }
+
+    main { flex: 1; padding: 28px 24px; max-width: 1100px; margin: 0 auto; width: 100%; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ===== CARDS / STATS ===== */
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+    .card-title {
+      font-family: "Fraunces", serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .stat-label { font-size: 12px; color: var(--ink2); text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-value { font-family: "Fraunces", serif; font-size: 2rem; font-weight: 600; color: var(--ink); line-height: 1.1; margin-top: 4px; }
+    .stat-accent { color: var(--accent); }
+
+    /* ===== SKELETON ===== */
+    .skeleton {
+      background: linear-gradient(90deg, var(--line) 25%, #f0e8d8 50%, var(--line) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+      border-radius: 6px;
+      height: 16px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton-row td { padding: 14px 16px; }
+
+    /* ===== TABLE ===== */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+    table { width: 100%; border-collapse: collapse; background: var(--card); }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--ink2);
+      font-weight: 500;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+      white-space: nowrap;
+    }
+    td { padding: 13px 16px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #faf7f0; }
+    .actions { display: flex; gap: 6px; }
+
+    /* ===== SEARCH / FILTERS ===== */
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .search-bar input {
+      flex: 1;
+      min-width: 200px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      background: var(--card);
+      outline: none;
+      color: var(--ink);
+      transition: border-color 0.15s;
+    }
+    .search-bar input:focus { border-color: var(--accent); }
+
+    /* Filter pills row */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--accent);
+      color: #fff;
+    }
+    .filter-chip button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+    .filter-chip button:hover { color: #fff; }
+
+    /* Advanced filters panel */
+    .adv-filters {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    .adv-filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .adv-filters .field-group { margin-bottom: 0; }
+    .adv-filters-actions { display: flex; gap: 8px; margin-top: 14px; justify-content: flex-end; }
+
+    /* ===== MOBILE CARDS ===== */
+    .people-cards { display: none; flex-direction: column; gap: 10px; }
+    .person-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+    .person-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .person-card-name { font-weight: 500; font-size: 15px; }
+    .person-card-name.inativo { color: #e67e22; }
+    .person-card-meta { font-size: 12px; color: var(--ink2); margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .person-card-meta span { display: flex; align-items: center; gap: 4px; }
+    .person-card-actions { display: flex; gap: 6px; margin-top: 10px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .status-dot.ativo   { background: var(--green); }
+    .status-dot.inativo { background: #e67e22; }
+    .badge-mirim {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 1px 7px;
+      border-radius: 20px;
+      background: #e3f0ff;
+      color: #1565c0;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,18,8,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 24px;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 32px;
+      width: 100%;
+      max-width: 660px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .modal-header h2 { font-family: "Fraunces", serif; font-size: 1.4rem; font-weight: 300; }
+    .close-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--ink2); line-height: 1; padding: 4px 8px; border-radius: 8px; }
+    .close-btn:hover { background: var(--bg); }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid .full { grid-column: 1 / -1; }
+
+    /* ===== VIEW PERSON MODAL ===== */
+    #view-modal .modal { max-width: 560px; }
+    .view-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+    .view-name { font-family: "Fraunces", serif; font-size: 1.4rem; font-weight: 300; }
+    .view-status { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-top: 4px; color: var(--ink2); }
+    .view-section { margin-bottom: 18px; }
+    .view-section-title {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--ink2);
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+    }
+    .view-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+    .view-field label { font-size: 11px; color: var(--ink2); display: block; margin-bottom: 2px; }
+    .view-field span { font-size: 14px; font-weight: 500; }
+    .pastoral-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pastoral-tag { background: var(--bg); border: 1px solid var(--line); border-radius: 20px; padding: 3px 10px; font-size: 12px; }
+    .view-actions { display: flex; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+
+    /* ===== BIRTHDAYS ===== */
+    .month-section { margin-bottom: 32px; }
+    .month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .month-name { font-family: "Fraunces", serif; font-size: 1.5rem; font-weight: 300; color: var(--ink); }
+    .month-count { background: var(--accent); color: #fff; font-size: 12px; font-weight: 500; padding: 2px 9px; border-radius: 20px; }
+    .birthday-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .birthday-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow);
+    }
+    .bday-day {
+      background: var(--accent);
+      color: #fff;
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Fraunces", serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .bday-info { min-width: 0; }
+    .bday-name { font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bday-age  { font-size: 12px; color: var(--ink2); margin-top: 2px; }
+
+    /* Accordion mobile birthdays */
+    .month-accordion {
+      margin-bottom: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      overflow: hidden;
+    }
+    .month-accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+      gap: 10px;
+    }
+    .month-accordion-header:hover { background: var(--bg); }
+    .month-accordion-header .left { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .month-accordion-header .arrow { font-size: 1rem; transition: transform 0.2s; color: var(--ink2); }
+    .month-accordion-header .arrow.open { transform: rotate(180deg); }
+    .month-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: var(--bg); }
+    .month-accordion-content.open { max-height: 2000px; }
+    .birthday-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+    .birthday-item {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .birthday-item .day {
+      background: var(--accent);
+      color: #fff;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Fraunces", serif;
+      font-size: 1rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .birthday-item .info { flex: 1; }
+    .birthday-item .name { font-weight: 500; font-size: 13px; }
+    .birthday-item .details { font-size: 11px; color: var(--ink2); margin-top: 1px; }
+
+    /* ===== IMPORT ===== */
+    .drop-zone {
+      border: 2px dashed var(--line);
+      border-radius: 14px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      color: var(--ink2);
+      background: var(--card);
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: #fff5f2; color: var(--accent); }
+    .drop-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+    /* ===== ALERT ===== */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-info    { background: #e8f4fd; color: #1a5a8a; border: 1px solid #b8d8f0; }
+    .alert-success { background: #e8f5ee; color: #1a5a36; border: 1px solid #b0dfc2; }
+    .alert-error   { background: #fde8e4; color: #8a2010; border: 1px solid #f5c5bc; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state { text-align: center; padding: 60px 24px; color: var(--ink2); }
+    .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state h3 { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 300; color: var(--ink); }
+
+    /* ===== PAGINATION ===== */
+    .pagination-wrap { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+    .pagination-info { font-size: 13px; color: var(--ink2); margin-left: 8px; }
+
+    /* ===== UTILS ===== */
+    .hidden { display: none !important; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      header { padding: 0 14px; }
+      header .logo { font-size: 1.1rem; }
+      .user-badge { font-size: 11px; gap: 6px; }
+      nav { padding: 0 10px; }
+      .nav-tab { padding: 10px 12px; font-size: 13px; }
+      main { padding: 16px 12px; }
+
+      .stats-row { grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 18px; }
+      .stat-card { padding: 12px 14px; }
+      .stat-value { font-size: 1.4rem; }
+      .stat-label { font-size: 10px; }
+
+      .card { padding: 16px; }
+      .card-title { font-size: 1.1rem; margin-bottom: 14px; }
+
+      /* Hide table, show cards on mobile */
+      .table-wrap { display: none; }
+      .people-cards { display: flex; }
+
+      .search-bar { gap: 8px; }
+      .search-bar input { min-width: unset; width: 100%; }
+
+      .modal { padding: 20px; border-radius: 16px; }
+      .modal-header h2 { font-size: 1.15rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .full { grid-column: 1; }
+
+      .month-section { display: none; }
+      .month-accordion { display: block; }
+
+      .adv-filters-grid { grid-template-columns: 1fr; }
+      .view-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (min-width: 769px) {
+      .month-accordion { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: repeat(2,1fr); gap: 8px; }
+      .stat-card { padding: 10px; }
+      .stat-value { font-size: 1.2rem; }
+    }
+
+    /* Filter buttons active state */
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- CONFIRM DIALOG -->
+<div id="confirm-overlay" class="hidden">
+  <div id="confirm-box">
+    <h3 id="confirm-title">Confirmar ação</h3>
+    <p id="confirm-message">Tem certeza?</p>
+    <div id="confirm-actions">
+      <button class="btn btn-outline btn-sm" id="confirm-cancel">Cancelar</button>
+      <button class="btn btn-sm" id="confirm-ok">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-icon">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+    <h1>Átrio</h1>
+    <p class="sub">Acesso ao sistema</p>
+    <div id="login-error" class="alert alert-error hidden"></div>
+    <div class="field-group" style="text-align:left">
+      <label>Acesso</label>
+      <input type="text" id="inp-user" placeholder="Código de acesso" autocomplete="username" />
+    </div>
+    <div class="field-group" style="text-align:left">
+      <label>Senha</label>
+      <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') doLogin();" />
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-top:4px;" id="login-btn" onclick="doLogin()">Acessar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="logo">Atrio<span>·</span></div>
+    <div class="header-right">
+      <div class="user-badge">
+        <span id="header-user-name">—</span>
+        <span id="header-role-pill" class="role-pill admin">Admin</span>
+      </div>
+      <button class="btn btn-ghost" style="color:rgba(255,255,255,0.6);font-size:13px" onclick="logout()">Sair</button>
+    </div>
+  </header>
+  <nav>
+    <button class="nav-tab active" onclick="showPage('dashboard')">Painel</button>
+    <button class="nav-tab" onclick="showPage('people')">Pessoas</button>
+    <button class="nav-tab" onclick="showPage('birthdays')">Aniversários</button>
+    <button class="nav-tab admin-only" onclick="showPage('import')">Importar Excel</button>
+    <button class="nav-tab admin-only" onclick="exportToJSON()">Exportar JSON</button>
+  </nav>
+  <main>
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card"><div class="stat-label">Total de pessoas</div><div class="stat-value stat-accent" id="stat-total">0</div></div>
+        <div class="stat-card"><div class="stat-label">Aniversariantes este mês</div><div class="stat-value" id="stat-thismonth">0</div></div>
+        <div class="stat-card"><div class="stat-label">Aniversariantes hoje</div><div class="stat-value" id="stat-today">0</div></div>
+        <div class="stat-card"><div class="stat-label">Cadastros este mês</div><div class="stat-value" id="stat-new">0</div></div>
+        <div class="stat-card" style="border-left:4px solid #2196F3"><div class="stat-label">Mirins (&lt;16 anos)</div><div class="stat-value" style="color:#2196F3" id="stat-mirins">0</div></div>
+        <div class="stat-card" style="border-left:4px solid #4CAF50"><div class="stat-label">Adultos (16–60 anos)</div><div class="stat-value" style="color:#4CAF50" id="stat-adultos">0</div></div>
+        <div class="stat-card" style="border-left:4px solid #FF9800"><div class="stat-label">Idosos (&gt;60 anos)</div><div class="stat-value" style="color:#FF9800" id="stat-idosos">0</div></div>
+      </div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">🎂 Aniversariantes de hoje</div>
+        <div id="today-list"><p style="color:var(--ink2);font-size:14px">Nenhum hoje.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Últimos cadastros</div>
+        <div id="recent-list"><p style="color:var(--ink2);font-size:14px">Nenhum cadastro ainda.</p></div>
+      </div>
+    </div>
+
+    <!-- PEOPLE -->
+    <div class="page" id="page-people">
+      <!-- Search + action row -->
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Buscar por nome, código, telefone, endereço…" oninput="onSearchInput()" />
+        <button class="btn btn-sm btn-outline" id="adv-toggle" onclick="toggleAdvFilters()">⚙ Filtros</button>
+        <button class="btn btn-primary admin-only" onclick="openModal()">+ Novo</button>
+      </div>
+
+      <!-- Quick filter pills -->
+      <div class="filter-row" id="quick-filters">
+        <button class="btn btn-sm btn-outline filter-btn active" id="filter-todos"    onclick="setFilter('todos')">Todos</button>
+        <button class="btn btn-sm btn-outline filter-btn"        id="filter-ativos"   onclick="setFilter('ativos')">Ativos</button>
+        <button class="btn btn-sm btn-outline filter-btn"        id="filter-inativos" onclick="setFilter('inativos')">Inativos</button>
+        <span id="filter-chips"></span>
+      </div>
+
+      <!-- Advanced filter panel -->
+      <div class="adv-filters hidden" id="adv-filters">
+        <div class="adv-filters-grid">
+          <div class="field-group">
+            <label>Movimento Pastoral</label>
+            <input type="text" id="f-adv-pastoral" placeholder="Ex: Coral, Liturgia…" />
+          </div>
+          <div class="field-group">
+            <label>Estado Civil</label>
+            <select id="f-adv-estadocivil">
+              <option value="">Todos</option>
+              <option>Solteiro</option><option>Casado</option><option>Viuvo</option><option>Divorciado</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Faixa etária</label>
+            <select id="f-adv-faixa">
+              <option value="">Todas</option>
+              <option value="mirim">Mirins (&lt;16)</option>
+              <option value="adulto">Adultos (16–60)</option>
+              <option value="idoso">Idosos (&gt;60)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Especiais</label>
+            <select id="f-adv-especial">
+              <option value="">—</option>
+              <option value="mes">Aniversariantes do mês</option>
+              <option value="semtel">Sem telefone</option>
+            </select>
+          </div>
+        </div>
+        <div class="adv-filters-actions">
+          <button class="btn btn-sm btn-outline" onclick="clearAdvFilters()">Limpar</button>
+          <button class="btn btn-sm btn-primary" onclick="applyAdvFilters()">Aplicar filtros</button>
+        </div>
+      </div>
+
+      <!-- Table (desktop) -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Nascimento</th>
+              <th>Endereço</th>
+              <th class="admin-only">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="people-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Cards (mobile) -->
+      <div class="people-cards" id="people-cards"></div>
+
+      <div id="pagination"></div>
+      <div id="people-empty" class="empty-state hidden">
+        <div class="es-icon">👥</div>
+        <h3>Nenhuma pessoa encontrada</h3>
+        <p>Tente outra busca ou adicione um novo cadastro.</p>
+      </div>
+    </div>
+
+    <!-- BIRTHDAYS -->
+    <div class="page" id="page-birthdays">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <h2 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;">Aniversariantes</h2>
+        <select id="birthday-year-filter" style="padding:10px 14px;border:1.5px solid var(--line);border-radius:var(--radius);font-family:'DM Sans',sans-serif;background:var(--card);color:var(--ink);font-size:14px;" onchange="renderBirthdays()"></select>
+      </div>
+      <div id="birthday-content"></div>
+    </div>
+
+    <!-- IMPORT -->
+    <div class="page" id="page-import">
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">Importar Planilha Excel</div>
+        <p style="font-size:13px;color:var(--ink2);margin-bottom:20px">Faça upload de uma planilha <strong>.xlsx</strong> ou <strong>.xls</strong>.</p>
+        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+          <div class="drop-icon">📂</div>
+          <p><strong>Clique para selecionar</strong> ou arraste o arquivo aqui</p>
+          <p style="font-size:12px;margin-top:4px">.xlsx · .xls</p>
+        </div>
+        <input type="file" id="file-input" accept=".xlsx,.xls" style="display:none" onchange="handleFileImport(this)" />
+        <div id="import-result" class="hidden" style="margin-top:16px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Modelo de planilha</div>
+        <p style="font-size:13px;color:var(--ink2);margin-bottom:16px">Baixe o modelo para preencher corretamente.</p>
+        <button class="btn btn-outline" onclick="downloadTemplate()">Baixar modelo .xlsx</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- EDIT/ADD MODAL -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Novo cadastro</h2>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="field-group full">
+        <label>Nome completo *</label>
+        <input type="text" id="f-nome" placeholder="Ex: João Silva" />
+        <span class="field-error" id="err-nome">Preencha o nome.</span>
+      </div>
+      <div class="field-group">
+        <label>Data de nascimento *</label>
+        <input type="date" id="f-nasc" />
+        <span class="field-error" id="err-nasc">Data inválida ou futura.</span>
+      </div>
+      <div class="field-group">
+        <label>Telefone</label>
+        <input type="tel" id="f-tel" placeholder="(21) 99999-9999" maxlength="15" />
+      </div>
+      <div class="field-group">
+        <label>Endereço</label>
+        <input type="text" id="f-endereco" placeholder="Ex: Magé" />
+      </div>
+      <div class="field-group">
+        <label>Bairro</label>
+        <input type="text" id="f-bairro" placeholder="Ex: Centro" />
+      </div>
+      <div class="field-group">
+        <label>Estado Civil</label>
+        <select id="f-estadoCivil">
+          <option value="Solteiro">Solteiro(a)</option>
+          <option value="Casado">Casado(a)</option>
+          <option value="Viuvo">Viúvo(a)</option>
+          <option value="Divorciado">Divorciado(a)</option>
+        </select>
+      </div>
+      <div id="conjuge-fields" style="display:none" class="full">
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Nome do cônjuge</label>
+            <input type="text" id="f-conjuge-nome" placeholder="Nome completo" />
+          </div>
+          <div class="field-group">
+            <label>Nasc. cônjuge</label>
+            <input type="date" id="f-conjuge-data" />
+          </div>
+        </div>
+      </div>
+      <div class="field-group full">
+        <label>Filhos</label>
+        <button type="button" class="btn btn-sm btn-outline" onclick="addFilhoField()">+ Filho</button>
+        <div id="filhos-list" style="margin-top:8px"></div>
+      </div>
+      <div class="field-group full">
+        <label>Movimentos e Pastorais</label>
+        <textarea id="f-obs" rows="2" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)"></textarea>
+      </div>
+      <div class="field-group">
+        <label>Status</label>
+        <select id="f-status">
+          <option value="ativo">Ativo</option>
+          <option value="inativo">Inativo</option>
+        </select>
+      </div>
+      <div class="field-group full">
+        <label>Observação (motivo inativação)</label>
+        <textarea id="f-observacao" rows="2" placeholder="Ex: Falecido em 10/05/2024"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" id="save-btn" onclick="savePerson()">Salvar pessoa</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW PERSON MODAL -->
+<div class="modal-overlay hidden" id="view-modal">
+  <div class="modal" style="max-width:540px">
+    <div id="view-modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ===== CONFIG =====
+const API_URL = 'http://localhost:3000';
+
+// ===== STATE =====
+let currentUser   = null;
+let allPeople     = [];   // single source of truth
+let editId        = null;
+let currentFilter = 'todos';
+let currentPage   = 1;
+const ITEMS_PER_PAGE = 15;
+let advFilters    = {};   // { pastoral, estadocivil, faixa, especial }
+const MONTHS      = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+
+// ===== TOAST =====
+function toast(msg, type = 'success') {
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="toast-icon">${icons[type]||'•'}</span><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  requestAnimationFrame(() => { el.classList.add('show'); });
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 250);
+  }, 3200);
+}
+
+// ===== CONFIRM DIALOG =====
+function confirmDialog(title, message, okLabel = 'Confirmar', danger = true) {
+  return new Promise(resolve => {
+    document.getElementById('confirm-title').textContent   = title;
+    document.getElementById('confirm-message').textContent = message;
+    const okBtn = document.getElementById('confirm-ok');
+    okBtn.textContent  = okLabel;
+    okBtn.className    = `btn btn-sm ${danger ? 'btn-danger' : 'btn-primary'}`;
+    document.getElementById('confirm-overlay').classList.remove('hidden');
+    const cleanup = (val) => {
+      document.getElementById('confirm-overlay').classList.add('hidden');
+      okBtn.onclick     = null;
+      cancelBtn.onclick = null;
+      resolve(val);
+    };
+    const cancelBtn = document.getElementById('confirm-cancel');
+    okBtn.onclick     = () => cleanup(true);
+    cancelBtn.onclick = () => cleanup(false);
+  });
+}
+
+// ===== PHONE MASK =====
+function phoneMask(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,11);
+  if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/,'($1) $2-$3');
+  else if (v.length > 6)  v = v.replace(/^(\d{2})(\d{4,5})(\d{0,4})$/,'($1) $2-$3');
+  else if (v.length > 2)  v = v.replace(/^(\d{2})(\d+)$/,'($1) $2');
+  el.value = v;
+}
+
+// ===== DATE VALIDATION =====
+function validateDate(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return false;
+  if (d.getFullYear() < 1900) return false;
+  if (d > new Date()) return false;
+  return true;
+}
+
+// ===== API =====
+async function apiRequest(endpoint, options = {}) {
+  const token = sessionStorage.getItem('token'); // sessionStorage safer than localStorage
+  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  try {
+    const resp = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+    if (resp.status === 401) { logout(); throw new Error('Sessão expirada.'); }
+    const data = await resp.json();
+    return { ok: resp.ok, data, status: resp.status };
+  } catch (err) {
+    console.error(`API ${endpoint}:`, err);
+    return { ok: false, data: { message: err.message }, status: 500 };
+  }
+}
+
+function ajustarDataLocal(iso) {
+  if (!iso) return '';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso;
+  const d = new Date(iso);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+}
+
+function mapPerson(p) {
+  return {
+    id: p.id,
+    nomeCompleto:        p.nomeCompleto,
+    dataNascimento:      p.dataNascimento ? ajustarDataLocal(p.dataNascimento) : '',
+    codigoDizimista:     p.codigoDizimista,
+    telefone:            p.telefone || '',
+    endereco:            p.endereco || '',
+    bairro:              p.bairro || '',
+    estadoCivil:         p.estadoCivil || 'Solteiro',
+    ativo:               p.ativo !== false,
+    observacao:          p.observacoes || '',
+    conjuge:             p.conjuge ? {
+      nome: p.conjuge.nome || '',
+      dataNascimento: p.conjuge.dataNascimento ? ajustarDataLocal(p.conjuge.dataNascimento) : ''
+    } : { nome: '', dataNascimento: '' },
+    filhos:              (p.filhos || []).map(f => ({
+      nome: f.nome,
+      dataNascimento: f.dataNascimento ? ajustarDataLocal(f.dataNascimento) : ''
+    })),
+    movimentosPastorais: p.movimentosPastorais || [],
+    createdAt:           p.createdAt || new Date().toISOString()
+  };
+}
+
+async function loadPeople(silent = false) {
+  if (!silent) showTableSkeleton();
+  const result = await apiRequest('/pessoas?incluirInativos=true');
+  if (result.ok) {
+    allPeople = result.data.map(mapPerson);
+  } else {
+    if (!silent) toast('Erro ao carregar pessoas.', 'error');
+    allPeople = [];
+  }
+  renderDashboard();
+  renderTable();
+  renderBirthdays();
+}
+
+function showTableSkeleton() {
+  const tbody = document.getElementById('people-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = Array(6).fill(0).map(() =>
+    `<tr class="skeleton-row">
+      <td><div class="skeleton" style="width:70%"></div></td>
+      <td><div class="skeleton" style="width:60%"></div></td>
+      <td><div class="skeleton" style="width:50%"></div></td>
+      <td><div class="skeleton" style="width:80px"></div></td>
+    </tr>`
+  ).join('');
+  const cards = document.getElementById('people-cards');
+  if (cards) cards.innerHTML = Array(4).fill(0).map(() =>
+    `<div class="person-card"><div class="skeleton" style="height:80px"></div></div>`
+  ).join('');
+}
+
+// ===== LOGIN =====
+async function doLogin() {
+  const btn  = document.getElementById('login-btn');
+  const errDiv = document.getElementById('login-error');
+  const username = document.getElementById('inp-user').value.trim().toLowerCase();
+  const password = document.getElementById('inp-pass').value;
+  errDiv.classList.add('hidden');
+  if (!username || !password) {
+    errDiv.classList.remove('hidden');
+    errDiv.textContent = 'Preencha usuário e senha.';
+    return;
+  }
+  btn.disabled = true;
+  btn.classList.add('btn-loading');
+  btn.textContent = 'Entrando…';
+  try {
+    const resp = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const result = await resp.json();
+    if (result.success) {
+      if (result.token) sessionStorage.setItem('token', result.token);
+      currentUser = { name: username, role: result.user?.role || 'member', label: result.user?.role === 'admin' ? 'Admin' : 'Membro' };
+      applyRole();
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      await loadPeople();
+      showPage('dashboard');
+    } else {
+      errDiv.classList.remove('hidden');
+      errDiv.textContent = result.message || 'Usuário ou senha incorretos.';
+    }
+  } catch {
+    errDiv.classList.remove('hidden');
+    errDiv.textContent = 'Erro ao conectar com o servidor.';
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('btn-loading');
+    btn.textContent = 'Acessar';
+  }
+}
+
+function logout() {
+  currentUser = null;
+  sessionStorage.removeItem('token');
+  allPeople = [];
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('inp-user').value = '';
+  document.getElementById('inp-pass').value = '';
+}
+
+function applyRole() {
+  const isAdmin = currentUser?.role === 'admin';
+  document.getElementById('header-user-name').textContent = currentUser?.name || '';
+  const pill = document.getElementById('header-role-pill');
+  pill.textContent  = currentUser?.label || '';
+  pill.className    = 'role-pill ' + (isAdmin ? 'admin' : 'member');
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = isAdmin ? '' : 'none';
+  });
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id)?.classList.add('active');
+  const map = { dashboard: 0, people: 1, birthdays: 2, import: 3 };
+  document.querySelectorAll('.nav-tab')[map[id]]?.classList.add('active');
+  if (id === 'birthdays') { buildYearFilter(); renderBirthdays(); }
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'people')    renderTable();
+}
+
+// ===== DASHBOARD =====
+function renderDashboard() {
+  const ativos = allPeople.filter(p => p.ativo === true);
+  const now = new Date(), cm = now.getMonth(), cd = now.getDate(), cy = now.getFullYear();
+
+  const calc = (fn) => ativos.filter(fn).length;
+  const byDate = (p, mFilter, dFilter) => {
+    if (!p.dataNascimento) return false;
+    const [,m,d] = p.dataNascimento.split('-').map(Number);
+    return (dFilter == null ? m-1 === mFilter : m-1 === mFilter && d === dFilter);
+  };
+  const age = (p) => { if(!p.dataNascimento) return null; return cy - +p.dataNascimento.split('-')[0]; };
+
+  document.getElementById('stat-total').textContent      = ativos.length;
+  document.getElementById('stat-thismonth').textContent  = calc(p => byDate(p, cm));
+  document.getElementById('stat-today').textContent      = calc(p => byDate(p, cm, cd));
+  document.getElementById('stat-new').textContent        = calc(p => { const d=new Date(p.createdAt); return d.getMonth()===cm && d.getFullYear()===cy; });
+  document.getElementById('stat-mirins').textContent     = calc(p => { const a=age(p); return a!=null && a<16; });
+  document.getElementById('stat-adultos').textContent    = calc(p => { const a=age(p); return a!=null && a>=16 && a<=60; });
+  document.getElementById('stat-idosos').textContent     = calc(p => { const a=age(p); return a!=null && a>60; });
+
+  const today = ativos.filter(p => byDate(p, cm, cd));
+  const todayEl = document.getElementById('today-list');
+  todayEl.innerHTML = today.length === 0
+    ? '<p style="color:var(--ink2);font-size:14px">Nenhum aniversariante hoje.</p>'
+    : today.map(p => {
+        const a = age(p), mirim = a < 16;
+        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:1.4rem">${mirim?'👶':'🎉'}</span>
+          <div>
+            <div style="font-weight:500;${mirim?'color:#2196F3':''}">${esc(p.nomeCompleto)}</div>
+            <div style="font-size:12px;color:var(--ink2)">${a} anos hoje!${mirim?' (Mirim)':''}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+  const recent = [...ativos].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,5);
+  const recentEl = document.getElementById('recent-list');
+  recentEl.innerHTML = recent.length === 0
+    ? '<p style="color:var(--ink2);font-size:14px">Nenhum cadastro ainda.</p>'
+    : recent.map(p => {
+        const a = age(p), mirim = a && a < 16;
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)">
+          <span style="font-weight:500;${mirim?'color:#2196F3':''}">${esc(p.nomeCompleto)}</span>
+          <span style="font-size:12px;color:var(--ink2)">${formatDate(p.dataNascimento)}</span>
+        </div>`;
+      }).join('');
+}
+
+// ===== FILTERS =====
+let searchTimeout = null;
+function onSearchInput() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => { currentPage = 1; renderTable(); }, 180);
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  currentPage   = 1;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('filter-' + f)?.classList.add('active');
+  renderTable();
+}
+
+function toggleAdvFilters() {
+  document.getElementById('adv-filters').classList.toggle('hidden');
+}
+
+function applyAdvFilters() {
+  advFilters = {
+    pastoral:    document.getElementById('f-adv-pastoral').value.trim().toLowerCase(),
+    estadocivil: document.getElementById('f-adv-estadocivil').value,
+    faixa:       document.getElementById('f-adv-faixa').value,
+    especial:    document.getElementById('f-adv-especial').value,
+  };
+  currentPage = 1;
+  renderFilterChips();
+  renderTable();
+  document.getElementById('adv-filters').classList.add('hidden');
+}
+
+function clearAdvFilters() {
+  advFilters = {};
+  ['f-adv-pastoral','f-adv-estadocivil','f-adv-faixa','f-adv-especial'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderFilterChips();
+  renderTable();
+}
+
+function removeAdvFilter(key) {
+  delete advFilters[key];
+  const el = document.getElementById('f-adv-' + key);
+  if (el) el.value = '';
+  renderFilterChips();
+  renderTable();
+}
+
+function renderFilterChips() {
+  const labels = { pastoral:'Pastoral', estadocivil:'Est. Civil', faixa:'Faixa Etária', especial:'Especial' };
+  const chips  = document.getElementById('filter-chips');
+  if (!chips) return;
+  chips.innerHTML = Object.entries(advFilters)
+    .filter(([,v]) => v)
+    .map(([k,v]) => `<span class="filter-chip">${labels[k]}: ${v}<button onclick="removeAdvFilter('${k}')">×</button></span>`)
+    .join('');
+}
+
+function getFilteredData() {
+  const cy   = new Date().getFullYear();
+  const cm   = new Date().getMonth();
+  let data   = allPeople;
+
+  // Status filter
+  if (currentFilter === 'ativos')   data = data.filter(p => p.ativo === true);
+  if (currentFilter === 'inativos') data = data.filter(p => p.ativo === false);
+
+  // Text search (sanitised)
+  const term = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+  if (term) {
+    data = data.filter(p =>
+      (p.nomeCompleto    || '').toLowerCase().includes(term) ||
+      (p.telefone        || '').toLowerCase().includes(term) ||
+      (p.endereco        || '').toLowerCase().includes(term) ||
+      (p.codigoDizimista || '').toString().toLowerCase().includes(term)
+    );
+  }
+
+  // Advanced filters
+  if (advFilters.pastoral) {
+    data = data.filter(p => (p.movimentosPastorais||[]).join(',').toLowerCase().includes(advFilters.pastoral));
+  }
+  if (advFilters.estadocivil) {
+    data = data.filter(p => p.estadoCivil === advFilters.estadocivil);
+  }
+  if (advFilters.faixa) {
+    data = data.filter(p => {
+      const a = p.dataNascimento ? cy - +p.dataNascimento.split('-')[0] : null;
+      if (a == null) return false;
+      if (advFilters.faixa === 'mirim')  return a < 16;
+      if (advFilters.faixa === 'adulto') return a >= 16 && a <= 60;
+      if (advFilters.faixa === 'idoso')  return a > 60;
+    });
+  }
+  if (advFilters.especial === 'mes') {
+    data = data.filter(p => {
+      if (!p.dataNascimento) return false;
+      return +p.dataNascimento.split('-')[1] - 1 === cm;
+    });
+  }
+  if (advFilters.especial === 'semtel') {
+    data = data.filter(p => !p.telefone);
+  }
+
+  return data;
+}
+
+// ===== TABLE / CARDS =====
+function renderTable() {
+  if (!currentUser) return;
+  const isAdmin  = currentUser?.role === 'admin';
+  const cy       = new Date().getFullYear();
+  const filtered = getFilteredData();
+  const total    = filtered.length;
+  const start    = (currentPage - 1) * ITEMS_PER_PAGE;
+  const items    = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+  renderPagination(total);
+
+  const tbody = document.getElementById('people-tbody');
+  const cards = document.getElementById('people-cards');
+  const empty = document.getElementById('people-empty');
+
+  if (items.length === 0) {
+    if (tbody) tbody.innerHTML = '';
+    if (cards) cards.innerHTML = '';
+    empty?.classList.remove('hidden');
+    return;
+  }
+  empty?.classList.add('hidden');
+
+  // Desktop table
+  if (tbody) {
+    tbody.innerHTML = items.map(p => {
+      const anoNasc = p.dataNascimento ? +p.dataNascimento.split('-')[0] : 0;
+      const idade   = anoNasc ? cy - anoNasc : null;
+      const isMirim = idade != null && idade < 16;
+      const inativo = p.ativo === false;
+      return `<tr>
+        <td>
+          <strong style="cursor:pointer;color:${inativo?'#e67e22':'var(--accent)'}" onclick="viewPerson('${p.id}')">
+            ${esc(p.nomeCompleto)}${inativo?' <span style="font-size:11px;font-weight:400;color:#e67e22">(Inativo)</span>':''}
+          </strong>
+          ${p.codigoDizimista ? `<br><span style="font-size:11px;color:var(--ink2)">Cód: ${p.codigoDizimista}</span>` : ''}
+          ${isMirim && !inativo ? `<span class="badge-mirim" style="margin-left:6px">Mirim</span>` : ''}
+        </td>
+        <td>${formatDate(p.dataNascimento)}${idade ? ` (${idade}a)` : ''}</td>
+        <td>${esc(p.endereco || p.bairro || '—')}</td>
+        ${isAdmin ? `<td><div class="actions">
+          <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')" title="Gerar PDF">📄</button>
+          <button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')" title="Editar">✏️</button>
+          ${p.ativo
+            ? `<button class="btn btn-sm btn-danger"  onclick="inativarPerson('${p.id}')" title="Inativar">🔴</button>`
+            : `<button class="btn btn-sm btn-green"   onclick="reativarPerson('${p.id}')" title="Reativar">🟢</button>`}
+        </div></td>` : ''}
+      </tr>`;
+    }).join('');
+  }
+
+  // Mobile cards
+  if (cards) {
+    cards.innerHTML = items.map(p => {
+      const anoNasc = p.dataNascimento ? +p.dataNascimento.split('-')[0] : 0;
+      const idade   = anoNasc ? cy - anoNasc : null;
+      const isMirim = idade != null && idade < 16;
+      const inativo = p.ativo === false;
+      return `<div class="person-card">
+        <div class="person-card-top">
+          <div>
+            <div class="person-card-name ${inativo?'inativo':''}" onclick="viewPerson('${p.id}')" style="cursor:pointer">
+              ${esc(p.nomeCompleto)}
+              ${isMirim && !inativo ? `<span class="badge-mirim" style="margin-left:6px">Mirim</span>` : ''}
+            </div>
+            <div class="person-card-meta">
+              ${idade ? `<span>🎂 ${formatDate(p.dataNascimento)} (${idade}a)</span>` : ''}
+              ${p.endereco || p.bairro ? `<span>📍 ${esc(p.endereco||p.bairro)}</span>` : ''}
+              ${p.codigoDizimista ? `<span>Cód: ${p.codigoDizimista}</span>` : ''}
+            </div>
+          </div>
+          <div class="status-dot ${inativo?'inativo':'ativo'}"></div>
+        </div>
+        ${isAdmin ? `<div class="person-card-actions">
+          <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')">Ver</button>
+          <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')">📄</button>
+          <button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')">✏️</button>
+          ${p.ativo
+            ? `<button class="btn btn-sm btn-danger" onclick="inativarPerson('${p.id}')">Inativar</button>`
+            : `<button class="btn btn-sm btn-green" onclick="reativarPerson('${p.id}')">Reativar</button>`}
+        </div>` : ''}
+      </div>`;
+    }).join('');
+  }
+}
+
+function renderPagination(total) {
+  const el = document.getElementById('pagination');
+  if (!el) return;
+  const pages = Math.ceil(total / ITEMS_PER_PAGE);
+  if (pages <= 1) { el.innerHTML = `<div class="pagination-info" style="text-align:center;margin-top:10px">${total} registros</div>`; return; }
+
+  let html = `<div class="pagination-wrap">`;
+  html += `<button class="btn btn-sm btn-outline" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}>←</button>`;
+
+  let s = Math.max(1, currentPage-2), e = Math.min(pages, currentPage+2);
+  if (s > 1) { html += `<button class="btn btn-sm btn-outline" onclick="changePage(1)">1</button>`; if (s>2) html += `<span style="padding:0 4px">…</span>`; }
+  for (let i=s;i<=e;i++) html += `<button class="btn btn-sm ${i===currentPage?'btn-primary':'btn-outline'}" onclick="changePage(${i})">${i}</button>`;
+  if (e < pages) { if (e<pages-1) html += `<span style="padding:0 4px">…</span>`; html += `<button class="btn btn-sm btn-outline" onclick="changePage(${pages})">${pages}</button>`; }
+  html += `<button class="btn btn-sm btn-outline" onclick="changePage(${currentPage+1})" ${currentPage===pages?'disabled':''}>→</button>`;
+  html += `<span class="pagination-info">${total} registros</span>`;
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function changePage(p) {
+  const total = getFilteredData().length;
+  const max   = Math.ceil(total / ITEMS_PER_PAGE);
+  if (p < 1 || p > max) return;
+  currentPage = p;
+  renderTable();
+}
+
+// ===== VIEW PERSON =====
+function viewPerson(id) {
+  const p = allPeople.find(x => x.id == id);
+  if (!p) return;
+  const isAdmin = currentUser?.role === 'admin';
+  const cy = new Date().getFullYear();
+  const idade = p.dataNascimento ? cy - +p.dataNascimento.split('-')[0] : null;
+
+  const statusTxt = p.ativo ? '● Ativo' : `● Inativo${p.observacao ? ' — ' + p.observacao : ''}`;
+  const statusColor = p.ativo ? 'var(--green)' : '#e67e22';
+
+  document.getElementById('view-modal-content').innerHTML = `
+    <div class="view-header">
+      <div>
+        <div class="view-name">${esc(p.nomeCompleto)}</div>
+        <div class="view-status" style="color:${statusColor}">${statusTxt}</div>
+        ${p.codigoDizimista ? `<div style="font-size:12px;color:var(--ink2);margin-top:2px">Cód: ${p.codigoDizimista}</div>` : ''}
+      </div>
+      <button class="close-btn" onclick="document.getElementById('view-modal').classList.add('hidden')">×</button>
+    </div>
+
+    <div class="view-section">
+      <div class="view-section-title">Dados pessoais</div>
+      <div class="view-grid">
+        <div class="view-field"><label>Nascimento</label><span>${formatDate(p.dataNascimento)}${idade ? ` (${idade} anos)` : ''}</span></div>
+        <div class="view-field"><label>Telefone</label><span>${esc(p.telefone||'—')}</span></div>
+        <div class="view-field"><label>Endereço</label><span>${esc(p.endereco||'—')}</span></div>
+        <div class="view-field"><label>Bairro</label><span>${esc(p.bairro||'—')}</span></div>
+        <div class="view-field"><label>Estado Civil</label><span>${esc(p.estadoCivil||'—')}</span></div>
+      </div>
+    </div>
+
+    ${p.conjuge?.nome ? `
+    <div class="view-section">
+      <div class="view-section-title">Cônjuge</div>
+      <div class="view-grid">
+        <div class="view-field"><label>Nome</label><span>${esc(p.conjuge.nome)}</span></div>
+        <div class="view-field"><label>Nascimento</label><span>${formatDate(p.conjuge.dataNascimento)}</span></div>
+      </div>
+    </div>` : ''}
+
+    ${p.filhos?.length ? `
+    <div class="view-section">
+      <div class="view-section-title">Filhos (${p.filhos.length})</div>
+      ${p.filhos.map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px">
+        <span>${esc(f.nome)}</span><span style="color:var(--ink2)">${formatDate(f.dataNascimento)}</span>
+      </div>`).join('')}
+    </div>` : ''}
+
+    ${p.movimentosPastorais?.length ? `
+    <div class="view-section">
+      <div class="view-section-title">Movimentos e Pastorais</div>
+      <div class="pastoral-tags">${p.movimentosPastorais.map(m=>`<span class="pastoral-tag">${esc(m)}</span>`).join('')}</div>
+    </div>` : ''}
+
+    ${isAdmin ? `
+    <div class="view-actions">
+      <button class="btn btn-sm btn-outline" onclick="document.getElementById('view-modal').classList.add('hidden'); openModal('${p.id}')">✏️ Editar</button>
+      <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')">📄 Gerar PDF</button>
+    </div>` : ''}
+  `;
+  document.getElementById('view-modal').classList.remove('hidden');
+}
+
+// ===== MODAL CRUD =====
+function openModal(id = null) {
+  console.log('openModal chamado, id:', id);
+  
+  if (currentUser?.role !== 'admin') {
+    toast('Acesso negado. Apenas administradores podem editar.', 'error');
+    return;
+  }
+  
+  editId = id;
+  document.getElementById('modal-title').textContent = id ? 'Editar pessoa' : 'Novo cadastro';
+  document.getElementById('modal-error')?.classList.add('hidden');
+  
+  // Limpar campos
+  const campos = ['nome', 'nasc', 'tel', 'endereco', 'bairro', 'estadoCivil', 'conjuge-nome', 'conjuge-data', 'obs', 'ehDizimista', 'codigo-dizimista'];
+  campos.forEach(f => { 
+    const el = document.getElementById('f-' + f); 
+    if (el) el.value = ''; 
+  });
+  
+  const filhosContainer = document.getElementById('filhos-list');
+  if (filhosContainer) filhosContainer.innerHTML = '';
+  
+  document.querySelectorAll('.field-error').forEach(el => el.classList.remove('show'));
+  const campoCodigo = document.getElementById('campo-codigo-dizimista');
+  if (campoCodigo) campoCodigo.style.display = 'none';
+  
+  if (id) {
+    const p = allPeople.find(x => x.id == id);
+    if (!p) {
+      console.error('Pessoa não encontrada para editar:', id);
+      toast('Pessoa não encontrada.', 'error');
+      return;
+    }
+    
+    console.log('Editando pessoa:', p.nomeCompleto);
+    
+    document.getElementById('f-nome').value = p.nomeCompleto || '';
+    document.getElementById('f-nasc').value = p.dataNascimento || '';
+    document.getElementById('f-tel').value = p.telefone || '';
+    document.getElementById('f-endereco').value = p.endereco || '';
+    document.getElementById('f-bairro').value = p.bairro || '';
+    document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
+    document.getElementById('f-obs').value = (p.movimentosPastorais || []).join(', ');
+    
+    // Dados de dizimista
+    const ehDizimistaSelect = document.getElementById('f-ehDizimista');
+    if (ehDizimistaSelect) {
+      ehDizimistaSelect.value = p.codigoDizimista ? 'true' : 'false';
+    }
+    
+    if (p.codigoDizimista) {
+      const codigoInput = document.getElementById('f-codigo-dizimista');
+      if (codigoInput) codigoInput.value = p.codigoDizimista;
+      if (campoCodigo) campoCodigo.style.display = 'block';
+    }
+    
+    if (p.conjuge) {
+      document.getElementById('f-conjuge-nome').value = p.conjuge.nome || '';
+      document.getElementById('f-conjuge-data').value = p.conjuge.dataNascimento || '';
+    }
+    
+    const conjugeDiv = document.getElementById('conjuge-fields');
+    if (conjugeDiv) conjugeDiv.style.display = p.estadoCivil === 'Casado' ? 'block' : 'none';
+    
+    if (p.filhos && p.filhos.length > 0) {
+      p.filhos.forEach(filho => addFilhoField(filho.nome, filho.dataNascimento));
+    }
+  }
+  
+  const modalOverlay = document.getElementById('modal-overlay');
+  if (modalOverlay) {
+    modalOverlay.classList.remove('hidden');
+    console.log(' Modal de edição aberto');
+  } else {
+    console.error(' Elemento modal-overlay não encontrado');
+  }
+}
+
+
+function addFilhoField(nome = '', data = '') {
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
+  div.innerHTML = `<input type="text" placeholder="Nome do filho" value="${esc(nome)}" style="flex:2;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:DM Sans,sans-serif;font-size:14px;background:#fff;outline:none" class="filho-nome">
+    <input type="date" value="${data}" style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:DM Sans,sans-serif;font-size:14px;background:#fff;outline:none" class="filho-data">
+    <button type="button" class="btn btn-sm btn-outline" onclick="this.parentElement.remove()">✖</button>`;
+  document.getElementById('filhos-list').appendChild(div);
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+  editId = null;
+}
+
+async function savePerson() {
+  const saveBtn = document.getElementById('save-btn');
+  const nome    = document.getElementById('f-nome')?.value.trim();
+  const nasc    = document.getElementById('f-nasc')?.value;
+
+  // Validate
+  let valid = true;
+  const errNome = document.getElementById('err-nome');
+  const errNasc = document.getElementById('err-nasc');
+  if (!nome) { errNome?.classList.add('show'); document.getElementById('f-nome').classList.add('error'); valid = false; } 
+  else        { errNome?.classList.remove('show'); document.getElementById('f-nome').classList.remove('error'); }
+  if (!validateDate(nasc)) { errNasc?.classList.add('show'); document.getElementById('f-nasc').classList.add('error'); valid = false; }
+  else                      { errNasc?.classList.remove('show'); document.getElementById('f-nasc').classList.remove('error'); }
+  if (!valid) return;
+
+  const filhos = [];
+  document.querySelectorAll('.filho-item, #filhos-list > div').forEach(item => {
+    const nf = item.querySelector('.filho-nome')?.value.trim();
+    const df = item.querySelector('.filho-data')?.value;
+    if (nf && df) filhos.push({ nome: nf, dataNascimento: df });
+  });
+
+  const movs = (document.getElementById('f-obs')?.value.trim()||'').split(',').map(s=>s.trim()).filter(Boolean);
+  const ec   = document.getElementById('f-estadoCivil')?.value;
+
+  const data = {
+    nomeCompleto:        nome,
+    dataNascimento:      nasc,
+    ehDizimista:         true,
+    movimentosPastorais: movs,
+    filhos:              filhos,
+    ativo:               document.getElementById('f-status')?.value === 'ativo',
+    observacoes:         document.getElementById('f-observacao')?.value.trim() || '',
+  };
+  const tel = document.getElementById('f-tel')?.value.trim();    if (tel) data.telefone = tel;
+  const end = document.getElementById('f-endereco')?.value.trim(); if (end) data.endereco = end;
+  const bai = document.getElementById('f-bairro')?.value.trim();   if (bai) data.bairro   = bai;
+  if (ec) data.estadoCivil = ec;
+  const cnome = document.getElementById('f-conjuge-nome')?.value.trim();
+  const cdata = document.getElementById('f-conjuge-data')?.value;
+  if (cnome) data.conjuge = { nome: cnome, dataNascimento: cdata || null };
+
+  saveBtn.disabled = true;
+  saveBtn.classList.add('btn-loading');
+  saveBtn.textContent = 'Salvando…';
+
+  try {
+    const endpoint = editId ? `/pessoas/${editId}` : '/pessoas';
+    const method   = editId ? 'PATCH' : 'POST';
+    const result   = await apiRequest(endpoint, { method, body: JSON.stringify(data) });
+    if (!result.ok) throw new Error(result.data.message || 'Erro ao salvar.');
+    closeModal();
+    await loadPeople(true);
+    toast(editId ? 'Pessoa atualizada.' : 'Pessoa cadastrada.', 'success');
+  } catch (err) {
+    toast(err.message, 'error');
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.classList.remove('btn-loading');
+    saveBtn.textContent = 'Salvar pessoa';
+  }
+}
+
+async function inativarPerson(id) {
+  const p = allPeople.find(x => x.id == id);
+  if (!p) return;
+  const ok = await confirmDialog('Inativar pessoa', `Desativar "${p.nomeCompleto}"? Os dados serão mantidos.`, 'Inativar', true);
+  if (!ok) return;
+  const result = await apiRequest(`/pessoas/${id}`, { method: 'PATCH', body: JSON.stringify({ ativo: false }) });
+  if (result.ok) {
+    await loadPeople(true);
+    toast('Pessoa inativada.', 'info');
+  } else {
+    toast(result.data.message || 'Erro ao inativar.', 'error');
+  }
+}
+
+async function reativarPerson(id) {
+  const p = allPeople.find(x => x.id == id);
+  if (!p) return;
+  const ok = await confirmDialog('Reativar pessoa', `Reativar "${p.nomeCompleto}"?`, 'Reativar', false);
+  if (!ok) return;
+  const result = await apiRequest(`/pessoas/${id}`, { method: 'PATCH', body: JSON.stringify({ ativo: true }) });
+  if (result.ok) {
+    await loadPeople(true);
+    toast('Pessoa reativada.', 'success');
+  } else {
+    toast(result.data.message || 'Erro ao reativar.', 'error');
+  }
+}
+
+// ===== BIRTHDAYS =====
+function buildYearFilter() {
+  const sel = document.getElementById('birthday-year-filter');
+  if (!sel || sel.options.length > 0) return;
+  const y = new Date().getFullYear();
+  for (let i = y; i >= y-5; i--) {
+    const o = document.createElement('option'); o.value = i; o.textContent = i; sel.appendChild(o);
+  }
+}
+
+let currentOpenMonth = null;
+function toggleMonth(mi) {
+  if (currentOpenMonth != null && currentOpenMonth !== mi) {
+    document.getElementById(`content-${currentOpenMonth}`)?.classList.remove('open');
+    document.getElementById(`arrow-${currentOpenMonth}`)?.classList.remove('open');
+  }
+  const c = document.getElementById(`content-${mi}`);
+  const a = document.getElementById(`arrow-${mi}`);
+  c?.classList.toggle('open');
+  a?.classList.toggle('open');
+  currentOpenMonth = c?.classList.contains('open') ? mi : null;
+}
+
+function renderBirthdays() {
+  const container = document.getElementById('birthday-content');
+  if (!container) return;
+  const ativos = allPeople.filter(p => p.ativo === true);
+  const now = new Date(), cm = now.getMonth(), cd = now.getDate();
+  const sel = document.getElementById('birthday-year-filter');
+  const yr  = sel ? parseInt(sel.value) : now.getFullYear();
+
+  const byMonth = Array.from({length:12}, () => []);
+  ativos.forEach(p => {
+    if (!p.dataNascimento) return;
+    const [ano, mes, dia] = p.dataNascimento.split('-').map(Number);
+    if (!mes || !dia) return;
+    byMonth[mes-1].push({ ...p, _day: dia, _idade: yr - ano, _mirim: yr - ano < 16 });
+  });
+  byMonth.forEach(m => m.sort((a,b) => a._day - b._day));
+
+  const mirimStyle = (m) => m ? 'background:#2196F3' : '';
+  const mirimName  = (m) => m ? 'color:#2196F3' : '';
+
+  // Desktop
+  const desktopHtml = MONTHS.map((mn, mi) => {
+    if (!byMonth[mi].length) return '';
+    const isThis = mi === cm && yr === now.getFullYear();
+    return `<div class="month-section">
+      <div class="month-header">
+        <span class="month-name">${mn}</span>
+        <span class="month-count">${byMonth[mi].length}</span>
+        <button class="btn btn-sm btn-outline" onclick="copyMonthList(${mi})" style="padding:4px 10px;font-size:12px">Copiar lista</button>
+        ${isThis ? '<span style="font-size:12px;color:var(--accent2);font-weight:500">✦ Este mês</span>' : ''}
+      </div>
+      <div class="birthday-grid">
+        ${byMonth[mi].map(p => {
+          const today = isThis && p._day === cd;
+          return `<div class="birthday-card" style="${p._mirim?'border-color:#2196F3;background:rgba(33,150,243,0.04)':''}${today?';border-color:var(--accent2);background:#fffbf0':''}">
+            <div class="bday-day" style="${mirimStyle(p._mirim)}${today?';background:var(--accent2)':''}">${p._day}</div>
+            <div class="bday-info">
+              <div class="bday-name" style="${mirimName(p._mirim)}">${esc(p.nomeCompleto)}</div>
+              <div class="bday-age">${p._idade} anos${today?' 🎉':''}${p._mirim?' · Mirim':''}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Mobile accordion
+  const mobileHtml = MONTHS.map((mn, mi) => {
+    if (!byMonth[mi].length) return '';
+    const isThis = mi === cm && yr === now.getFullYear();
+    return `<div class="month-accordion">
+      <div class="month-accordion-header" onclick="toggleMonth(${mi})">
+        <div class="left">
+          <span class="month-name" style="font-size:1.1rem;font-weight:500">${mn}</span>
+          <span class="month-count">${byMonth[mi].length}</span>
+          ${isThis ? '<span style="font-size:11px;color:var(--accent2)">✦</span>' : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();copyMonthList(${mi})" style="padding:3px 8px;font-size:11px">Copiar</button>
+          <span class="arrow" id="arrow-${mi}">▼</span>
+        </div>
+      </div>
+      <div class="month-accordion-content" id="content-${mi}">
+        <div class="birthday-list">
+          ${byMonth[mi].map(p => `<div class="birthday-item">
+            <div class="day" style="${mirimStyle(p._mirim)}">${p._day}</div>
+            <div class="info">
+              <div class="name" style="${mirimName(p._mirim)}">${esc(p.nomeCompleto)}</div>
+              <div class="details">${p._idade} anos${p._mirim?' · Mirim':''}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const isMobile = window.innerWidth <= 768;
+  const content  = (isMobile ? mobileHtml : desktopHtml) || `<div class="empty-state"><div class="es-icon">🎂</div><h3>Nenhum aniversariante</h3></div>`;
+  container.innerHTML = content;
+}
+
+function copyMonthList(mi) {
+  const yr   = parseInt(document.getElementById('birthday-year-filter')?.value) || new Date().getFullYear();
+  const list = allPeople
+    .filter(p => p.ativo && p.dataNascimento && +p.dataNascimento.split('-')[1]-1 === mi)
+    .sort((a,b) => +a.dataNascimento.split('-')[2] - +b.dataNascimento.split('-')[2]);
+  if (!list.length) { toast(`Nenhum aniversariante em ${MONTHS[mi]}.`, 'info'); return; }
+  const txt = `${MONTHS[mi]}:\n\n${list.map((p,i)=>`${i+1}. ${p.nomeCompleto}`).join('\n')}`;
+  navigator.clipboard.writeText(txt).then(() => toast(`Lista de ${list.length} aniversariantes copiada!`, 'success'));
+}
+
+// ===== IMPORT =====
+window.handleFileImport = function(inp) { if (inp.files?.[0]) processExcelFile(inp.files[0]); };
+
+async function processExcelFile(file) {
+  if (!window.XLSX) {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    document.head.appendChild(s);
+    await new Promise(res => s.onload = res);
+  }
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const wb   = XLSX.read(e.target.result, { type: 'binary' });
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+      let added = 0, errors = 0;
+      for (const row of rows) {
+        try {
+          const nome = (row['Nome'] || row['nome'] || '').toString().trim();
+          if (!nome) { errors++; continue; }
+          const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString();
+          const partes  = nascRaw.split('/');
+          if (partes.length !== 3) { errors++; continue; }
+          const dataNascimento = `${partes[2]}-${partes[1]}-${partes[0]}`;
+          const pd = { nomeCompleto: nome, dataNascimento, ehDizimista: true, ativo: true, movimentosPastorais: [], filhos: [] };
+          const tel = (row['Telefone']||'').toString().trim(); if (tel) pd.telefone = tel;
+          const end = (row['Endereco']||row['Endereço']||'').toString().trim(); if (end) pd.endereco = end;
+          const bai = (row['Bairro']||'').toString().trim(); if (bai) pd.bairro = bai;
+          const cod = (row['Código dizimista']||'').toString().trim(); if (cod) pd.codigoDizimista = cod;
+          const resp = await fetch(`${API_URL}/pessoas`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pd) });
+          resp.ok ? added++ : errors++;
+        } catch { errors++; }
+      }
+      await loadPeople(true);
+      const res = document.getElementById('import-result');
+      res.classList.remove('hidden');
+      res.innerHTML = `<div class="alert alert-success">✓ ${added} pessoa(s) importadas!${errors ? ` ${errors} erro(s) ignorados.` : ''}</div>`;
+      setTimeout(() => res.classList.add('hidden'), 5000);
+      toast(`Importação concluída: ${added} adicionados.`, 'success');
+    } catch (err) { toast('Erro ao processar o arquivo.', 'error'); }
+  };
+  reader.readAsBinaryString(file);
+}
+
+window.downloadTemplate = function() {
+  if (!window.XLSX) { toast('Aguarde, carregando biblioteca…', 'info'); return; }
+  const ws = XLSX.utils.aoa_to_sheet([['Nome','Código dizimista','Data de nascimento','Conjuge','Data nascimento conjuge','Telefone','Endereco','Bairro']]);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Dizimistas');
+  XLSX.writeFile(wb, 'modelo_dizimistas.xlsx');
+};
+
+// ===== PDF (lazy loaded) =====
+async function generatePDF(id) {
+  const person = allPeople.find(p => p.id == id);
+  if (!person) { toast('Pessoa não encontrada.', 'error'); return; }
+  if (!window.PDFLib) {
+    toast('Carregando gerador de PDF…', 'info');
+    await Promise.all([
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js'),
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js'),
+    ]);
+  }
+  try {
+    let pdfDoc;
+    try {
+      const r = await fetch('templates/ficha_dizimistas_modelo.pdf');
+      if (!r.ok) throw new Error();
+      pdfDoc = await PDFLib.PDFDocument.load(await r.arrayBuffer());
+    } catch {
+      pdfDoc = await PDFLib.PDFDocument.create();
+      pdfDoc.addPage([600, 800]);
+    }
+    const pages = pdfDoc.getPages(), page = pages[0], { height } = page.getSize();
+    const font     = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+    const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    const draw = (txt, x, y, size = 11, bold = false) => {
+      if (txt) try { page.drawText(String(txt), { x, y: height - y, size, font: bold ? fontBold : font }); } catch {}
+    };
+    const fmtDate = s => { if (!s) return ''; const d = new Date(s); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; };
+
+    draw(person.nomeCompleto, 80, 120, 14, true);
+    draw('Nascimento: ' + fmtDate(person.dataNascimento), 80, 150, 11);
+    draw('Telefone: ' + (person.telefone||'—'), 80, 170, 11);
+    draw('Endereço: ' + (person.endereco||'—'), 80, 210, 11);
+    draw('Bairro: '   + (person.bairro||'—'),   80, 230, 11);
+    if (person.conjuge?.nome) {
+      draw('CÔNJUGE:', 80, 290, 12, true);
+      draw('Nome: ' + person.conjuge.nome, 80, 310, 11);
+      draw('Data: ' + fmtDate(person.conjuge.dataNascimento), 80, 330, 11);
+    }
+    if (person.filhos?.length) {
+      draw('FILHOS:', 80, 370, 12, true);
+      person.filhos.slice(0,6).forEach((f,i) => draw(`${i+1}. ${f.nome}`, 80, 390 + i*18, 10));
+    }
+    if (person.movimentosPastorais?.length) {
+      draw('MOVIMENTOS:', 80, 500, 12, true);
+      draw(person.movimentosPastorais.join(', '), 80, 520, 10);
+    }
+    const bytes = await pdfDoc.save();
+    saveAs(new Blob([bytes], { type: 'application/pdf' }), `Ficha_${person.nomeCompleto.replace(/\s+/g,'_')}.pdf`);
+    toast('PDF gerado com sucesso.', 'success');
+  } catch (err) { toast('Erro ao gerar PDF: ' + err.message, 'error'); }
+}
+
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
+    const s = document.createElement('script'); s.src = src;
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+// ===== EXPORT =====
+function exportToJSON() {
+  const data = allPeople.map(({ id, createdAt, ...rest }) => rest);
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `dados_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Dados exportados.', 'success');
+}
+
+// ===== UTILS =====
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function formatDate(s) {
+  if (!s) return '—';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const [a,m,d] = s.split('-'); return `${d}/${m}/${a}`; }
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? '—' : `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}/${d.getUTCFullYear()}`;
+}
+
+// ===== EVENTS =====
+document.addEventListener('DOMContentLoaded', () => {
+  // Drag & drop
+  const dz = document.getElementById('drop-zone');
+  if (dz) {
+    dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault(); dz.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0]; if (f) processExcelFile(f);
+    });
+  }
+
+  // Show/hide cônjuge fields
+  document.getElementById('f-estadoCivil')?.addEventListener('change', function() {
+    document.getElementById('conjuge-fields').style.display = this.value === 'Casado' ? 'block' : 'none';
+  });
+
+  // Phone mask
+  document.getElementById('f-tel')?.addEventListener('input', function() { phoneMask(this); });
+
+  // Real-time validation
+  document.getElementById('f-nome')?.addEventListener('input', function() {
+    const ok = this.value.trim().length > 0;
+    this.classList.toggle('error', !ok);
+    document.getElementById('err-nome')?.classList.toggle('show', !ok);
+  });
+  document.getElementById('f-nasc')?.addEventListener('change', function() {
+    const ok = validateDate(this.value);
+    this.classList.toggle('error', !ok);
+    document.getElementById('err-nasc')?.classList.toggle('show', !ok);
+  });
+
+  // Close modals on overlay click
+  document.getElementById('view-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.add('hidden');
+  });
+  document.getElementById('modal-overlay')?.addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Lazy load xlsx only on import tab
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      if (t.textContent.includes('Importar') && !window.XLSX) {
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+      }
+    });
+  });
+});
+
+window.addEventListener('resize', () => renderBirthdays());
+</script>
+</body>
+</html>

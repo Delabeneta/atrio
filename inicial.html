@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Átrio · Comunidade São Sebastião</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════
+   ÁTRIO 
+   Paleta: Índigo Profundo + Âmbar Vivo
+   Tipografia: Inter (sans) + Lora (serif)
+   ═══════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  /* ── Índigo */
+  --indigo-950: #1a1830;
+  --indigo-900: #2e2a5e;
+  --indigo-800: #3d3580;
+  --indigo-600: #5b52c2;
+  --indigo-400: #8b84d8;
+  --indigo-200: #cccaf2;
+  --indigo-100: #e4e2f4;
+  --indigo-50:  #f0effc;
+
+  /* ── Âmbar */
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-400: #fbbf24;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  /* ── Semânticas */
+  --success:       #059669;
+  --success-bg:    #d1fae5;
+  --success-text:  #065f46;
+  --warning:       #d97706;
+  --warning-bg:    #fef3c7;
+  --warning-text:  #92400e;
+  --danger:        #dc2626;
+  --danger-bg:     #fee2e2;
+  --danger-text:   #991b1b;
+
+  /* ── Superfícies */
+  --bg:       #f5f4fc;
+  --card:     #ffffff;
+  --surface:  #f8f7fe;
+
+  /* ── Texto */
+  --ink:      #1a1830;
+  --ink2:     #4b4980;
+  --ink3:     #6b6a8a;
+  --ink4:     #9e9cb8;
+
+  /* ── Bordas */
+  --line:     #e4e2f4;
+  --line2:    #cccaf2;
+
+  /* ── Tipografia */
+  --font-sans:  "Inter", system-ui, sans-serif;
+  --font-serif: "Lora", Georgia, serif;
+
+  /* ── Layout */
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow:    0 1px 12px rgba(61,53,128,0.07);
+  --shadow-lg: 0 6px 32px rgba(61,53,128,0.12);
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--indigo-950);
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.logo span { color: var(--amber-500); }
+
+/* ── BOTÕES ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  line-height: 1;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--indigo-800);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) { background: var(--indigo-900); }
+
+.btn-accent {
+  background: var(--amber-500);
+  color: var(--indigo-950);
+  font-weight: 600;
+}
+.btn-accent:hover:not(:disabled) { background: var(--amber-600); }
+
+.btn-secondary {
+  background: var(--indigo-50);
+  color: var(--indigo-800);
+  border: 1.5px solid var(--indigo-200);
+}
+.btn-secondary:hover:not(:disabled) { background: var(--indigo-100); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--line);
+  color: var(--ink2);
+}
+.btn-outline:hover:not(:disabled) { border-color: var(--indigo-600); color: var(--indigo-600); }
+
+.btn-ghost-dark {
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+  font-size: 12.5px;
+  padding: 7px 15px;
+}
+.btn-ghost-dark:hover:not(:disabled) { border-color: var(--amber-400); color: var(--amber-400); }
+
+.btn-danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1.5px solid #fecaca;
+}
+.btn-danger:hover:not(:disabled) { background: #fecaca; }
+
+.btn-sm   { padding: 6px 13px; font-size: 12.5px; }
+.btn-lg   { padding: 12px 26px; font-size: 15px; }
+
+.btn-loading { position: relative; color: transparent !important; pointer-events: none; }
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 15px; height: 15px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── HERO ── */
+.hero {
+  background: var(--indigo-950);
+  padding: 72px 28px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 55% 45% at 50% 0%, rgba(91,82,194,0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--amber-400);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.18;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+.hero h1 em { color: var(--amber-400); font-style: italic; }
+.hero p {
+  font-size: 1.02rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+
+/* ── DIVISORES DE SEÇÃO ── */
+.divider {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  color: var(--ink);
+  padding: 52px 24px 8px;
+}
+.divider span { color: var(--indigo-600); }
+
+.section-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink3);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  margin: 28px 0 20px;
+}
+
+/* ── FORM CARD ── */
+.form-wrap {
+  max-width: 700px;
+  margin: 32px auto 64px;
+  padding: 0 20px;
+}
+.form-card {
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line);
+}
+
+/* ── SELETOR DE SITUAÇÃO ── */
+.situacao-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.situacao-option {
+  position: relative;
+}
+.situacao-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+}
+.situacao-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 16px 10px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  background: #fff;
+  user-select: none;
+}
+.situacao-label .icon { font-size: 1.4rem; }
+.situacao-label .label-text { font-size: 12.5px; font-weight: 500; color: var(--ink3); line-height: 1.3; }
+.situacao-option input:checked + .situacao-label {
+  border-color: var(--indigo-600);
+  background: var(--indigo-50);
+  box-shadow: 0 0 0 3px rgba(91,82,194,0.12);
+}
+.situacao-option input:checked + .situacao-label .label-text { color: var(--indigo-800); }
+
+/* ── CAMPOS ── */
+.field-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 18px; }
+.field-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.field-group input,
+.field-group select,
+.field-group textarea {
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 13px;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  color: var(--ink);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  border-color: var(--indigo-600);
+  box-shadow: 0 0 0 3px rgba(91,82,194,0.1);
+}
+.field-group input.err { border-color: var(--danger); }
+.field-error { font-size: 12px; color: var(--danger-text); display: none; }
+.field-error.show { display: block; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.full { grid-column: 1 / -1; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+.badge-active  { background: var(--indigo-50);  color: var(--indigo-800); }
+.badge-amber   { background: var(--amber-100);   color: var(--warning-text); }
+.badge-success { background: var(--success-bg);  color: var(--success-text); }
+.badge-muted   { background: var(--surface);     color: var(--ink3); }
+.badge-danger  { background: var(--danger-bg);   color: var(--danger-text); }
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* ── NAVEGAÇÃO LATERAL ── */
+.sidebar {
+  background: var(--indigo-950);
+  padding: 16px 10px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.nav-item.active {
+  background: rgba(245,158,11,0.14);
+  color: var(--amber-400);
+}
+.nav-item:hover:not(.active) {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.9);
+}
+
+/* ── ESTADO DE SUCESSO ── */
+.success-state {
+  display: none;
+  text-align: center;
+  padding: 48px 24px;
+}
+.success-state.show { display: block; }
+.success-icon {
+  width: 68px; height: 68px;
+  background: var(--success-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 20px;
+}
+.success-state h2 {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.success-state p { color: var(--ink3); font-size: 13.5px; line-height: 1.65; }
+
+/* ── TOAST ── */
+#toast-wrap {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  background: var(--indigo-950);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 240px;
+  max-width: 340px;
+  box-shadow: 0 4px 24px rgba(26,24,48,0.25);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.toast.show { opacity: 1; transform: none; }
+.toast.t-success { border-left: 4px solid var(--success); }
+.toast.t-error   { border-left: 4px solid var(--danger); }
+.toast.t-warning { border-left: 4px solid var(--amber-500); }
+
+
+/* ── STATS ── */
+.stats-bar {
+  display: flex;
+  gap: 0;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.stat-item {
+  flex: 1;
+  padding: 16px;
+  text-align: center;
+  border-right: 1px solid var(--line);
+}
+.stat-item:last-child { border-right: none; }
+.stat-value { font-size: 22px; font-weight: 600; color: var(--indigo-800); line-height: 1.2; }
+.stat-value.amber { color: var(--amber-600); }
+.stat-label { font-size: 11px; color: var(--ink3); margin-top: 3px; }
+
+/* ── TABELA ── */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+thead th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink3);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--indigo-50); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--indigo-950);
+  color: rgba(255,255,255,0.38);
+  text-align: center;
+  padding: 32px 24px;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 600px) {
+  .form-card { padding: 24px 18px; border-radius: var(--radius-lg); }
+  .form-row { grid-template-columns: 1fr; }
+  .situacao-grid { grid-template-columns: 1fr; }
+  .hero { padding: 52px 20px 48px; }
+  .stats-bar { flex-direction: column; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--line); }
+  .stat-item:last-child { border-bottom: none; }
+}
+a.btn {
+ text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-ghost-light {
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  padding: 8px 16px;
+}
+.btn-ghost-light:hover {
+  border-color: var(--amber-400);
+  color: var(--amber-400);
+}
+  </style>
+</head>
+<body>
+
+<div id="toast-wrap"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">Átrio<span>·</span></div>
+      <a href="index.html" class="btn btn-ghost-light" style="text-decoration: none; display: inline-flex;">
+      Acessar sistema
+        </a>
+
+ 
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Comunidade São Sebastião da Rua J</span>
+  <h1>Bem-vindo ao<br><em>Átrio</em></h1>
+  <p>O dízimo é um gesto de amor e partilha que sustenta a missão da nossa Igreja. Faça parte dessa corrente de graça.</p>
+  <button class="btn btn-primary" onclick="document.getElementById('cadastro').scrollIntoView({behavior:'smooth'})">
+    Cadastrar-me como dizimista
+  </button>
+</section>
+
+<!-- FORM SECTION -->
+<div class="divider">Cadastro de <span>Dizimista</span></div>
+
+<div class="form-wrap">
+  <div class="form-card" id="cadastro">
+
+    <!-- Formulário -->
+    <div id="form-section">
+
+      <!-- Situação -->
+      <div class="section-divider">Qual é a sua situação?</div>
+      <div class="situacao-grid">
+        <div class="situacao-option">
+          <input type="radio" name="situacao" id="s-ja" value="SIM" checked />
+          <label for="s-ja" class="situacao-label">
+            <span class="icon"></span>
+            <span class="label-text">Já sou dizimista</span>
+          </label>
+        </div>
+        <div class="situacao-option">
+          <input type="radio" name="situacao" id="s-deseja" value="DESEJA_SER" />
+          <label for="s-deseja" class="situacao-label">
+            <span class="icon"></span>
+            <span class="label-text">Desejo me tornar dizimista</span>
+          </label>
+        </div>
+        <div class="situacao-option">
+          <input type="radio" name="situacao" id="s-nao" value="NAO" />
+          <label for="s-nao" class="situacao-label">
+            <span class="icon"></span>
+            <span class="label-text">Sou fiel da comunidade</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Dados pessoais -->
+      <div class="section-divider">Dados pessoais</div>
+      <div class="form-row">
+        <div class="field-group full">
+          <label>Nome completo *</label>
+          <input type="text" id="p-nome" placeholder="Ex: João da Silva" autocomplete="name" />
+          <span class="field-error" id="err-nome">Preencha o nome completo.</span>
+        </div>
+        <div class="field-group">
+          <label>Data de nascimento *</label>
+          <input type="date" id="p-nasc" />
+          <span class="field-error" id="err-nasc">Data inválida ou futura.</span>
+        </div>
+        <div class="field-group">
+          <label>Telefone</label>
+          <input type="tel" id="p-tel" placeholder="(21) 99999-9999" maxlength="15" autocomplete="tel" />
+        </div>
+        <div class="field-group full">
+          <label>Endereço</label>
+          <input type="text" id="p-endereco" placeholder="Rua, número, complemento" autocomplete="street-address" />
+        </div>
+        <div class="field-group">
+          <label>Bairro</label>
+          <input type="text" id="p-bairro" placeholder="Ex: Centro" />
+        </div>
+        <div class="field-group">
+          <label>Cidade</label>
+          <input type="text" id="p-cidade" placeholder="Ex: Magé" />
+        </div>
+      </div>
+
+      <!-- Estado Civil -->
+      <div class="section-divider">Família</div>
+      <div class="form-row">
+        <div class="field-group">
+          <label>Estado Civil</label>
+          <select id="p-estadoCivil">
+            <option value="Solteiro">Solteiro(a)</option>
+            <option value="Casado">Casado(a)</option>
+            <option value="Viuvo">Viúvo(a)</option>
+            <option value="Divorciado">Divorciado(a)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="conjuge-fields" style="display:none">
+        <div class="form-row">
+          <div class="field-group">
+            <label>Nome do cônjuge</label>
+            <input type="text" id="p-conjuge-nome" placeholder="Nome completo" />
+          </div>
+          <div class="field-group">
+            <label>Nascimento do cônjuge</label>
+            <input type="date" id="p-conjuge-data" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Filhos</label>
+        <button type="button" class="btn btn-outline btn-sm" onclick="addFilho()" style="width:fit-content">+ Adicionar filho</button>
+        <div id="filhos-list" style="margin-top:10px"></div>
+      </div>
+
+      <!-- Pastorais -->
+      <div class="section-divider">Vida paroquial</div>
+      <div class="field-group">
+        <label>Movimentos e Pastorais</label>
+        <input type="text" id="p-obs" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)" />
+      </div>
+
+      <button type="button" class="btn btn-primary" id="submit-btn" onclick="submitCadastro()" style="width:100%;margin-top:16px;padding:14px">
+        Enviar cadastro
+      </button>
+
+      <p style="font-size:12px;color:var(--ink2);text-align:center;margin-top:16px;line-height:1.6">
+        Após o envio, sua ficha será analisada pela pastoral e você poderá pegar a carterinha na próxima missa!
+      </p>
+    </div>
+
+    <!-- Estado de Sucesso -->
+    <div class="success-state" id="success-state">
+      <div class="success-icon">🎉</div>
+      <h2>Cadastro enviado!</h2>
+      <p id="success-msg">Sua ficha foi recebida com sucesso. Você pode pegar a carterinha. Que Deus abençoe sua caminhada! 
+        <br> Entre em contato com a gente, em caso de dúvidas <br> 
+         botão para abrir o zap zap</p>
+      <button class="btn btn-outline" style="margin-top:24px" onclick="resetForm()">Fazer outro cadastro</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>Comunidade São Sebastião da Rua J</div>
+  <div>© 2026 · Sistema Átrio · Gestão de Dizimistas</div>
+</footer>
+
+<script>
+const API_URL = 'http://localhost:3000';
+
+// ── UTILS ──
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function phoneMask(el){
+  let v=el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>10) v=v.replace(/^(\d{2})(\d{5})(\d{4})$/,'($1) $2-$3');
+  else if(v.length>6) v=v.replace(/^(\d{2})(\d{4,5})(\d{0,4})$/,'($1) $2-$3');
+  else if(v.length>2) v=v.replace(/^(\d{2})(\d+)$/,'($1) $2');
+  el.value=v;
+}
+
+function validateDate(s){
+  if(!s) return false;
+  const d=new Date(s);
+  if(isNaN(d.getTime())||d.getFullYear()<1900||d>new Date()) return false;
+  return true;
+}
+
+function toast(msg, type='success'){
+  const el=document.createElement('div');
+  el.className=`toast t-${type}`;
+  el.innerHTML=`<span>${type==='success'?'✓':'✕'}</span><span>${msg}</span>`;
+  document.getElementById('toast-wrap').appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),250); },3500);
+}
+
+// ── FILHOS ──
+function addFilho(nome='', data=''){
+  const div=document.createElement('div');
+  div.style.cssText='display:flex;gap:8px;margin-bottom:8px;align-items:center';
+  div.innerHTML=`
+    <input type="text" placeholder="Nome do filho" value="${esc(nome)}"
+      style="flex:2;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:#fff;outline:none;transition:border-color .18s"
+      class="filho-nome" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--line)'">
+    <input type="date" value="${data}"
+      style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:#fff;outline:none;transition:border-color .18s"
+      class="filho-data" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--line)'">
+    <button type="button" class="
+     btn-sm btn-outline" onclick="this.parentElement.remove()" style="flex-shrink:0">✖</button>`;
+  document.getElementById('filhos-list').appendChild(div);
+}
+
+// ── SUBMIT ──
+async function submitCadastro(){
+  const nome=document.getElementById('p-nome').value.trim();
+  const nasc=document.getElementById('p-nasc').value;
+  const btn=document.getElementById('submit-btn');
+
+  // Validação
+  let ok=true;
+  const setErr=(id,errId,valid)=>{
+    document.getElementById(id).classList.toggle('err',!valid);
+    document.getElementById(errId).classList.toggle('show',!valid);
+    if(!valid) ok=false;
+  };
+  setErr('p-nome','err-nome', nome.length>0);
+  setErr('p-nasc','err-nasc', validateDate(nasc));
+  if(!ok){ toast('Preencha os campos obrigatórios.','error'); return; }
+
+  // Situação
+
+
+  const situacaoRadios = document.querySelectorAll('input[name="situacao"]');
+let situacao = '';
+situacaoRadios.forEach(radio => {
+  if (radio.checked) situacao = radio.value;
+});
+
+  const situacaoMap = {
+  'SIM': 'JaDizimista',
+  'DESEJA_SER': 'DesejaSerDizimista',
+  'NAO': 'NaoDizimista'
+    };
+  const situacaoDizimista = situacaoMap[situacao] || 'NaoDizimista';
+  
+// Filhos
+  const filhos=[];
+  document.querySelectorAll('#filhos-list > div').forEach(row=>{
+    const n=row.querySelector('.filho-nome')?.value.trim();
+    const d=row.querySelector('.filho-data')?.value;
+    if(n&&d) filhos.push({nome:n,dataNascimento:d});
+  });
+
+  // Movimentos (strings livres — backend salva em observacoes)
+  const movRaw=document.getElementById('p-obs').value.trim();
+  const movimentos=movRaw?movRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
+
+  const estadoCivil=document.getElementById('p-estadoCivil').value;
+  const conjugeNome=document.getElementById('p-conjuge-nome').value.trim();
+  const conjugeData=document.getElementById('p-conjuge-data').value;
+
+  // ehDizimista: true apenas se já é ou deseja ser
+  const ehDizimista=situacao!=='NAO';
+
+  const payload={
+    nomeCompleto: nome,
+    dataNascimento: nasc,
+    telefone: document.getElementById('p-tel').value.trim()||undefined,
+    endereco: document.getElementById('p-endereco').value.trim()||undefined,
+    bairro: document.getElementById('p-bairro').value.trim()||undefined,
+    cidade: document.getElementById('p-cidade').value.trim()||undefined,
+    estadoCivil,
+    ehDizimista,
+    ativo: false,   // sempre inativo até aprovação
+    situacaoDizimista: situacaoDizimista,
+    filhos,
+    // Pastorais são strings livres — salvamos em observacoes
+    observacoes: [
+      `Cadastro público · ${situacaoDizimista==='SIM'?'Já dizimista':situacaoDizimista==='DESEJA_SER'?'Deseja ser dizimista':'Fiel'}`,
+      movimentos.length?`Pastorais: ${movimentos.join(', ')}`:'',
+    ].filter(Boolean).join(' · '),
+  };
+  if(conjugeNome) payload.conjuge={nome:conjugeNome,dataNascimento:conjugeData||null};
+
+  btn.disabled=true;
+  btn.classList.add('btn-loading');
+
+  try{
+    const r=await fetch(`${API_URL}/public/cadastrar-dizimista`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),
+    });
+    const result=await r.json();
+    if(r.ok){
+      // Mensagem personalizada por situação
+      const msgs={
+        SIM: 'Seu cadastro foi recebido! A pastoral irá atualizar seu código de dizimista em breve.',
+        DESEJA_SER: 'Cadastro recebido! Nossa equipe entrará em contato para orientar seus próximos passos.',
+        NAO: 'Bem-vindo(a)! Seu cadastro como fiel da comunidade foi registrado com sucesso.',
+      };
+      document.getElementById('success-msg').textContent=msgs[situacao];
+      document.getElementById('form-section').style.display='none';
+      document.getElementById('success-state').classList.add('show');
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else {
+      toast(result.message||'Erro ao enviar. Tente novamente.','error');
+    }
+  } catch {
+    toast('Erro de conexão com o servidor.','error');
+  } finally {
+    btn.disabled=false;
+    btn.classList.remove('btn-loading');
+  }
+}
+
+function resetForm(){
+  document.getElementById('form-section').style.display='';
+  document.getElementById('success-state').classList.remove('show');
+  document.getElementById('p-nome').value='';
+  document.getElementById('p-nasc').value='';
+  document.getElementById('p-tel').value='';
+  document.getElementById('p-endereco').value='';
+  document.getElementById('p-bairro').value='';
+  document.getElementById('p-cidade').value='';
+  document.getElementById('p-obs').value='';
+  document.getElementById('p-conjuge-nome').value='';
+  document.getElementById('p-conjuge-data').value='';
+  document.getElementById('filhos-list').innerHTML='';
+  document.getElementById('s-ja').checked=true;
+}
+
+
+// ── EVENTOS ──
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('p-tel')?.addEventListener('input',function(){ phoneMask(this); });
+
+  document.getElementById('p-estadoCivil')?.addEventListener('change',function(){
+    document.getElementById('conjuge-fields').style.display=this.value==='Casado'?'block':'none';
+  });
+
+  document.getElementById('p-nome')?.addEventListener('input',function(){
+    const ok=this.value.trim().length>0;
+    this.classList.toggle('err',!ok);
+    document.getElementById('err-nome').classList.toggle('show',!ok);
+  });
+  document.getElementById('p-nasc')?.addEventListener('change',function(){
+    const ok=validateDate(this.value);
+    this.classList.toggle('err',!ok);
+    document.getElementById('err-nasc').classList.toggle('show',!ok);
+  });
+
+
+});
+</script>
+</body>
+</html>

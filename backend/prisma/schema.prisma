@@ -1,7 +1,5 @@
 generator client {
-  provider = "prisma-client"
-  output          = "../src/generated/prisma"
-  moduleFormat    = "cjs"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -12,14 +10,14 @@ model Pessoa {
   id                   String              @id @default(cuid())
   nomeCompleto         String
   dataNascimento       DateTime
-  email                String?             @unique
   telefone             String?
+  endereco             String?
   bairro               String?
-  cidade               String?
   cep                  String?
   comunidadeParticipa  String?
   comunidadeContribui  String?
-  ehDizimista          Boolean             @default(false)
+  situacaoDizimista   String?             @default("DesejaSerDizimista")
+  ehDizimista          Boolean             @default(true)
   estadoCivil          EstadoCivil         @default(Solteiro)
   batizado             Boolean             @default(false)
   desejaBatismo        Boolean             @default(false)
@@ -32,7 +30,7 @@ model Pessoa {
   temMatrimonio        Boolean             @default(false)
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
-  ativo                Boolean             @default(true)
+  status               String?   @default("pendente") // ativo | inativo | pendente
   codigoDizimista      String?             @unique
   conjuge              Json?
   filhos               Json?
@@ -54,40 +52,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@index([username])
-}
-
-model Log {
-  id        String   @id @default(cuid())
-  userId    String?
-  action    String
-  entity    String?
-  entityId  String?
-  details   Json?
-  ip        String?
-  userAgent String?
-  createdAt DateTime @default(now())
-
-  @@index([createdAt])
-  @@index([userId])
-}
-
-model Setting {
-  id          String   @id @default(cuid())
-  key         String   @unique
-  value       Json
-  description String?
-  updatedAt   DateTime @updatedAt
-}
-
-model Backup {
-  id        String   @id @default(cuid())
-  filename  String
-  size      Int
-  status    String
-  error     String?
-  createdAt DateTime @default(now())
-
-  @@index([createdAt])
 }
 
 enum EstadoCivil {

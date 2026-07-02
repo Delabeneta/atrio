@@ -1,12 +1,14 @@
+// src/pessoas/dto/create-pessoa.dto.ts
 import {
   IsString,
   IsEmail,
   IsOptional,
-  IsDateString,
   IsBoolean,
+  IsDateString,
+  IsEnum,
   IsArray,
   ValidateNested,
-  IsEnum,
+  isString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import {
@@ -14,8 +16,22 @@ import {
   FrequenciaMissa,
   MovimentoPastoral,
 } from '@prisma/client';
-import { ConjugeDto } from './conjuge.dto';
-import { FilhoDto } from './filho.dto';
+
+class ConjugeDto {
+  @IsString()
+  nome!: string;
+
+  @IsDateString()
+  dataNascimento!: string;
+}
+
+class FilhoDto {
+  @IsString()
+  nome!: string;
+
+  @IsDateString()
+  dataNascimento!: string;
+}
 
 export class CreatePessoaDto {
   @IsString()
@@ -23,23 +39,6 @@ export class CreatePessoaDto {
 
   @IsDateString()
   dataNascimento!: string;
-
-  @IsEnum(EstadoCivil)
-  @IsOptional()
-  estadoCivil?: EstadoCivil;
-
-  @IsEnum(FrequenciaMissa)
-  @IsOptional()
-  frequenciaMissa?: FrequenciaMissa;
-
-  @IsArray()
-  @IsEnum(MovimentoPastoral, { each: true })
-  @IsOptional()
-  movimentosPastorais?: MovimentoPastoral[];
-
-  @IsString()
-  @IsOptional()
-  codigoDizimista?: string;
 
   @IsEmail()
   @IsOptional()
@@ -55,7 +54,7 @@ export class CreatePessoaDto {
 
   @IsString()
   @IsOptional()
-  cidade?: string;
+  endereco?: string;
 
   @IsString()
   @IsOptional()
@@ -73,16 +72,9 @@ export class CreatePessoaDto {
   @IsOptional()
   ehDizimista?: boolean;
 
-  @ValidateNested()
-  @Type(() => ConjugeDto)
+  @IsEnum(EstadoCivil)
   @IsOptional()
-  conjuge?: ConjugeDto;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => FilhoDto)
-  @IsOptional()
-  filhos?: FilhoDto[];
+  estadoCivil?: EstadoCivil;
 
   @IsBoolean()
   @IsOptional()
@@ -104,6 +96,10 @@ export class CreatePessoaDto {
   @IsOptional()
   confessaRegularmente?: boolean;
 
+  @IsEnum(FrequenciaMissa)
+  @IsOptional()
+  frequenciaMissa?: FrequenciaMissa;
+
   @IsBoolean()
   @IsOptional()
   temEucaristia?: boolean;
@@ -118,9 +114,28 @@ export class CreatePessoaDto {
 
   @IsString()
   @IsOptional()
+  codigoDizimista?: string; // Agora é opcional, será gerado automaticamente
+
+  @ValidateNested()
+  @Type(() => ConjugeDto)
+  @IsOptional()
+  conjuge?: ConjugeDto;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => FilhoDto)
+  @IsOptional()
+  filhos?: FilhoDto[];
+
+  @IsArray()
+  @IsEnum(MovimentoPastoral, { each: true })
+  @IsOptional()
+  movimentosPastorais?: MovimentoPastoral[];
+
+  @IsString()
+  @IsOptional()
   observacoes?: string;
 
-  @IsBoolean()
-  @IsOptional()
-  ativo?: boolean;
+  @IsString()
+  status?: string;
 }
