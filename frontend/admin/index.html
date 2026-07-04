@@ -1475,7 +1475,6 @@ function ajustarDataLocal(iso) {
 }
 
 function mapPerson(p) {
-  console.log('📦 Mapeando pessoa:', p.nomeCompleto, 'comunidade:', p.comunidadeParticipa);
 
   return {
     id: p.id,
@@ -1896,13 +1895,10 @@ function changePage(p) {
 }
 
 // ===== VIEW PERSON =====
-// ===== VIEW PERSON =====
 function viewPerson(id) {
-  console.log('🔍 viewPerson chamado para id:', id);
-  console.log('📊 allPeople carregados:', allPeople.length);
   
   if (!allPeople || allPeople.length === 0) {
-    console.warn('⚠️ allPeople vazio, recarregando...');
+    console.warn('allPeople vazio, recarregando...');
     loadPeople().then(() => {
       viewPerson(id);
     });
@@ -1916,7 +1912,6 @@ function viewPerson(id) {
     return;
   }
   
-  console.log('Pessoa encontrada:', p.nomeCompleto);
   
   const isAdmin = currentUser?.role === 'admin';
   const cy = new Date().getFullYear();
@@ -2019,14 +2014,12 @@ function viewPerson(id) {
     modalContent.innerHTML = html;
     const modal = document.getElementById('view-modal');
     modal.classList.remove('hidden');
-    console.log('Modal de visualização aberto');
   } else {
     console.error(' Elemento view-modal-content não encontrado no DOM');
   }
 }
 
 function openModal(id = null) {
-  console.log(' openModal chamado, id:', id);
   
   if (currentUser?.role !== 'admin') {
     toast('Acesso negado. Apenas administradores podem editar.', 'error');
@@ -2059,7 +2052,6 @@ function openModal(id = null) {
       return;
     }
     
-    console.log('Editando pessoa:', p.nomeCompleto);
     
     document.getElementById('f-nome').value = p.nomeCompleto || '';
     document.getElementById('f-nasc').value = p.dataNascimento || '';
@@ -2098,9 +2090,8 @@ function openModal(id = null) {
   const modalOverlay = document.getElementById('modal-overlay');
   if (modalOverlay) {
     modalOverlay.classList.remove('hidden');
-    console.log('✅ Modal de edição aberto');
   } else {
-    console.error('❌ Elemento modal-overlay não encontrado');
+    console.error(' Elemento modal-overlay não encontrado');
   }
 }
 
@@ -2161,7 +2152,7 @@ async function savePerson() {
   // 1. Validar Nome
   const nome = document.getElementById('f-nome')?.value.trim();
   if (!nome) {
-    errors.push('❌ Nome completo é obrigatório.');
+    errors.push('Nome completo é obrigatório.');
     document.getElementById('f-nome')?.classList.add('error');
     document.getElementById('err-nome')?.classList.add('show');
   } else {
@@ -2172,7 +2163,7 @@ async function savePerson() {
   // 2. Validar Data de Nascimento
   const nasc = document.getElementById('f-nasc')?.value;
   if (!nasc || !validateDate(nasc)) {
-    errors.push('❌ Data de nascimento é obrigatória e deve ser válida.');
+    errors.push(' Data de nascimento é obrigatória e deve ser válida.');
     document.getElementById('f-nasc')?.classList.add('error');
     document.getElementById('err-nasc')?.classList.add('show');
   } else {
@@ -2183,19 +2174,19 @@ async function savePerson() {
   // 3. Validar Telefone (se preenchido)
   const tel = document.getElementById('f-tel')?.value.trim();
   if (tel && !/^\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}$/.test(tel)) {
-    errors.push('⚠️ Telefone inválido. Use o formato (21) 99999-9999.');
+    errors.push('Telefone inválido. Use o formato (21) 99999-9999.');
   }
   
   // 4. Validar Endereço (opcional, mas se preenchido deve ter tamanho mínimo)
   const endereco = document.getElementById('f-endereco')?.value.trim();
   if (endereco && endereco.length < 3) {
-    errors.push('⚠️ Endereço muito curto. Verifique o campo.');
+    errors.push('Endereço muito curto. Verifique o campo.');
   }
   
   // 5. Validar Bairro (opcional)
   const bairro = document.getElementById('f-bairro')?.value.trim();
   if (bairro && bairro.length < 2) {
-    errors.push('⚠️ Bairro muito curto. Verifique o campo.');
+    errors.push('Bairro muito curto. Verifique o campo.');
   }
   
   // 6. Validar Código do Dizimista (se for dizimista)
@@ -2203,29 +2194,29 @@ async function savePerson() {
   const codigoDizimista = document.getElementById('f-codigo-dizimista')?.value.trim();
   
   if (ehDizimista && !codigoDizimista) {
-    errors.push('❌ Para dizimistas, é necessário informar um código.');
+    errors.push(' Para dizimistas, é necessário informar um código.');
   }
   
   if (codigoDizimista && !/^\d+$/.test(codigoDizimista)) {
-    errors.push('⚠️ Código do dizimista deve conter apenas números.');
+    errors.push(' Código do dizimista deve conter apenas números.');
   }
   
   // 7. Validar Movimentos Pastorais (opcional)
   const movsRaw = document.getElementById('f-obs')?.value.trim() || '';
   const movs = movsRaw.split(',').map(s => s.trim()).filter(Boolean);
   if (movs.length > 0 && movs.some(m => m.length > 50)) {
-    errors.push('⚠️ Movimentos pastorais muito longos (máx 50 caracteres por item).');
+    errors.push('Movimentos pastorais muito longos (máx 50 caracteres por item).');
   }
   
   // ===== SE HOUVER ERROS, EXIBE =====
   if (errors.length > 0) {
     const errorMessage = errors.join('\n');
-    console.error('❌ Erros de validação:', errors);
+    console.error('Erros de validação:', errors);
     toast(errorMessage, 'error');
     
     // Marca o modal com erro
     document.getElementById('modal-error')?.classList.remove('hidden');
-    document.getElementById('modal-error').textContent = '⚠️ Corrija os erros antes de salvar.';
+    document.getElementById('modal-error').textContent = ' Corrija os erros antes de salvar.';
     
     return;
   }
@@ -2274,16 +2265,13 @@ async function savePerson() {
   const cnome = document.getElementById('f-conjuge-nome')?.value.trim();
   const cdata = document.getElementById('f-conjuge-data')?.value;
   if (cnome) data.conjuge = { nome: cnome, dataNascimento: cdata || null };
-  // Dentro do savePerson(), após montar o objeto data:
-console.log('📤 Enviando comunidade:', data.comunidadeParticipa); 
+  
 
 // ===== ENVIA PARA API =====
   saveBtn.disabled = true;
   saveBtn.classList.add('btn-loading');
   saveBtn.textContent = 'Salvando…';
-  
-  console.log('📤 Enviando para API:', JSON.stringify(data, null, 2));
-  
+    
   try {
     const endpoint = currentEditId  ? `/pessoas/${currentEditId }` : '/pessoas';
     const method = currentEditId  ? 'PATCH' : 'POST';
@@ -2292,14 +2280,14 @@ console.log('📤 Enviando comunidade:', data.comunidadeParticipa);
     if (!result.ok) {
       // Trata erros da API
       const apiError = result.data?.message || 'Erro ao salvar no servidor.';
-      console.error('❌ Erro da API:', apiError);
+      console.error(' Erro da API:', apiError);
       
       // Se for erro de validação do DTO, mostra detalhes
       if (result.data?.errors) {
         const detalhes = result.data.errors.map(e => `- ${e.field}: ${e.message}`).join('\n');
-        toast(`❌ Erro de validação:\n${detalhes}`, 'error');
+        toast(` Erro de validação:\n${detalhes}`, 'error');
       } else {
-        toast(`❌ ${apiError}`, 'error');
+        toast(` ${apiError}`, 'error');
       }
       
       throw new Error(apiError);
@@ -2312,11 +2300,11 @@ console.log('📤 Enviando comunidade:', data.comunidadeParticipa);
     toast(currentEditId  ? '✅ Pessoa atualizada com sucesso!' : '✅ Pessoa cadastrada com sucesso!', 'success');
     
   } catch (err) {
-    console.error('❌ Erro:', err);
+    console.error(' Erro:', err);
     const errDiv = document.getElementById('modal-error');
     if (errDiv) {
       errDiv.classList.remove('hidden');
-      errDiv.textContent = `❌ ${err.message || 'Erro ao salvar. Tente novamente.'}`;
+      errDiv.textContent = ` ${err.message || 'Erro ao salvar. Tente novamente.'}`;
     }
   } finally {
     saveBtn.disabled = false;

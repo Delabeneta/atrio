@@ -134,8 +134,6 @@ export class PessoasService {
   }
 
   async update(id: string, updatePessoaDto: UpdatePessoaDto) {
-    console.log('🔄 Atualizando pessoa:', id);
-    console.log('📦 Dados:', JSON.stringify(updatePessoaDto, null, 2));
     await this.findOne(id);
 
     if (updatePessoaDto.codigoDizimista) {

@@ -35,8 +35,6 @@ export class PessoasController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
-    console.log('📥 Recebendo PATCH para:', id);
-    console.log('📦 Dados:', JSON.stringify(updatePessoaDto, null, 2));
     return this.pessoasService.update(id, updatePessoaDto);
   }
 
