@@ -48,14 +48,15 @@ Content-Type: application/json
 }
 
 ### ATUALIZAR PESSOA (APENAS campos enviados)
-PATCH http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
+PATCH http://localhost:3000/pessoas/cmr5j18ci00011jiahaoz53q5
 Content-Type: application/json
 
 {
   "telefone": "(21)98888-7777",
   "bairro": "Piabetá",
+  "comunidadeParticipa": "Piabetá",
   "movimentosPastorais": ["Liturgia", "Catequese"],
-  "ativo": false
+  "status": "ativo"
 }
 
 ### REMOVER PESSOA (soft delete - apenas inativa)

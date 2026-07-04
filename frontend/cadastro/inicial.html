@@ -657,6 +657,12 @@ a.btn {
 
       <!-- Pastorais -->
       <div class="section-divider">Vida paroquial</div>
+      
+      <div class="field-group full">
+        <label>Comunidade que participa</label>
+        <input type="text" id="p-comunidade" placeholder="Ex: Nossa Senhora Aparecida" />
+      </div>  
+          
       <div class="field-group">
         <label>Movimentos e Pastorais</label>
         <input type="text" id="p-obs" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)" />
@@ -776,12 +782,28 @@ situacaoRadios.forEach(radio => {
   document.querySelectorAll('#filhos-list > div').forEach(row=>{
     const n=row.querySelector('.filho-nome')?.value.trim();
     const d=row.querySelector('.filho-data')?.value;
-    if(n&&d) filhos.push({nome:n,dataNascimento:d});
-  });
+        if(n&&d) filhos.push({nome:n,dataNascimento:d});
+      });
 
-  // Movimentos (strings livres — backend salva em observacoes)
-  const movRaw=document.getElementById('p-obs').value.trim();
-  const movimentos=movRaw?movRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
+      // Movimentos (strings livres — backend salva em observacoes)
+      // Coleta o texto original para exibição
+    const movRaw = document.getElementById('f-obs')?.value.trim() || '';
+    const movimentosDigitados = movRaw ? movRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+    // Lista de valores válidos do enum (mantida no frontend)
+    const movimentosValidos = [
+      'PastoralFamiliar', 'PastoralDizimista', 'GrupoOracao',
+      'Liturgia', 'Catequese', 'Coral', 'Acolitos',
+      'MinistroEucaristico', 'LegiaoMaria'
+    ];
+
+    // Filtra apenas os válidos para enviar ao backend
+    const movimentosParaEnviar = movimentosDigitados.filter(
+      s => movimentosValidos.includes(s)
+    );
+
+    // Texto completo para exibição (observações)
+    const textoCompleto = movimentosDigitados.join(', ');
 
   const estadoCivil=document.getElementById('p-estadoCivil').value;
   const conjugeNome=document.getElementById('p-conjuge-nome').value.trim();
@@ -797,6 +819,7 @@ situacaoRadios.forEach(radio => {
     endereco: document.getElementById('p-endereco').value.trim()||undefined,
     bairro: document.getElementById('p-bairro').value.trim()||undefined,
     cidade: document.getElementById('p-cidade').value.trim()||undefined,
+    comunidadeParticipa: document.getElementById('p-comunidade').value.trim() || undefined,
     estadoCivil,
     ehDizimista,
     ativo: false,   // sempre inativo até aprovação
@@ -805,7 +828,7 @@ situacaoRadios.forEach(radio => {
     // Pastorais são strings livres — salvamos em observacoes
     observacoes: [
       `Cadastro público · ${situacaoDizimista==='SIM'?'Já dizimista':situacaoDizimista==='DESEJA_SER'?'Deseja ser dizimista':'Fiel'}`,
-      movimentos.length?`Pastorais: ${movimentos.join(', ')}`:'',
+      movimentos.length ? `Pastorais: ${textoCompleto}`:'',
     ].filter(Boolean).join(' · '),
   };
   if(conjugeNome) payload.conjuge={nome:conjugeNome,dataNascimento:conjugeData||null};
@@ -824,7 +847,7 @@ situacaoRadios.forEach(radio => {
       // Mensagem personalizada por situação
       const msgs={
         SIM: 'Seu cadastro foi recebido! A pastoral irá atualizar seu código de dizimista em breve.',
-        DESEJA_SER: 'Cadastro recebido! Nossa equipe entrará em contato para orientar seus próximos passos.',
+        DESEJA_SER: 'Cadastro recebido! Faremos a sua carteira e você poderá pegar na próxima missa.',
         NAO: 'Bem-vindo(a)! Seu cadastro como fiel da comunidade foi registrado com sucesso.',
       };
       document.getElementById('success-msg').textContent=msgs[situacao];

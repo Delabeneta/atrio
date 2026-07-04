@@ -35,6 +35,8 @@ export class PessoasController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
+    console.log('📥 Recebendo PATCH para:', id);
+    console.log('📦 Dados:', JSON.stringify(updatePessoaDto, null, 2));
     return this.pessoasService.update(id, updatePessoaDto);
   }
 
@@ -45,7 +47,9 @@ export class PessoasController {
 
   @Patch(':id/reativar')
   reativar(@Param('id') id: string) {
-    return this.pessoasService.update(id, { ativo: true });
+    return this.pessoasService.update(id, {
+      status: 'ativo',
+    } as UpdatePessoaDto);
   }
   @Get('pendentes/aprovar')
   async listarPendentes() {

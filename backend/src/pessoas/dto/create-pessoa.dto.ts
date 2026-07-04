@@ -22,6 +22,7 @@ class ConjugeDto {
   nome!: string;
 
   @IsDateString()
+  @IsOptional()
   dataNascimento!: string;
 }
 

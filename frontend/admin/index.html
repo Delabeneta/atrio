@@ -1225,6 +1225,7 @@ tr:hover td { background: var(--indigo-50); }
               <th>Nome</th>
               <th>Nascimento</th>
               <th>Endereço</th>
+              <th>Comunidade</th>
               <th class="admin-only">Ações</th>
             </tr>
           </thead>
@@ -1317,6 +1318,10 @@ tr:hover td { background: var(--indigo-50); }
       <div class="field-group">
         <label>Bairro</label>
         <input type="text" id="f-bairro" placeholder="Ex: Centro" />
+      </div>
+      <div class="field-group full">
+        <label>Comunidade que participa</label>
+        <input type="text" id="f-comunidade" placeholder="Ex: Nossa Senhora Aparecida" />
       </div>
       <div class="field-group">
         <label>Estado Civil</label>
@@ -1470,6 +1475,8 @@ function ajustarDataLocal(iso) {
 }
 
 function mapPerson(p) {
+  console.log('📦 Mapeando pessoa:', p.nomeCompleto, 'comunidade:', p.comunidadeParticipa);
+
   return {
     id: p.id,
     nomeCompleto: p.nomeCompleto,
@@ -1478,6 +1485,7 @@ function mapPerson(p) {
     telefone: p.telefone || '',
     endereco: p.endereco || '',
     bairro: p.bairro || '',
+    comunidadeParticipa: p.comunidadeParticipa || '',
     estadoCivil: p.estadoCivil || 'Solteiro',
     status: p.status || 'ativo',
     observacao: p.observacoes || '',
@@ -1813,6 +1821,7 @@ function renderTable() {
         </td>
         <td>${formatDate(p.dataNascimento)}${idade ? ` (${idade}a)` : ''}</td>
         <td>${esc(p.endereco || p.bairro || '—')}</td>
+        <td>${esc(p.comunidadeParticipa || '-')}
         ${isAdmin ? `<td><div class="actions">
           <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')" title="Gerar PDF">📄</button>
           <button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')" title="Editar">✏️</button>
@@ -1841,7 +1850,8 @@ function renderTable() {
               ${idade ? `<span>🎂 ${formatDate(p.dataNascimento)} (${idade}a)</span>` : ''}
               ${p.endereco || p.bairro ? `<span> ${esc(p.endereco||p.bairro)}</span>` : ''}
               ${p.codigoDizimista ? `<span>Cód: ${p.codigoDizimista}</span>` : ''}
-            </div>
+              ${p.comunidadeParticipa ? `<span>🏛️ ${esc(p.comunidadeParticipa)}</span>` : ''}
+              </div>
           </div>
           <div class="status-dot ${inativo?'inativo':'ativo'}"></div>
         </div>
@@ -1940,6 +1950,7 @@ function viewPerson(id) {
         <div class="view-field"><label>Telefone</label><span>${esc(p.telefone || '—')}</span></div>
         <div class="view-field"><label>Endereço</label><span>${esc(p.endereco || '—')}</span></div>
         <div class="view-field"><label>Bairro</label><span>${esc(p.bairro || '—')}</span></div>
+        <div class="view-field"><label>Comunidade</label><span>${esc(p.comunidadeParticipa || '—')}</span></div>
         <div class="view-field"><label>Estado Civil</label><span>${esc(p.estadoCivil || '—')}</span></div>
       </div>
     </div>
@@ -2014,7 +2025,6 @@ function viewPerson(id) {
   }
 }
 
-// ===== MODAL CRUD (corrigido) =====
 function openModal(id = null) {
   console.log(' openModal chamado, id:', id);
   
@@ -2028,7 +2038,7 @@ function openModal(id = null) {
   document.getElementById('modal-error')?.classList.add('hidden');
   
   // Limpar campos
-  const campos = ['nome', 'nasc', 'tel', 'endereco', 'bairro', 'estadoCivil', 'conjuge-nome', 'conjuge-data', 'obs', 'ehDizimista', 'codigo-dizimista'];
+  const campos = ['nome', 'nasc', 'tel', 'endereco', 'bairro', 'comunidade', 'estadoCivil', 'conjuge-nome', 'conjuge-data', 'obs', 'ehDizimista', 'codigo-dizimista'];
   campos.forEach(f => { 
     const el = document.getElementById('f-' + f); 
     if (el) el.value = ''; 
@@ -2056,6 +2066,7 @@ function openModal(id = null) {
     document.getElementById('f-tel').value = p.telefone || '';
     document.getElementById('f-endereco').value = p.endereco || '';
     document.getElementById('f-bairro').value = p.bairro || '';
+    document.getElementById('f-comunidade').value = p.comunidadeParticipa || '';
     document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
     document.getElementById('f-obs').value = (p.movimentosPastorais || []).join(', ');
     
@@ -2127,53 +2138,6 @@ async function gerarCodigoDizimista() {
   toast(`Código ${proximoNumero} gerado. Você pode alterar se necessário.`, 'info');
 }
 
-// ===== MODAL CRUD =====
-function openModal(id = null) {
-  if (currentUser?.role !== 'admin') return;
-  editId = id;
-  document.getElementById('modal-title').textContent = id ? 'Editar pessoa' : 'Novo cadastro';
-  document.getElementById('modal-error')?.classList.add('hidden');
-  
-  const campos = ['nome','nasc','tel','endereco','bairro','estadoCivil','conjuge-nome','conjuge-data','obs','ehDizimista','codigo-dizimista'];
-  campos.forEach(f => { const el = document.getElementById('f-'+f); if(el) el.value = ''; });
-  document.getElementById('filhos-list').innerHTML = '';
-  document.querySelectorAll('.field-error').forEach(el => el.classList.remove('show'));
-  document.getElementById('campo-codigo-dizimista').style.display = 'none';
-
-  if (id) {
-    const p = allPeople.find(x => x.id == id);
-    if (p) {
-      document.getElementById('f-nome').value = p.nomeCompleto || '';
-      document.getElementById('f-nasc').value = p.dataNascimento || '';
-      document.getElementById('f-tel').value = p.telefone || '';
-      document.getElementById('f-endereco').value = p.endereco || '';
-      document.getElementById('f-bairro').value = p.bairro || '';
-      document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
-      document.getElementById('f-obs').value = (p.movimentosPastorais || []).join(', ');
-      
-      const ehDizimistaSelect = document.getElementById('f-ehDizimista');
-      ehDizimistaSelect.value = p.codigoDizimista ? 'true' : 'false';
-      
-      if (p.codigoDizimista) {
-        document.getElementById('f-codigo-dizimista').value = p.codigoDizimista;
-        document.getElementById('campo-codigo-dizimista').style.display = 'block';
-      }
-      
-      if (p.conjuge) {
-        document.getElementById('f-conjuge-nome').value = p.conjuge.nome || '';
-        document.getElementById('f-conjuge-data').value = p.conjuge.dataNascimento || '';
-      }
-      
-      document.getElementById('conjuge-fields').style.display = p.estadoCivil === 'Casado' ? 'block' : 'none';
-      
-      if (p.filhos && p.filhos.length > 0) {
-        p.filhos.forEach(filho => addFilhoField(filho.nome, filho.dataNascimento));
-      }
-    }
-  }
-  document.getElementById('modal-overlay').classList.remove('hidden');
-}
-
 function addFilhoField(nome = '', data = '') {
   const div = document.createElement('div');
   div.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
@@ -2190,81 +2154,177 @@ function closeModal() {
 
 async function savePerson() {
   const saveBtn = document.getElementById('save-btn');
+  const currentEditId = editId;
+  // ===== VALIDAÇÃO DETALHADA =====
+  const errors = [];
+  
+  // 1. Validar Nome
   const nome = document.getElementById('f-nome')?.value.trim();
+  if (!nome) {
+    errors.push('❌ Nome completo é obrigatório.');
+    document.getElementById('f-nome')?.classList.add('error');
+    document.getElementById('err-nome')?.classList.add('show');
+  } else {
+    document.getElementById('f-nome')?.classList.remove('error');
+    document.getElementById('err-nome')?.classList.remove('show');
+  }
+  
+  // 2. Validar Data de Nascimento
   const nasc = document.getElementById('f-nasc')?.value;
-
-  let valid = true;
-  const errNome = document.getElementById('err-nome');
-  const errNasc = document.getElementById('err-nasc');
-  if (!nome) { errNome?.classList.add('show'); document.getElementById('f-nome').classList.add('error'); valid = false; }
-  else { errNome?.classList.remove('show'); document.getElementById('f-nome').classList.remove('error'); }
-  if (!validateDate(nasc)) { errNasc?.classList.add('show'); document.getElementById('f-nasc').classList.add('error'); valid = false; }
-  else { errNasc?.classList.remove('show'); document.getElementById('f-nasc').classList.remove('error'); }
-  if (!valid) return;
-
+  if (!nasc || !validateDate(nasc)) {
+    errors.push('❌ Data de nascimento é obrigatória e deve ser válida.');
+    document.getElementById('f-nasc')?.classList.add('error');
+    document.getElementById('err-nasc')?.classList.add('show');
+  } else {
+    document.getElementById('f-nasc')?.classList.remove('error');
+    document.getElementById('err-nasc')?.classList.remove('show');
+  }
+  
+  // 3. Validar Telefone (se preenchido)
+  const tel = document.getElementById('f-tel')?.value.trim();
+  if (tel && !/^\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}$/.test(tel)) {
+    errors.push('⚠️ Telefone inválido. Use o formato (21) 99999-9999.');
+  }
+  
+  // 4. Validar Endereço (opcional, mas se preenchido deve ter tamanho mínimo)
+  const endereco = document.getElementById('f-endereco')?.value.trim();
+  if (endereco && endereco.length < 3) {
+    errors.push('⚠️ Endereço muito curto. Verifique o campo.');
+  }
+  
+  // 5. Validar Bairro (opcional)
+  const bairro = document.getElementById('f-bairro')?.value.trim();
+  if (bairro && bairro.length < 2) {
+    errors.push('⚠️ Bairro muito curto. Verifique o campo.');
+  }
+  
+  // 6. Validar Código do Dizimista (se for dizimista)
+  const ehDizimista = document.getElementById('f-ehDizimista')?.value === 'true';
+  const codigoDizimista = document.getElementById('f-codigo-dizimista')?.value.trim();
+  
+  if (ehDizimista && !codigoDizimista) {
+    errors.push('❌ Para dizimistas, é necessário informar um código.');
+  }
+  
+  if (codigoDizimista && !/^\d+$/.test(codigoDizimista)) {
+    errors.push('⚠️ Código do dizimista deve conter apenas números.');
+  }
+  
+  // 7. Validar Movimentos Pastorais (opcional)
+  const movsRaw = document.getElementById('f-obs')?.value.trim() || '';
+  const movs = movsRaw.split(',').map(s => s.trim()).filter(Boolean);
+  if (movs.length > 0 && movs.some(m => m.length > 50)) {
+    errors.push('⚠️ Movimentos pastorais muito longos (máx 50 caracteres por item).');
+  }
+  
+  // ===== SE HOUVER ERROS, EXIBE =====
+  if (errors.length > 0) {
+    const errorMessage = errors.join('\n');
+    console.error('❌ Erros de validação:', errors);
+    toast(errorMessage, 'error');
+    
+    // Marca o modal com erro
+    document.getElementById('modal-error')?.classList.remove('hidden');
+    document.getElementById('modal-error').textContent = '⚠️ Corrija os erros antes de salvar.';
+    
+    return;
+  }
+  
+  // ===== COLETA OS DADOS =====
   const filhos = [];
   document.querySelectorAll('.filho-item, #filhos-list > div').forEach(item => {
     const nf = item.querySelector('.filho-nome')?.value.trim();
     const df = item.querySelector('.filho-data')?.value;
     if (nf && df) filhos.push({ nome: nf, dataNascimento: df });
   });
-
-  const movs = (document.getElementById('f-obs')?.value.trim() || '').split(',').map(s => s.trim()).filter(Boolean);
-  const ec = document.getElementById('f-estadoCivil')?.value;
   
-  const ehDizimista = document.getElementById('f-ehDizimista')?.value === 'true';
-  let codigoDizimista = null;
+  const movimentosDigitados = movs;
+  const movimentosValidos = [
+    'PastoralFamiliar', 'PastoralDizimista', 'GrupoOracao',
+    'Liturgia', 'Catequese', 'Coral', 'Acolitos',
+    'MinistroEucaristico', 'LegiaoMaria'
+  ];
+  const movimentosParaEnviar = movimentosDigitados.filter(
+    s => movimentosValidos.includes(s)
+  );
+  const textoCompleto = movimentosDigitados.join(', ');
+  
+  const ec = document.getElementById('f-estadoCivil')?.value;
   let status = 'ativo';
   
-  if (ehDizimista) {
-    codigoDizimista = document.getElementById('f-codigo-dizimista')?.value.trim() || null;
-    if (!codigoDizimista) {
-      toast('Para dizimistas, é necessário informar um código.', 'error');
-      return;
-    }
-  } else {
-    status = 'inativo';
-  }
-
+  // ===== MONTA OBJETO =====
   const data = {
     nomeCompleto: nome,
     dataNascimento: nasc,
     ehDizimista: ehDizimista,
-    codigoDizimista: codigoDizimista,
-    movimentosPastorais: movs,
+    codigoDizimista: ehDizimista ? codigoDizimista : null,
+    movimentosPastorais: movimentosParaEnviar,
     filhos: filhos,
     status: status,
-    observacoes: '',
+    observacoes: textoCompleto,
+    comunidadeParticipa: document.getElementById('f-comunidade')?.value.trim() || undefined,
   };
   
-  const tel = document.getElementById('f-tel')?.value.trim(); if (tel) data.telefone = tel;
-  const end = document.getElementById('f-endereco')?.value.trim(); if (end) data.endereco = end;
-  const bai = document.getElementById('f-bairro')?.value.trim(); if (bai) data.bairro = bai;
+  // Campos opcionais
+  if (tel) data.telefone = tel;
+  if (endereco) data.endereco = endereco;
+  if (bairro) data.bairro = bairro;
   if (ec) data.estadoCivil = ec;
+  
   const cnome = document.getElementById('f-conjuge-nome')?.value.trim();
   const cdata = document.getElementById('f-conjuge-data')?.value;
   if (cnome) data.conjuge = { nome: cnome, dataNascimento: cdata || null };
+  // Dentro do savePerson(), após montar o objeto data:
+console.log('📤 Enviando comunidade:', data.comunidadeParticipa); 
 
+// ===== ENVIA PARA API =====
   saveBtn.disabled = true;
   saveBtn.classList.add('btn-loading');
   saveBtn.textContent = 'Salvando…';
-
+  
+  console.log('📤 Enviando para API:', JSON.stringify(data, null, 2));
+  
   try {
-    const endpoint = editId ? `/pessoas/${editId}` : '/pessoas';
-    const method = editId ? 'PATCH' : 'POST';
+    const endpoint = currentEditId  ? `/pessoas/${currentEditId }` : '/pessoas';
+    const method = currentEditId  ? 'PATCH' : 'POST';
     const result = await apiRequest(endpoint, { method, body: JSON.stringify(data) });
-    if (!result.ok) throw new Error(result.data.message || 'Erro ao salvar.');
+    
+    if (!result.ok) {
+      // Trata erros da API
+      const apiError = result.data?.message || 'Erro ao salvar no servidor.';
+      console.error('❌ Erro da API:', apiError);
+      
+      // Se for erro de validação do DTO, mostra detalhes
+      if (result.data?.errors) {
+        const detalhes = result.data.errors.map(e => `- ${e.field}: ${e.message}`).join('\n');
+        toast(`❌ Erro de validação:\n${detalhes}`, 'error');
+      } else {
+        toast(`❌ ${apiError}`, 'error');
+      }
+      
+      throw new Error(apiError);
+    }
+    
     closeModal();
     await loadPeople(true);
-    toast(editId ? 'Pessoa atualizada.' : 'Pessoa cadastrada.', 'success');
+    await loadAllPeople();
+
+    toast(currentEditId  ? '✅ Pessoa atualizada com sucesso!' : '✅ Pessoa cadastrada com sucesso!', 'success');
+    
   } catch (err) {
-    toast(err.message, 'error');
+    console.error('❌ Erro:', err);
+    const errDiv = document.getElementById('modal-error');
+    if (errDiv) {
+      errDiv.classList.remove('hidden');
+      errDiv.textContent = `❌ ${err.message || 'Erro ao salvar. Tente novamente.'}`;
+    }
   } finally {
     saveBtn.disabled = false;
     saveBtn.classList.remove('btn-loading');
     saveBtn.textContent = 'Salvar pessoa';
   }
 }
+
 
 
 async function inativarPerson(id) {

@@ -112,6 +112,7 @@ export class PessoasService {
       telefone: pessoa.telefone,
       endereco: pessoa.endereco,
       bairro: pessoa.bairro,
+      comunidadeParticipa: pessoa.comunidadeParticipa,
       estadoCivil: pessoa.estadoCivil,
       status: pessoa.status,
       conjuge: pessoa.conjuge,
@@ -133,7 +134,23 @@ export class PessoasService {
   }
 
   async update(id: string, updatePessoaDto: UpdatePessoaDto) {
+    console.log('🔄 Atualizando pessoa:', id);
+    console.log('📦 Dados:', JSON.stringify(updatePessoaDto, null, 2));
     await this.findOne(id);
+
+    if (updatePessoaDto.codigoDizimista) {
+      const existe = await this.prisma.pessoa.findFirst({
+        where: {
+          codigoDizimista: updatePessoaDto.codigoDizimista,
+          NOT: { id },
+        },
+      });
+      if (existe) {
+        throw new ConflictException(
+          'Código de dizimista já cadastrado para outra pessoa',
+        );
+      }
+    }
 
     const updateData: any = { ...updatePessoaDto };
 
