@@ -825,10 +825,11 @@ situacaoRadios.forEach(radio => {
     ativo: false,   // sempre inativo até aprovação
     situacaoDizimista: situacaoDizimista,
     filhos,
+    movimentosPastorais: movimentosParaEnviar,
     // Pastorais são strings livres — salvamos em observacoes
     observacoes: [
       `Cadastro público · ${situacaoDizimista==='SIM'?'Já dizimista':situacaoDizimista==='DESEJA_SER'?'Deseja ser dizimista':'Fiel'}`,
-      movimentos.length ? `Pastorais: ${textoCompleto}`:'',
+      movimentosDigitados.length ? `Pastorais: ${textoCompleto}`:'',
     ].filter(Boolean).join(' · '),
   };
   if(conjugeNome) payload.conjuge={nome:conjugeNome,dataNascimento:conjugeData||null};

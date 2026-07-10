@@ -2,7 +2,7 @@
 GET http://localhost:3000/pessoas
 
 ### LISTAR TODAS AS PESSOAS (incluindo inativas)
-GET http://localhost:3000/pessoas?incluirInativos=true
+GET http://localhost:3000/pessoas?incluirInativos=false
 
 ### BUSCAR PESSOA POR ID
 GET http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
@@ -48,7 +48,7 @@ Content-Type: application/json
 }
 
 ### ATUALIZAR PESSOA (APENAS campos enviados)
-PATCH http://localhost:3000/pessoas/cmr5j18ci00011jiahaoz53q5
+PATCH http://localhost:3000/pessoas/cmr43o5wx000121fwjk5doj6i
 Content-Type: application/json
 
 {
@@ -60,7 +60,10 @@ Content-Type: application/json
 }
 
 ### REMOVER PESSOA (soft delete - apenas inativa)
-DELETE http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI
+DELETE http://localhost:3000/pessoas/cmr42xxm1000020ghzjmy2jc6
+
+### LISTAR TODAS AS PESSOAS (ativas)
+GET http://localhost:3000/pessoas
 
 ### REATIVAR PESSOA
 PATCH http://localhost:3000/pessoas/COLOQUE_O_ID_AQUI/reativar

@@ -1217,21 +1217,39 @@ tr:hover td { background: var(--indigo-50); }
         </div>
       </div>
 
-      <!-- Table (desktop) -->
+          <!-- Table (desktop) -->
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Nome</th>
-              <th>Nascimento</th>
-              <th>Endereço</th>
-              <th>Comunidade</th>
+              <th style="cursor:pointer;" onclick="toggleSort('nomeCompleto')">
+                Nome 
+                <span id="sort-nomeCompleto" style="font-size:10px;">⬇</span>
+              </th>
+              <th style="cursor:pointer;" onclick="toggleSort('dataNascimento')">
+                Nascimento
+                <span id="sort-dataNascimento" style="font-size:10px;"></span>
+              </th>
+              <th style="cursor:pointer;" onclick="toggleSort('endereco')">
+                Endereço
+                <span id="sort-endereco" style="font-size:10px;"></span>
+              </th>
+              <th style="cursor:pointer;" onclick="toggleSort('comunidadeParticipa')">
+                Comunidade
+                <span id="sort-comunidadeParticipa" style="font-size:10px;"></span>
+              </th>
+              <th style="cursor:pointer;" onclick="toggleSort('codigoDizimista')">
+                Código
+                <span id="sort-codigoDizimista" style="font-size:10px;"></span>
+              </th>
               <th class="admin-only">Ações</th>
             </tr>
           </thead>
           <tbody id="people-tbody"></tbody>
         </table>
       </div>
+          
+
 
       <!-- Cards (mobile) -->
       <div class="people-cards" id="people-cards"></div>
@@ -1395,6 +1413,8 @@ let currentFilter = 'todos';
 let currentPage   = 1;
 const ITEMS_PER_PAGE = 15;
 let advFilters    = {};
+let sortField     = 'nomeCompleto';  
+let sortOrder     = 'asc';           
 const MONTHS      = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
 // ===== TOAST =====
@@ -1411,6 +1431,46 @@ function toast(msg, type = 'success') {
   }, 3200);
 }
 
+// ===== ORDENAÇÃO =====
+function sortData(data, field, order) {
+    if (!data || !data.length) return data;
+
+  return [...data].sort((a, b) => {
+    let valA = a[field] || '';
+    let valB = b[field] || '';
+    
+    // Se for número, converte
+    if (field === 'codigoDizimista' || field === 'dataNascimento') {
+      // Para código, compara como número
+      if (field === 'codigoDizimista') {
+        valA = parseInt(valA) || 0;
+        valB = parseInt(valB) || 0;
+      }
+      // Para data, compara como data
+      if (field === 'dataNascimento') {
+        valA = new Date(valA).getTime() || 0;
+        valB = new Date(valB).getTime() || 0;
+      }
+    }
+    
+    // Comparação
+    if (valA < valB) return order === 'asc' ? -1 : 1;
+    if (valA > valB) return order === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+// Função para alternar ordenação
+function toggleSort(field) {
+  if (sortField === field) {
+    // Alterna a ordem
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortField = field;
+    sortOrder = 'asc';
+  }
+  renderTable();
+}
 // ===== CONFIRM DIALOG =====
 function confirmDialog(title, message, okLabel = 'Confirmar', danger = true) {
   return new Promise(resolve => {
@@ -1780,7 +1840,13 @@ function renderTable() {
   if (!currentUser) return;
   const isAdmin  = currentUser?.role === 'admin';
   const cy       = new Date().getFullYear();
+
   const filtered = getFilteredData();
+  
+  const sorted = sortData(filtered, sortField, sortOrder);
+
+  updateSortIcons();
+  
   const total    = filtered.length;
   const start    = (currentPage - 1) * ITEMS_PER_PAGE;
   const items    = filtered.slice(start, start + ITEMS_PER_PAGE);
@@ -1865,6 +1931,20 @@ function renderTable() {
       </div>`;
     }).join('');
   }
+}
+
+function updateSortIcons() {
+  const fields = ['nomeCompleto', 'dataNascimento', 'endereco', 'comunidadeParticipa', 'codigoDizimista'];
+  fields.forEach(field => {
+    const icon = document.getElementById(`sort-${field}`);
+    if (icon) {
+      if (field === sortField) {
+        icon.textContent = sortOrder === 'asc' ? '⬆' : '⬇';
+      } else {
+        icon.textContent = '';
+      }
+    }
+  });
 }
 
 function renderPagination(total) {
