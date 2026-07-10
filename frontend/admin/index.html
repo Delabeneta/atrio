@@ -1093,6 +1093,8 @@ tr:hover td { background: var(--indigo-50); }
 </div>
 
 <!-- LOGIN -->
+  
+
 <div id="login-screen">
   <div class="login-box">
     <div class="login-icon">
@@ -1101,7 +1103,7 @@ tr:hover td { background: var(--indigo-50); }
       </svg>
     </div>
     <h1>Átrio</h1>
-    <p class="sub">Acesso ao sistema</p>
+    <p class="sub"></p>
     <div id="login-error" class="alert alert-error hidden"></div>
     <div class="field-group" style="text-align:left">
       <label>Acesso</label>
@@ -1113,6 +1115,14 @@ tr:hover td { background: var(--indigo-50); }
         onkeydown="if(event.key==='Enter') doLogin();" />
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:4px;" id="login-btn" onclick="doLogin()">Acessar</button>
+  
+      <div style="margin-top: 20px; border-top: 1px solid var(--line); padding-top: 20px;">
+      <a href="../cadastro/inicial.html" class="btn btn-outline" style="width:100%; text-decoration: none; display: inline-flex; justify-content: center;">
+        Página de Cadastro
+      </a>
+    </div>
+  
+  
   </div>
 </div>
 
@@ -1120,11 +1130,16 @@ tr:hover td { background: var(--indigo-50); }
 <div id="app">
   <header>
     <div class="logo">Átrio<span>·</span></div>
+     
     <div class="header-right">
       <div class="user-badge">
         <span id="header-user-name">—</span>
         <span id="header-role-pill" class="role-pill admin">Admin</span>
       </div>
+         <a href="../cadastro/inicial.html" class="btn btn-ghost-light" style="text-decoration: none; display: inline-flex;">
+        Cadastro
+      </a>
+
       <button class="btn btn-ghost" style="color:rgba(255,255,255,0.6);font-size:13px" onclick="logout()">Sair</button>
     </div>
   </header>
@@ -1618,7 +1633,7 @@ async function doLogin() {
     const result = await resp.json();
     if (result.success) {
       if (result.token) sessionStorage.setItem('token', result.token);
-      currentUser = { name: username, role: result.user?.role || role, label: result.user?.role === 'admin' ? 'Admin' : 'Membro' };
+      currentUser = { name: username, role: result.user?.role || role, label: result.user?.role === 'admin' ? 'Admin' : 'Laura' };
       applyRole();
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
@@ -2797,6 +2812,9 @@ function formatDate(s) {
 // ===== EVENTS =====
 let resizeTimeout;
 document.addEventListener('DOMContentLoaded', () => {
+  
+  wakeUpBackend();
+
   const dz = document.getElementById('drop-zone');
   if (dz) {
     dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });

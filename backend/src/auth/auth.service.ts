@@ -8,8 +8,8 @@ const USERS = {
     role: 'admin',
     name: 'Administrador',
   },
-  membro: {
-    password: process.env.ADMIN_PASSWORD,
+  Laura: {
+    password: process.env.MEMBER_PASSWORD,
     role: 'member',
     name: 'Membro',
   },
@@ -17,7 +17,6 @@ const USERS = {
 
 @Injectable()
 export class AuthService {
-  // Remove o async se não tem await
   login(username: string, password: string, role: string) {
     const user = USERS[username.toLowerCase()];
 

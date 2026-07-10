@@ -660,7 +660,7 @@ a.btn {
       
       <div class="field-group full">
         <label>Comunidade que participa</label>
-        <input type="text" id="p-comunidade" placeholder="Ex: Nossa Senhora Aparecida" />
+        <input type="text" id="p-comunidade" placeholder="Ex: São Sebastião - Rua J" />
       </div>  
           
       <div class="field-group">
@@ -700,6 +700,13 @@ a.btn {
 
 <script>
 const API_URL = CONFIG.API_URL;
+
+
+
+
+
+
+
 
 // ── UTILS ──
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -883,8 +890,39 @@ function resetForm(){
 }
 
 
+// ===== WAKE UP BACKEND =====
+// Função para "acordar" o backend enquanto o usuário vê a página
+function wakeUpBackend(retries = 3) {
+  console.log(`Acordando o backend... (${retries} tentativas restantes)`);
+  
+  fetch(`${API_URL}/healthz`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(3000),
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Backend acordado!');
+      return;
+    } 
+      throw new Error(`Status: ${response.status}`);
+  })
+  .catch(error => {
+    if (retries > 1) {
+    console.log(`tentando novamente em 2 segundos. (${retries - 1} restantes)`);
+    setTimeout(() => wakeUpBackend(retries - 1), 2000);
+    } else { 
+       console.log('Nao foi possivel acordar o backend!')
+    }
+  });
+}
+
+
 // ── EVENTOS ──
 document.addEventListener('DOMContentLoaded',()=>{
+  
+  wakeUpBackend();
+
   document.getElementById('p-tel')?.addEventListener('input',function(){ phoneMask(this); });
 
   document.getElementById('p-estadoCivil')?.addEventListener('change',function(){
