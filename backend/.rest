@@ -72,3 +72,92 @@ Content-Type: application/json
 {
   "ativo": true
 }
+
+
+
+### ============================================
+### CRUD DE USUÁRIOS DO SISTEMA
+### ============================================
+
+@baseUrl = http://localhost:3000
+
+### 1. CRIAR USUÁRIO ADMIN
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "EliasJ",
+  "password": "forte123",
+  "name": "Elias",
+  "role": "admin"
+}
+
+### 2. CRIAR USUÁRIO SECRETARIA
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "secretaria",
+  "password": "123456",
+  "name": "Secretária Paroquial",
+  "role": "member"
+}
+
+### 3. CRIAR USUÁRIO PADRE
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "Renata",
+  "password": "@Bastiao19",
+  "name": "Laurinha",
+  "role": "member"
+}
+
+### 4. CRIAR USUÁRIO COORDENADOR
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "coordenador",
+  "password": "123456",
+  "name": "Coordenador da Pastoral",
+  "role": "member"
+}
+
+### 5. LISTAR TODOS OS USUÁRIOS
+GET {{baseUrl}}/users
+
+### 6. BUSCAR USUÁRIO POR ID (substitua pelo ID real)
+GET {{baseUrl}}/users/SEU_ID_AQUI
+
+### 7. ATUALIZAR USUÁRIO
+PUT {{baseUrl}}/users/SEU_ID_AQUI
+Content-Type: application/json
+
+{
+  "name": "Secretária Maria Silva",
+  "role": "admin"
+}
+
+### 8. ATUALIZAR SENHA
+PUT {{baseUrl}}/users/SEU_ID_AQUI
+Content-Type: application/json
+
+{
+  "password": "nova_senha_123"
+}
+
+### 9. DELETAR USUÁRIO (cuidado!)
+DELETE {{baseUrl}}/users/SEU_ID_AQUI
+
+### 10. TENTAR CRIAR USUÁRIO COM USERNAME DUPLICADO (deve falhar)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456",
+  "name": "Teste Duplicado",
+  "role": "member"
+}

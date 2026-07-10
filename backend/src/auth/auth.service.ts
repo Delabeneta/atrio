@@ -1,47 +1,61 @@
-// src/auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
-
-// Usuários fixos
-const USERS = {
-  admin: {
-    password: process.env.ADMIN_PASSWORD,
-    role: 'admin',
-    name: 'Administrador',
-  },
-  Laura: {
-    password: process.env.MEMBER_PASSWORD,
-    role: 'member',
-    name: 'Membro',
-  },
-};
+import { PrismaService } from '../prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  login(username: string, password: string, role: string) {
-    const user = USERS[username.toLowerCase()];
+  constructor(private readonly prisma: PrismaService) {}
 
-    if (!user || user.password !== password) {
+  async login(username: string, password: string, role: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { username: username },
+      });
+
+      if (!user) {
+        return {
+          success: false,
+          message: 'Usuário inválido',
+        };
+      }
+
+      const passwordValid = await bcrypt.compare(password, user.password);
+
+      if (!passwordValid) {
+        return {
+          success: false,
+          message: 'Senha inválida',
+        };
+      }
+
+      if (user.role !== role) {
+        return {
+          success: false,
+          message: `Acesso negado. Você não tem permissão como ${role}.`,
+        };
+      }
+
+      return {
+        success: true,
+        user: {
+          id: user.id,
+          name: user.name,
+          username: user.username,
+          role: user.role,
+        },
+        token: `token-${Date.now()}-${user.id}`,
+      };
+    } catch (error) {
+      console.error('Erro no login:', error);
       return {
         success: false,
-        message: 'Usuário ou senha inválidos',
+        message: 'Erro interno no servidor',
       };
     }
+  }
 
-    if (user.role !== role) {
-      return {
-        success: false,
-        message: `Acesso negado. Você não tem permissão como ${role}.`,
-      };
-    }
-
-    return {
-      success: true,
-      user: {
-        name: user.name,
-        username: username.toLowerCase(),
-        role: user.role,
-      },
-      token: `token-${Date.now()}`,
-    };
+  async validateToken(token: string) {
+    // Implementar validação JWT depois
+    return { valid: true };
   }
 }
