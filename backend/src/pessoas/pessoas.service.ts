@@ -77,6 +77,8 @@ export class PessoasService {
         comunidadeContribui: createPessoaDto.comunidadeContribui,
         ehDizimista: createPessoaDto.ehDizimista ?? true,
         estadoCivil: createPessoaDto.estadoCivil,
+        codigoDizimista: createPessoaDto.codigoDizimista,
+
         batizado: createPessoaDto.batizado ?? false,
         desejaBatismo: createPessoaDto.desejaBatismo ?? false,
         catequista: createPessoaDto.catequista ?? false,
@@ -86,12 +88,13 @@ export class PessoasService {
         temEucaristia: createPessoaDto.temEucaristia ?? false,
         temCrisma: createPessoaDto.temCrisma ?? false,
         temMatrimonio: createPessoaDto.temMatrimonio ?? false,
-        codigoDizimista: createPessoaDto.codigoDizimista,
+
         conjuge: createPessoaDto.conjuge as unknown as Prisma.InputJsonValue,
         filhos: createPessoaDto.filhos as unknown as Prisma.InputJsonValue,
         movimentosPastorais: createPessoaDto.movimentosPastorais ?? [],
         observacoes: createPessoaDto.observacoes,
         status: createPessoaDto.status,
+        situacaoDizimista: createPessoaDto.situacaoDizimista,
       },
     });
   }

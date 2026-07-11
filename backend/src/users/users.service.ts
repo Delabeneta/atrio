@@ -25,7 +25,7 @@ export class UsersService {
 
     return this.prisma.user.create({
       data: {
-        username: createUserDto.username.toLowerCase(), // ← sempre minúsculo
+        username: createUserDto.username,
         password: hashedPassword,
         name: createUserDto.name,
         role: createUserDto.role || 'member',

@@ -86,9 +86,9 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "username": "EliasJ",
+  "username": "Rafael",
   "password": "forte123",
-  "name": "Elias",
+  "name": "Delabeneta",
   "role": "admin"
 }
 

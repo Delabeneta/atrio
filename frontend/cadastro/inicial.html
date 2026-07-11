@@ -528,6 +528,152 @@ a.btn {
   border-color: var(--amber-400);
   color: var(--amber-400);
 }
+
+/* ============================================================
+   SACRAMENTOS - CHECKBOXES ESTILIZADOS
+   ============================================================ */
+.sacramentos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.sacramento-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  user-select: none;
+}
+
+.sacramento-item:hover {
+  border-color: var(--indigo-400);
+  background: var(--indigo-50);
+}
+
+.sacramento-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Checkbox personalizado - ARREDONDADO */
+.sacramento-item .checkmark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--line2);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Quando o checkbox está marcado */
+.sacramento-item input[type="checkbox"]:checked + .checkmark {
+  background: var(--indigo-600);
+  border-color: var(--indigo-600);
+  animation: pop 0.2s ease;
+}
+
+/* Símbolo de "✓" dentro do círculo */
+.sacramento-item input[type="checkbox"]:checked + .checkmark::after {
+  content: "✓";
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  animation: fadeIn 0.15s ease;
+}
+
+/* Item marcado - destaque */
+.sacramento-item:has(input:checked) {
+  background: var(--indigo-50);
+  border-color: var(--indigo-600);
+  box-shadow: 0 0 0 3px rgba(91, 82, 194, 0.1);
+}
+
+.sacramento-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  transition: color 0.2s;
+  flex: 1;
+}
+
+.sacramento-item:has(input:checked) .sacramento-label {
+  font-weight: 500;
+  color: var(--indigo-700);
+}
+
+/* Animações */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================================
+   SACRAMENTOS - RESPONSIVO
+   ============================================================ */
+@media (max-width: 768px) {
+  .sacramentos-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .sacramento-item {
+    padding: 14px 16px;
+  }
+  
+  .sacramento-item .checkmark {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .sacramento-item input[type="checkbox"]:checked + .checkmark::after {
+    font-size: 16px;
+  }
+  
+  .sacramento-label {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sacramento-item {
+    padding: 12px 14px;
+  }
+  
+  .sacramento-item .checkmark {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Tablet - 2 colunas */
+@media (min-width: 481px) and (max-width: 768px) {
+  .sacramentos-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -654,19 +800,97 @@ a.btn {
         <button type="button" class="btn btn-outline btn-sm" onclick="addFilho()" style="width:fit-content">+ Adicionar filho</button>
         <div id="filhos-list" style="margin-top:10px"></div>
       </div>
+<!-- Vida Paroquial -->
+<div class="section-divider">Vida Paroquial</div>
 
-      <!-- Pastorais -->
-      <div class="section-divider">Vida paroquial</div>
+<div class="field-group full">
+  <label>Comunidade que participa</label>
+  <input type="text" id="p-comunidade" placeholder="Ex: São Sebastião - Rua J" />
+</div>
+
+<!-- ===== VIDA ESPIRITUAL ===== -->
+<div style="margin-top: 24px; padding-top: 20px; border-top: 2px solid var(--line);">
+  <h3 style="font-family: var(--font-serif); font-size: 1.05rem; font-weight: 400; margin-bottom: 16px; color: var(--ink);">
+     Vida Espiritual
+  </h3>
+  
+  <div class="form-row">
+    <!-- Batismo -->
+    <div class="field-group">
+      <label>É batizado(a)?</label>
+      <select id="p-batizado">
+        <option value="true">Sim, sou batizado(a)</option>
+        <option value="false" selected>Não sou batizado(a)</option>
+        <option value="deseja">Não, mas desejo ser batizado(a)</option>
+      </select>
+    </div>
+
+    <!-- Catequese -->
+    <div class="field-group">
+      <label>Participa da Catequese?</label>
+      <select id="p-catequese">
+        <option value="true">Sim, participo da catequese</option>
+        <option value="false" selected>Não participo da catequese</option>
+        <option value="deseja">Não, mas desejo participar</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Sacramentos -->
+  <div class="field-group full">
+    <label>Quais sacramentos já recebeu?</label>
+    <div class="sacramentos-grid">
+      <label class="sacramento-item" for="p-sacramento-eucaristia">
+        <input type="checkbox" id="p-sacramento-eucaristia" value="eucaristia" />
+        <span class="checkmark"></span>
+        <span class="sacramento-label">Primeira Eucaristia</span>
+      </label>
       
-      <div class="field-group full">
-        <label>Comunidade que participa</label>
-        <input type="text" id="p-comunidade" placeholder="Ex: São Sebastião - Rua J" />
-      </div>  
-          
-      <div class="field-group">
-        <label>Movimentos e Pastorais</label>
-        <input type="text" id="p-obs" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)" />
-      </div>
+      <label class="sacramento-item" for="p-sacramento-crisma">
+        <input type="checkbox" id="p-sacramento-crisma" value="crisma" />
+        <span class="checkmark"></span>
+        <span class="sacramento-label">Crisma</span>
+      </label>
+      
+      <label class="sacramento-item" for="p-sacramento-matrimonio">
+        <input type="checkbox" id="p-sacramento-matrimonio" value="matrimonio" />
+        <span class="checkmark"></span>
+        <span class="sacramento-label">Matrimônio</span>
+      </label>
+    </div>
+    <div style="font-size: 12px; color: var(--ink3); margin-top: 6px;">
+      Marque todos os sacramentos que já recebeu
+    </div>
+  </div>
+
+  <div class="form-row">
+    <!-- Confissão -->
+    <div class="field-group">
+      <label>Confessa-se regularmente?</label>
+      <select id="p-confessa">
+        <option value="true">Sim, confesso-me regularmente</option>
+        <option value="false" selected>Não me confesso regularmente</option>
+      </select>
+    </div>
+
+    <!-- Frequência nas Missas -->
+    <div class="field-group">
+      <label>Participa das missas?</label>
+      <select id="p-frequencia-missa">
+        <option value="Diaria">Diariamente</option>
+        <option value="Semanal">Semanalmente</option>
+        <option value="Eventual" selected>Eventualmente</option>
+        <option value="Nunca">Não participo</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Movimentos e Pastorais -->
+<div class="field-group" style="margin-top: 16px;">
+  <label>Movimentos e Pastorais</label>
+  <input type="text" id="p-obs" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)" />
+</div>
 
       <button type="button" class="btn btn-primary" id="submit-btn" onclick="submitCadastro()" style="width:100%;margin-top:16px;padding:14px">
         Enviar cadastro
@@ -763,7 +987,6 @@ async function submitCadastro(){
 
   // Situação
 
-
   const situacaoRadios = document.querySelectorAll('input[name="situacao"]');
 let situacao = '';
 situacaoRadios.forEach(radio => {
@@ -785,7 +1008,6 @@ situacaoRadios.forEach(radio => {
         if(n&&d) filhos.push({nome:n,dataNascimento:d});
       });
 
-      // Movimentos (strings livres — backend salva em observacoes)
       // Coleta o texto original para exibição
     const movRaw = document.getElementById('f-obs')?.value.trim() || '';
     const movimentosDigitados = movRaw ? movRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
@@ -809,6 +1031,29 @@ situacaoRadios.forEach(radio => {
   const conjugeNome=document.getElementById('p-conjuge-nome').value.trim();
   const conjugeData=document.getElementById('p-conjuge-data').value;
 
+       // Batismo
+  const batizadoSelect = document.getElementById('p-batizado');
+  const batizadoValue = batizadoSelect?.value || 'false';
+  const batizado = batizadoValue === 'true';
+  const desejaBatismo = batizadoValue === 'deseja';
+
+  // Catequese
+  const catequeseSelect = document.getElementById('p-catequese');
+  const catequeseValue = catequeseSelect?.value || 'false';
+  const catequista = catequeseValue === 'true';
+  const desejaCatequese = catequeseValue === 'deseja';
+
+  // Sacramentos
+  const temEucaristia = document.getElementById('p-sacramento-eucaristia')?.checked || false;
+  const temCrisma = document.getElementById('p-sacramento-crisma')?.checked || false;
+  const temMatrimonio = document.getElementById('p-sacramento-matrimonio')?.checked || false;
+
+  // Confissão
+  const confessaRegularmente = document.getElementById('p-confessa')?.value === 'true';
+
+  // Frequência Missa
+  const frequenciaMissa = document.getElementById('p-frequencia-missa')?.value || 'Eventual';
+
   // ehDizimista: true apenas se já é ou deseja ser
   const ehDizimista=situacao!=='NAO';
 
@@ -826,7 +1071,15 @@ situacaoRadios.forEach(radio => {
     situacaoDizimista: situacaoDizimista,
     filhos,
     movimentosPastorais: movimentosParaEnviar,
-    // Pastorais são strings livres — salvamos em observacoes
+    batizado,
+    desejaBatismo,
+    catequista,
+    desejaCatequese,
+    confessaRegularmente,
+    frequenciaMissa,
+    temEucaristia,
+    temCrisma,
+    temMatrimonio,
     observacoes: [
       `Cadastro público · ${situacaoDizimista==='SIM'?'Já dizimista':situacaoDizimista==='DESEJA_SER'?'Deseja ser dizimista':'Fiel'}`,
       movimentosDigitados.length ? `Pastorais: ${textoCompleto}`:'',

@@ -8,7 +8,6 @@ import {
   IsEnum,
   IsArray,
   ValidateNested,
-  isString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import {
@@ -115,7 +114,7 @@ export class CreatePessoaDto {
 
   @IsString()
   @IsOptional()
-  codigoDizimista?: string; // Agora é opcional, será gerado automaticamente
+  codigoDizimista?: string;
 
   @ValidateNested()
   @Type(() => ConjugeDto)
@@ -139,4 +138,8 @@ export class CreatePessoaDto {
 
   @IsString()
   status?: string;
+
+  @IsString()
+  @IsOptional()
+  situacaoDizimista?: string;
 }

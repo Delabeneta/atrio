@@ -7,10 +7,10 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <title>Átrio · Gestão</title>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-  
+ 
+ <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500&display=swap');
 :root {
   /* Superfícies */
   --bg:           #F4F3F0;
@@ -1073,7 +1073,190 @@ tr:hover td { background: var(--indigo-50); }
   .stat-value { font-size: 1.3rem; }
 }
 
-  </style>
+/* ============================================================
+   SACRAMENTOS - CHECKBOXES ESTILIZADOS
+   ============================================================ */
+.sacramentos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.sacramento-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  user-select: none;
+}
+
+.sacramento-item:hover {
+  border-color: var(--indigo-400);
+  background: var(--indigo-50);
+}
+
+.sacramento-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.sacramento-item .checkmark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.sacramento-item input[type="checkbox"]:checked + .checkmark {
+  background: var(--indigo-600);
+  border-color: var(--indigo-600);
+  animation: pop 0.2s ease;
+}
+
+.sacramento-item input[type="checkbox"]:checked + .checkmark::after {
+  content: "X";
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  animation: fadeIn 0.15s ease;
+}
+
+.sacramento-item:has(input:checked) {
+  background: var(--indigo-50);
+  border-color: var(--indigo-600);
+  box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
+}
+
+.sacramento-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+
+.sacramento-item:has(input:checked) .sacramento-label {
+  font-weight: 500;
+  color: var(--indigo-700);
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================================
+   SACRAMENTOS - RESPONSIVO
+   ============================================================ */
+@media (max-width: 768px) {
+  .sacramentos-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .sacramento-item {
+    padding: 14px 16px;
+  }
+  
+  .sacramento-item .checkmark {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .sacramento-item input[type="checkbox"]:checked + .checkmark::after {
+    font-size: 16px;
+  }
+  
+  .sacramento-label {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sacramento-item {
+    padding: 12px 14px;
+  }
+  
+  .sacramento-item .checkmark {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Tablet - 2 colunas */
+@media (min-width: 481px) and (max-width: 768px) {
+  .sacramentos-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ============================================================
+   SACRAMENTOS - VIEW (Visualização)
+   ============================================================ */
+.sacramentos-view-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.sacramento-view-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.sacramento-view-item.recebido {
+  background: var(--green-bg);
+  border-color: var(--green);
+  color: var(--green-text);
+}
+
+.sacramento-view-item.nao-recebido {
+  background: var(--surface-3);
+  border-color: var(--line);
+  color: var(--ink-2);
+  opacity: 0.7;
+}
+
+.sacramento-view-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .sacramentos-view-grid {
+    grid-template-columns: 1fr;
+  }
+}
+ </style>
+
 </head>
 <body>
 
@@ -1382,6 +1565,83 @@ tr:hover td { background: var(--indigo-50); }
         <button type="button" class="btn btn-sm btn-outline" onclick="addFilhoField()">+ Filho</button>
         <div id="filhos-list" style="margin-top:8px"></div>
       </div>
+
+   <!-- ===== VIDA ESPIRITUAL ===== -->
+<div class="full" style="margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--line);">
+  <h3 style="font-family: var(--font-serif); font-size: 1.1rem; font-weight: 400; margin-bottom: 16px; color: var(--ink);">
+    Vida Espiritual
+  </h3>
+  
+  <div class="form-grid">
+    <!-- Batismo -->
+    <div class="field-group">
+      <label>É batizado(a)?</label>
+      <select id="f-batizado">
+        <option value="true">Sim, sou batizado(a)</option>
+        <option value="false" selected>Não sou batizado(a)</option>
+        <option value="deseja">Não, mas desejo ser batizado(a)</option>
+      </select>
+    </div>
+
+    <!-- Catequese -->
+    <div class="field-group">
+      <label>Participa da Catequese?</label>
+      <select id="f-catequese">
+        <option value="true">Sim, participo da catequese</option>
+        <option value="false" selected>Não participo da catequese</option>
+        <option value="deseja">Não, mas desejo participar</option>
+      </select>
+    </div>
+<!-- Sacramentos -->
+<div class="field-group full">
+  <label>Quais sacramentos já recebeu?</label>
+  <div class="sacramentos-grid">
+    <label class="sacramento-item" for="f-sacramento-eucaristia">
+      <input type="checkbox" id="f-sacramento-eucaristia" value="eucaristia" />
+      <span class="checkmark"></span>
+      <span class="sacramento-label">Primeira Eucaristia</span>
+    </label>
+    
+    <label class="sacramento-item" for="f-sacramento-crisma">
+      <input type="checkbox" id="f-sacramento-crisma" value="crisma" />
+      <span class="checkmark"></span>
+      <span class="sacramento-label">Crisma</span>
+    </label>
+    
+    <label class="sacramento-item" for="f-sacramento-matrimonio">
+      <input type="checkbox" id="f-sacramento-matrimonio" value="matrimonio" />
+      <span class="checkmark"></span>
+      <span class="sacramento-label">Matrimônio</span>
+    </label>
+  </div>
+  <div style="font-size: 12px; color: var(--ink-3); margin-top: 6px;">
+    Marque todos os sacramentos que já recebeu
+  </div>
+</div>
+
+    <!-- Confissão -->
+    <div class="field-group">
+      <label>Confessa-se regularmente?</label>
+      <select id="f-confessa">
+        <option value="true">Sim, confesso-me regularmente</option>
+        <option value="false" selected>Não me confesso regularmente</option>
+      </select>
+    </div>
+
+    <!-- Frequência nas Missas -->
+    <div class="field-group">
+      <label>Participa das missas?</label>
+      <select id="f-frequencia-missa">
+        <option value="Diaria">Diariamente</option>
+        <option value="Semanal">Semanalmente</option>
+        <option value="Eventual" selected>Eventualmente</option>
+        <option value="Nunca">Não participo</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+
       <div class="field-group full">
         <label>Movimentos e Pastorais</label>
         <textarea id="f-obs" rows="2" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)"></textarea>
@@ -1572,7 +1832,17 @@ function mapPerson(p) {
       dataNascimento: f.dataNascimento ? ajustarDataLocal(f.dataNascimento) : ''
     })),
     movimentosPastorais: p.movimentosPastorais || [],
-    createdAt: p.createdAt || new Date().toISOString()
+    createdAt: p.createdAt || new Date().toISOString(),
+
+    batizado: p.batizado || false,
+    desejaBatismo: p.desejaBatismo || false,
+    catequista: p.catequista || false,
+    desejaCatequese: p.desejaCatequese || false,
+    confessaRegularmente: p.confessaRegularmente || false,
+    frequenciaMissa: p.frequenciaMissa || 'Eventual',
+    temEucaristia: p.temEucaristia || false,
+    temCrisma: p.temCrisma || false,
+    temMatrimonio: p.temMatrimonio || false
   };
 }
 
@@ -1613,6 +1883,7 @@ async function doLogin() {
   const errDiv = document.getElementById('login-error');
   const username = document.getElementById('inp-user').value.trim().toLowerCase();
   const password = document.getElementById('inp-pass').value;
+
   errDiv.classList.add('hidden');
   if (!username || !password) {
     errDiv.classList.remove('hidden');
@@ -1623,13 +1894,25 @@ async function doLogin() {
   btn.classList.add('btn-loading');
   btn.textContent = 'Entrando…';
   try {
-    const role = username === 'admin' ? 'admin' : 'member';
+
+    const usersResp = await fetch(`${API_URL}/users`);
+    const users = await usersResp.json();
+    const foundUser = users.find(u => u.username === username);
+    
+    if (!foundUser) {
+      errDiv.classList.remove('hidden');
+      errDiv.textContent = 'Usuário não encontrado.';
+      return;
+    }
+    
+    const role = foundUser.role;
     
     const resp = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password, role })
     });
+
     const result = await resp.json();
     if (result.success) {
       if (result.token) sessionStorage.setItem('token', result.token);
@@ -2083,6 +2366,53 @@ function viewPerson(id) {
       </div>
     `;
   }
+
+
+// ===== SACRAMENTOS NA VIEW =====
+html += `
+  <div class="view-section">
+    <div class="view-section-title">Sacramentos</div>
+    <div class="sacramentos-view-grid">
+      <div class="sacramento-view-item ${p.temEucaristia ? 'recebido' : 'nao-recebido'}">
+        <span class="sacramento-view-icon">${p.temEucaristia ? '✅' : '⬜'}</span>
+        <span>Primeira Eucaristia</span>
+      </div>
+      <div class="sacramento-view-item ${p.temCrisma ? 'recebido' : 'nao-recebido'}">
+        <span class="sacramento-view-icon">${p.temCrisma ? '✅' : '⬜'}</span>
+        <span>Crisma</span>
+      </div>
+      <div class="sacramento-view-item ${p.temMatrimonio ? 'recebido' : 'nao-recebido'}">
+        <span class="sacramento-view-icon">${p.temMatrimonio ? '✅' : '⬜'}</span>
+        <span>Matrimônio</span>
+      </div>
+    </div>
+  </div>
+`;
+
+// ===== VIDA ESPIRITUAL NA VIEW =====
+html += `
+  <div class="view-section">
+    <div class="view-section-title">Vida Espiritual</div>
+    <div class="view-grid">
+      <div class="view-field">
+        <label>Batizado</label>
+        <span>${p.batizado ? '✅ Sim' : (p.desejaBatismo ? '⏳ Deseja ser batizado' : '❌ Não')}</span>
+      </div>
+      <div class="view-field">
+        <label>Catequese</label>
+        <span>${p.catequista ? '✅ Sim' : (p.desejaCatequese ? '⏳ Deseja participar' : '❌ Não')}</span>
+      </div>
+      <div class="view-field">
+        <label>Confissão Regular</label>
+        <span>${p.confessaRegularmente ? '✅ Sim' : '❌ Não'}</span>
+      </div>
+      <div class="view-field">
+        <label>Frequência Missa</label>
+        <span>${p.frequenciaMissa || 'Eventual'}</span>
+      </div>
+    </div>
+  </div>
+`;
   
   // Observação
   if (p.observacao) {
@@ -2156,6 +2486,9 @@ function openModal(id = null) {
     document.getElementById('f-comunidade').value = p.comunidadeParticipa || '';
     document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
     document.getElementById('f-obs').value = (p.movimentosPastorais || []).join(', ');
+
+        carregarDadosEspirituais(p);
+
     
     // Dados de dizimista
     const ehDizimistaSelect = document.getElementById('f-ehDizimista');
@@ -2237,10 +2570,95 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.add('hidden');
   editId = null;
 }
+// ===== COLETA DADOS ESPIRITUAIS =====
+function coletarDadosEspirituais() {
+  // Batismo
+  const batizadoSelect = document.getElementById('f-batizado');
+  const batizadoValue = batizadoSelect?.value || 'false';
+  const batizado = batizadoValue === 'true';
+  const desejaBatismo = batizadoValue === 'deseja';
+
+  // Catequese
+  const catequeseSelect = document.getElementById('f-catequese');
+  const catequeseValue = catequeseSelect?.value || 'false';
+  const catequista = catequeseValue === 'true';
+  const desejaCatequese = catequeseValue === 'deseja';
+
+  // SACRAMENTOS - CAPTURAR CHECKBOX
+  const temEucaristia = document.getElementById('f-sacramento-eucaristia')?.checked || false;
+  const temCrisma = document.getElementById('f-sacramento-crisma')?.checked || false;
+  const temMatrimonio = document.getElementById('f-sacramento-matrimonio')?.checked || false;
+
+  // Confissão
+  const confessaRegularmente = document.getElementById('f-confessa')?.value === 'true';
+
+  // Frequência Missa
+  const frequenciaMissa = document.getElementById('f-frequencia-missa')?.value || 'Eventual';
+
+  console.log('Dados espirituais coletados:', {
+    batizado,
+    desejaBatismo,
+    catequista,
+    desejaCatequese,
+    temEucaristia,
+    temCrisma,
+    temMatrimonio,
+    confessaRegularmente,
+    frequenciaMissa
+  });
+
+  return {
+    batizado,
+    desejaBatismo,
+    catequista,
+    desejaCatequese,
+    confessaRegularmente: confessaRegularmente,
+    frequenciaMissa: frequenciaMissa,
+    temEucaristia: temEucaristia,
+    temCrisma: temCrisma,
+    temMatrimonio: temMatrimonio
+  };
+}
+
+// ===== CARREGAR DADOS ESPIRITUAIS NA EDIÇÃO =====
+function carregarDadosEspirituais(pessoa) {
+  // Batismo
+  const batizadoSelect = document.getElementById('f-batizado');
+  if (pessoa.batizado && !pessoa.desejaBatismo) {
+    batizadoSelect.value = 'true';
+  } else if (pessoa.desejaBatismo) {
+    batizadoSelect.value = 'deseja';
+  } else {
+    batizadoSelect.value = 'false';
+  }
+
+  // Catequese
+  const catequeseSelect = document.getElementById('f-catequese');
+  if (pessoa.catequista && !pessoa.desejaCatequese) {
+    catequeseSelect.value = 'true';
+  } else if (pessoa.desejaCatequese) {
+    catequeseSelect.value = 'deseja';
+  } else {
+    catequeseSelect.value = 'false';
+  }
+
+  // 🆕 SACRAMENTOS - MARCAR CHECKBOX
+  document.getElementById('f-sacramento-eucaristia').checked = pessoa.temEucaristia || false;
+  document.getElementById('f-sacramento-crisma').checked = pessoa.temCrisma || false;
+  document.getElementById('f-sacramento-matrimonio').checked = pessoa.temMatrimonio || false;
+
+  // Confissão
+  document.getElementById('f-confessa').value = pessoa.confessaRegularmente ? 'true' : 'false';
+
+  // Frequência Missa
+  document.getElementById('f-frequencia-missa').value = pessoa.frequenciaMissa || 'Eventual';
+}
+
 
 async function savePerson() {
   const saveBtn = document.getElementById('save-btn');
   const currentEditId = editId;
+  
   // ===== VALIDAÇÃO DETALHADA =====
   const errors = [];
   
@@ -2258,7 +2676,7 @@ async function savePerson() {
   // 2. Validar Data de Nascimento
   const nasc = document.getElementById('f-nasc')?.value;
   if (!nasc || !validateDate(nasc)) {
-    errors.push(' Data de nascimento é obrigatória e deve ser válida.');
+    errors.push('Data de nascimento é obrigatória e deve ser válida.');
     document.getElementById('f-nasc')?.classList.add('error');
     document.getElementById('err-nasc')?.classList.add('show');
   } else {
@@ -2289,11 +2707,11 @@ async function savePerson() {
   const codigoDizimista = document.getElementById('f-codigo-dizimista')?.value.trim();
   
   if (ehDizimista && !codigoDizimista) {
-    errors.push(' Para dizimistas, é necessário informar um código.');
+    errors.push('Para dizimistas, é necessário informar um código.');
   }
   
   if (codigoDizimista && !/^\d+$/.test(codigoDizimista)) {
-    errors.push(' Código do dizimista deve conter apenas números.');
+    errors.push('Código do dizimista deve conter apenas números.');
   }
   
   // 7. Validar Movimentos Pastorais (opcional)
@@ -2308,15 +2726,14 @@ async function savePerson() {
     const errorMessage = errors.join('\n');
     console.error('Erros de validação:', errors);
     toast(errorMessage, 'error');
-    
-    // Marca o modal com erro
     document.getElementById('modal-error')?.classList.remove('hidden');
     document.getElementById('modal-error').textContent = ' Corrija os erros antes de salvar.';
-    
     return;
   }
   
   // ===== COLETA OS DADOS =====
+  
+  // 1. Filhos
   const filhos = [];
   document.querySelectorAll('.filho-item, #filhos-list > div').forEach(item => {
     const nf = item.querySelector('.filho-nome')?.value.trim();
@@ -2324,6 +2741,7 @@ async function savePerson() {
     if (nf && df) filhos.push({ nome: nf, dataNascimento: df });
   });
   
+  // 2. Movimentos Pastorais
   const movimentosDigitados = movs;
   const movimentosValidos = [
     'PastoralFamiliar', 'PastoralDizimista', 'GrupoOracao',
@@ -2335,54 +2753,99 @@ async function savePerson() {
   );
   const textoCompleto = movimentosDigitados.join(', ');
   
+  // 3. Cônjuge
+  const conjugeNome = document.getElementById('f-conjuge-nome')?.value.trim();
+  const conjugeData = document.getElementById('f-conjuge-data')?.value;
+  
+  // 4. Estado Civil e Status
   const ec = document.getElementById('f-estadoCivil')?.value;
-  let status = 'ativo';
+  const status = 'ativo';
+  
+  // ===== 🆕 COLETA DADOS ESPIRITUAIS =====
+  
+  // Batismo
+  const batizadoSelect = document.getElementById('f-batizado');
+  const batizadoValue = batizadoSelect?.value || 'false';
+  const batizado = batizadoValue === 'true';
+  const desejaBatismo = batizadoValue === 'deseja';
+  
+  // Catequese
+  const catequeseSelect = document.getElementById('f-catequese');
+  const catequeseValue = catequeseSelect?.value || 'false';
+  const catequista = catequeseValue === 'true';
+  const desejaCatequese = catequeseValue === 'deseja';
+  
+  // Sacramentos
+  const temEucaristia = document.getElementById('f-sacramento-eucaristia')?.checked || false;
+  const temCrisma = document.getElementById('f-sacramento-crisma')?.checked || false;
+  const temMatrimonio = document.getElementById('f-sacramento-matrimonio')?.checked || false;
+  
+  // Confissão
+  const confessaRegularmente = document.getElementById('f-confessa')?.value === 'true';
+  
+  // Frequência Missa
+  const frequenciaMissa = document.getElementById('f-frequencia-missa')?.value || 'Eventual';
   
   // ===== MONTA OBJETO =====
   const data = {
+    // Dados básicos
     nomeCompleto: nome,
     dataNascimento: nasc,
+    telefone: tel || undefined,
+    endereco: endereco || undefined,
+    bairro: bairro || undefined,
+    comunidadeParticipa: document.getElementById('f-comunidade')?.value.trim() || undefined,
+    estadoCivil: ec || 'Solteiro',
+    
+    // Dados de dizimista
     ehDizimista: ehDizimista,
     codigoDizimista: ehDizimista ? codigoDizimista : null,
+    
+    //  VIDA ESPIRITUAL
+    batizado: batizado,
+    desejaBatismo: desejaBatismo,
+    catequista: catequista,
+    desejaCatequese: desejaCatequese,
+    confessaRegularmente: confessaRegularmente,
+    frequenciaMissa: frequenciaMissa,
+    temEucaristia: temEucaristia,
+    temCrisma: temCrisma,
+    temMatrimonio: temMatrimonio,
+    
+    // Família
+    conjuge: conjugeNome ? { 
+      nome: conjugeNome, 
+      dataNascimento: conjugeData || null 
+    } : undefined,
+    filhos: filhos.length > 0 ? filhos : undefined,
+    
+    // Movimentos e observações
     movimentosPastorais: movimentosParaEnviar,
-    filhos: filhos,
-    status: status,
     observacoes: textoCompleto,
-    comunidadeParticipa: document.getElementById('f-comunidade')?.value.trim() || undefined,
+    
+    // Status
+    status: status,
   };
   
-  // Campos opcionais
-  if (tel) data.telefone = tel;
-  if (endereco) data.endereco = endereco;
-  if (bairro) data.bairro = bairro;
-  if (ec) data.estadoCivil = ec;
-  
-  const cnome = document.getElementById('f-conjuge-nome')?.value.trim();
-  const cdata = document.getElementById('f-conjuge-data')?.value;
-  if (cnome) data.conjuge = { nome: cnome, dataNascimento: cdata || null };
-  
-
-// ===== ENVIA PARA API =====
+  // ===== ENVIA PARA API =====
   saveBtn.disabled = true;
   saveBtn.classList.add('btn-loading');
   saveBtn.textContent = 'Salvando…';
     
   try {
-    const endpoint = currentEditId  ? `/pessoas/${currentEditId }` : '/pessoas';
-    const method = currentEditId  ? 'PATCH' : 'POST';
+    const endpoint = currentEditId ? `/pessoas/${currentEditId}` : '/pessoas';
+    const method = currentEditId ? 'PATCH' : 'POST';
     const result = await apiRequest(endpoint, { method, body: JSON.stringify(data) });
     
     if (!result.ok) {
-      // Trata erros da API
       const apiError = result.data?.message || 'Erro ao salvar no servidor.';
-      console.error(' Erro da API:', apiError);
+      console.error('Erro da API:', apiError);
       
-      // Se for erro de validação do DTO, mostra detalhes
       if (result.data?.errors) {
         const detalhes = result.data.errors.map(e => `- ${e.field}: ${e.message}`).join('\n');
-        toast(` Erro de validação:\n${detalhes}`, 'error');
+        toast(`Erro de validação:\n${detalhes}`, 'error');
       } else {
-        toast(` ${apiError}`, 'error');
+        toast(`${apiError}`, 'error');
       }
       
       throw new Error(apiError);
@@ -2390,16 +2853,15 @@ async function savePerson() {
     
     closeModal();
     await loadPeople(true);
-    await loadAllPeople();
-
-    toast(currentEditId  ? '✅ Pessoa atualizada com sucesso!' : '✅ Pessoa cadastrada com sucesso!', 'success');
+    
+    toast(currentEditId ? ' Pessoa atualizada com sucesso!' : ' Pessoa cadastrada com sucesso!', 'success');
     
   } catch (err) {
-    console.error(' Erro:', err);
+    console.error('Erro:', err);
     const errDiv = document.getElementById('modal-error');
     if (errDiv) {
       errDiv.classList.remove('hidden');
-      errDiv.textContent = ` ${err.message || 'Erro ao salvar. Tente novamente.'}`;
+      errDiv.textContent = `${err.message || 'Erro ao salvar. Tente novamente.'}`;
     }
   } finally {
     saveBtn.disabled = false;
@@ -2407,8 +2869,6 @@ async function savePerson() {
     saveBtn.textContent = 'Salvar pessoa';
   }
 }
-
-
 
 async function inativarPerson(id) {
   const p = allPeople.find(x => x.id == id);
