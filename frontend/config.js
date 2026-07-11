@@ -1,3 +1,3 @@
 const CONFIG = {
-  API_URL: 'http://localhost:3000' 
+  API_URL: 'https://atrio-backend-523e.onrender.com'
 };

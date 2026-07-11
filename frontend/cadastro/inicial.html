@@ -530,7 +530,7 @@ a.btn {
 }
 
 /* ============================================================
-   SACRAMENTOS - CHECKBOXES ESTILIZADOS
+   SACRAMENTOS - PADRONIZADO COM O SELECT
    ============================================================ */
 .sacramentos-grid {
   display: grid;
@@ -543,14 +543,17 @@ a.btn {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: var(--surface);
-  border: 2px solid var(--line);
+  padding: 8px 12px;
+  background: #fff;
+  border: 1.5px solid var(--line);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   position: relative;
   user-select: none;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--ink);
 }
 
 .sacramento-item:hover {
@@ -566,10 +569,10 @@ a.btn {
   pointer-events: none;
 }
 
-/* Checkbox personalizado - ARREDONDADO */
 .sacramento-item .checkmark {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+  border-width: 1.5px;
   border-radius: 50%;
   border: 2px solid var(--line2);
   background: #fff;
@@ -577,7 +580,7 @@ a.btn {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   position: relative;
 }
 
@@ -585,48 +588,32 @@ a.btn {
 .sacramento-item input[type="checkbox"]:checked + .checkmark {
   background: var(--indigo-600);
   border-color: var(--indigo-600);
-  animation: pop 0.2s ease;
 }
 
 /* Símbolo de "✓" dentro do círculo */
 .sacramento-item input[type="checkbox"]:checked + .checkmark::after {
   content: "✓";
   color: #fff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  animation: fadeIn 0.15s ease;
 }
 
 /* Item marcado - destaque */
 .sacramento-item:has(input:checked) {
   background: var(--indigo-50);
   border-color: var(--indigo-600);
-  box-shadow: 0 0 0 3px rgba(91, 82, 194, 0.1);
+  box-shadow: 0 0 0 3px rgba(91, 82, 194, 0.08);
 }
 
 .sacramento-label {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 300;
   color: var(--ink);
-  transition: color 0.2s;
   flex: 1;
 }
 
 .sacramento-item:has(input:checked) .sacramento-label {
-  font-weight: 500;
   color: var(--indigo-700);
-}
-
-/* Animações */
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; transform: scale(0.5); }
-  100% { opacity: 1; transform: scale(1); }
 }
 
 /* ============================================================
@@ -639,31 +626,31 @@ a.btn {
   }
   
   .sacramento-item {
-    padding: 14px 16px;
+    padding: 10px 12px;
   }
   
   .sacramento-item .checkmark {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
   }
   
   .sacramento-item input[type="checkbox"]:checked + .checkmark::after {
-    font-size: 16px;
+    font-size: 13px;
   }
   
   .sacramento-label {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
   .sacramento-item {
-    padding: 12px 14px;
+    padding: 9px 11px;
   }
   
   .sacramento-item .checkmark {
-    width: 26px;
-    height: 26px;
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -687,8 +674,6 @@ a.btn {
       <a href="../admin/index.html" class="btn btn-ghost-light" style="text-decoration: none; display: inline-flex;">
       Acessar sistema
         </a>
-
- 
   </div>
 </header>
 
