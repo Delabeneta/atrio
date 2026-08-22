@@ -18,3 +18,4 @@ export function getDefaultPasswordForRole(role: string): string {
   }
   return senha;
 }
+export const DEFAULT_ROLE = 'LIDER';

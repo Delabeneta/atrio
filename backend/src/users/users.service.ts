@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from '@prisma/client';
-import { getDefaultPasswordForRole } from 'src/auth/constants';
+import { getDefaultPasswordForRole } from '../auth/constants';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +23,7 @@ export class UsersService {
       !createUserDto.organizationId
     ) {
       console.warn(
-        `Usuário ${createUserDto.username} criado sem organização. Role: ${createUserDto.role}`,
+        ` Usuário ${createUserDto.username} criado sem organização. Role: ${createUserDto.role}`,
       );
     }
 
@@ -35,9 +35,8 @@ export class UsersService {
       throw new ConflictException('Username já está em uso');
     }
 
-    const senhaPadrao = getDefaultPasswordForRole(
-      createUserDto.role || 'LIDER',
-    );
+    const role = createUserDto.role || 'LIDER';
+    const senhaPadrao = getDefaultPasswordForRole(role);
     const hashedPassword = await bcrypt.hash(senhaPadrao, 10);
 
     return this.prisma.user.create({
@@ -46,7 +45,7 @@ export class UsersService {
         password: hashedPassword,
         email: createUserDto.email,
         nome: createUserDto.nome,
-        role: createUserDto.role as Role,
+        role: role as Role,
         organizationId: createUserDto.organizationId || null,
       },
       select: {
@@ -71,6 +70,7 @@ export class UsersService {
         role: true,
         organizationId: true,
         createdAt: true,
+        updatedAt: true,
       },
     });
   }
@@ -99,7 +99,9 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const usuarioAtual = await this.findOne(id);
+
     if (
+      updateUserDto.role &&
       (updateUserDto.role === 'COORDENADOR' ||
         updateUserDto.role === 'LIDER') &&
       !updateUserDto.organizationId
@@ -110,9 +112,12 @@ export class UsersService {
     }
 
     const data: any = {};
-    if (updateUserDto.nome) data.nome = updateUserDto.nome;
-    if (updateUserDto.role) data.role = updateUserDto.role as Role;
-    if (updateUserDto.username) {
+
+    if (updateUserDto.nome !== undefined) data.nome = updateUserDto.nome;
+    if (updateUserDto.email !== undefined) data.email = updateUserDto.email;
+    if (updateUserDto.role !== undefined)
+      data.role = updateUserDto.role as Role;
+    if (updateUserDto.username !== undefined) {
       data.username = updateUserDto.username.toLowerCase();
     }
     if (updateUserDto.organizationId !== undefined) {
