@@ -5,8 +5,10 @@
   "author": "",
   "private": true,
   "license": "MIT",
-  "scripts": {
-    "build": "nest build",
+   "scripts": {
+    "prebuild": "prisma generate",
+    "build": "prisma generate && nest build",
+    "postinstall": "prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -19,7 +21,7 @@
     "generate": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy"
-  },
+   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
