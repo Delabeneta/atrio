@@ -22,7 +22,6 @@ async function bootstrap() {
       'http://localhost:3000',
       'https://atrioraiz.vercel.app',
     ],
-    // ['http://localhost:3001'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
