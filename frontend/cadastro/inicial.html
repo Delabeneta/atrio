@@ -789,8 +789,10 @@ a.btn {
 <div class="section-divider">Vida Paroquial</div>
 
 <div class="field-group full">
-  <label>Comunidade que participa</label>
-  <input type="text" id="p-comunidade" placeholder="Ex: São Sebastião - Rua J" />
+  <label>Comunidade que participa *</label>
+  <select id="p-organization-id">
+    <option value="">Selecione sua comunidade</option>
+  </select>
 </div>
 
 <!-- ===== VIDA ESPIRITUAL ===== -->
@@ -953,70 +955,57 @@ function addFilho(nome='', data=''){
   document.getElementById('filhos-list').appendChild(div);
 }
 
-// ── SUBMIT ──
-async function submitCadastro(){
-  const nome=document.getElementById('p-nome').value.trim();
-  const nasc=document.getElementById('p-nasc').value;
-  const btn=document.getElementById('submit-btn');
+
+
+
+async function submitCadastro() {
+  const nome = document.getElementById('p-nome').value.trim();
+  const nasc = document.getElementById('p-nasc').value;
+  const btn = document.getElementById('submit-btn');
 
   // Validação
-  let ok=true;
-  const setErr=(id,errId,valid)=>{
-    document.getElementById(id).classList.toggle('err',!valid);
-    document.getElementById(errId).classList.toggle('show',!valid);
-    if(!valid) ok=false;
+  let ok = true;
+  const setErr = (id, errId, valid) => {
+    document.getElementById(id).classList.toggle('err', !valid);
+    document.getElementById(errId).classList.toggle('show', !valid);
+    if (!valid) ok = false;
   };
-  setErr('p-nome','err-nome', nome.length>0);
-  setErr('p-nasc','err-nasc', validateDate(nasc));
-  if(!ok){ toast('Preencha os campos obrigatórios.','error'); return; }
+  setErr('p-nome', 'err-nome', nome.length > 0);
+  setErr('p-nasc', 'err-nasc', validateDate(nasc));
+  if (!ok) { toast('Preencha os campos obrigatórios.', 'error'); return; }
 
   // Situação
-
   const situacaoRadios = document.querySelectorAll('input[name="situacao"]');
-let situacao = '';
-situacaoRadios.forEach(radio => {
-  if (radio.checked) situacao = radio.value;
-});
+  let situacao = '';
+  situacaoRadios.forEach(radio => {
+    if (radio.checked) situacao = radio.value;
+  });
 
   const situacaoMap = {
-  'SIM': 'JaDizimista',
-  'DESEJA_SER': 'DesejaSerDizimista',
-  'NAO': 'NaoDizimista'
-    };
+    'SIM': 'JaDizimista',
+    'DESEJA_SER': 'DesejaSerDizimista',
+    'NAO': 'NaoDizimista'
+  };
   const situacaoDizimista = situacaoMap[situacao] || 'NaoDizimista';
-  
-// Filhos
-  const filhos=[];
-  document.querySelectorAll('#filhos-list > div').forEach(row=>{
-    const n=row.querySelector('.filho-nome')?.value.trim();
-    const d=row.querySelector('.filho-data')?.value;
-        if(n&&d) filhos.push({nome:n,dataNascimento:d});
-      });
 
-      // Coleta o texto original para exibição
-    const movRaw = document.getElementById('f-obs')?.value.trim() || '';
-    const movimentosDigitados = movRaw ? movRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+  // Filhos
+  const filhos = [];
+  document.querySelectorAll('#filhos-list > div').forEach(row => {
+    const n = row.querySelector('.filho-nome')?.value.trim();
+    const d = row.querySelector('.filho-data')?.value;
+    if (n && d) filhos.push({ nome: n, dataNascimento: d });
+  });
 
-    // Lista de valores válidos do enum (mantida no frontend)
-    const movimentosValidos = [
-      'PastoralFamiliar', 'PastoralDizimista', 'GrupoOracao',
-      'Liturgia', 'Catequese', 'Coral', 'Acolitos',
-      'MinistroEucaristico', 'LegiaoMaria'
-    ];
+  // Movimentos Pastorais
+  const movRaw = document.getElementById('p-obs')?.value.trim() || '';
+  const movimentosDigitados = movRaw ? movRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+  const textoCompleto = movimentosDigitados.join(', ');
 
-    // Filtra apenas os válidos para enviar ao backend
-    const movimentosParaEnviar = movimentosDigitados.filter(
-      s => movimentosValidos.includes(s)
-    );
+  const estadoCivil = document.getElementById('p-estadoCivil').value;
+  const conjugeNome = document.getElementById('p-conjuge-nome').value.trim();
+  const conjugeData = document.getElementById('p-conjuge-data').value;
 
-    // Texto completo para exibição (observações)
-    const textoCompleto = movimentosDigitados.join(', ');
-
-  const estadoCivil=document.getElementById('p-estadoCivil').value;
-  const conjugeNome=document.getElementById('p-conjuge-nome').value.trim();
-  const conjugeData=document.getElementById('p-conjuge-data').value;
-
-       // Batismo
+  // Batismo
   const batizadoSelect = document.getElementById('p-batizado');
   const batizadoValue = batizadoSelect?.value || 'false';
   const batizado = batizadoValue === 'true';
@@ -1040,22 +1029,26 @@ situacaoRadios.forEach(radio => {
   const frequenciaMissa = document.getElementById('p-frequencia-missa')?.value || 'Eventual';
 
   // ehDizimista: true apenas se já é ou deseja ser
-  const ehDizimista=situacao!=='NAO';
+  const ehDizimista = situacao !== 'NAO';
 
-  const payload={
+  //  ORGANIZATION ID
+  const orgSelect = document.getElementById('p-organization-id');
+  const organizationId = orgSelect?.value || '';
+  const finalOrganizationId = organizationId && organizationId !== '' ? organizationId : null;
+
+  const payload = {
     nomeCompleto: nome,
     dataNascimento: nasc,
-    telefone: document.getElementById('p-tel').value.trim()||undefined,
-    endereco: document.getElementById('p-endereco').value.trim()||undefined,
-    bairro: document.getElementById('p-bairro').value.trim()||undefined,
-    cidade: document.getElementById('p-cidade').value.trim()||undefined,
-    comunidadeParticipa: document.getElementById('p-comunidade').value.trim() || undefined,
+    telefone: document.getElementById('p-tel').value.trim() || undefined,
+    endereco: document.getElementById('p-endereco').value.trim() || undefined,
+    bairro: document.getElementById('p-bairro').value.trim() || undefined,
+    status: 'pendente',
+    organizationId: finalOrganizationId,
     estadoCivil,
     ehDizimista,
-    ativo: false,   // sempre inativo até aprovação
     situacaoDizimista: situacaoDizimista,
-    filhos,
-    movimentosPastorais: movimentosParaEnviar,
+    filhos: filhos.length > 0 ? filhos : undefined,
+    movimentosPastorais: textoCompleto || undefined,
     batizado,
     desejaBatismo,
     catequista,
@@ -1066,40 +1059,70 @@ situacaoRadios.forEach(radio => {
     temCrisma,
     temMatrimonio,
     observacoes: [
-      `Cadastro público · ${situacaoDizimista==='SIM'?'Já dizimista':situacaoDizimista==='DESEJA_SER'?'Deseja ser dizimista':'Fiel'}`,
-      movimentosDigitados.length ? `Pastorais: ${textoCompleto}`:'',
+      `Cadastro público · ${situacaoDizimista === 'JaDizimista' ? 'Já dizimista' : situacaoDizimista === 'DesejaSerDizimista' ? 'Deseja ser dizimista' : 'Fiel'}`,
+      movimentosDigitados.length ? `Pastorais: ${textoCompleto}` : '',
     ].filter(Boolean).join(' · '),
   };
-  if(conjugeNome) payload.conjuge={nome:conjugeNome,dataNascimento:conjugeData||null};
 
-  btn.disabled=true;
+  // Cônjuge
+  if (conjugeNome) {
+    payload.conjuge = { 
+      nome: conjugeNome, 
+      dataNascimento: conjugeData || null 
+    };
+  }
+
+  console.log(' Enviando payload:', JSON.stringify(payload, null, 2));
+
+  btn.disabled = true;
   btn.classList.add('btn-loading');
 
-  try{
-    const r=await fetch(`${API_URL}/public/cadastrar-dizimista`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload),
+  try {
+    const r = await fetch(`${API_URL}/public/cadastrar-dizimista`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
-    const result=await r.json();
-    if(r.ok){
-      // Mensagem personalizada por situação
-      const msgs={
-        SIM: 'Seu cadastro foi recebido! A pastoral irá atualizar seu código de dizimista em breve.',
-        DESEJA_SER: 'Cadastro recebido! Faremos a sua carteira e você poderá pegar na próxima missa.',
-        NAO: 'Bem-vindo(a)! Seu cadastro como fiel da comunidade foi registrado com sucesso.',
+    
+    const result = await r.json();
+    console.log('📥 Status:', r.status);
+    console.log('📥 Resposta:', result);
+
+    if (r.ok) {
+      const msgs = {
+        'JaDizimista': 'Seu cadastro foi recebido! A pastoral irá atualizar seu código de dizimista em breve.',
+        'DesejaSerDizimista': 'Cadastro recebido! Faremos a sua carteira e você poderá pegar na próxima missa.',
+        'NaoDizimista': 'Bem-vindo(a)! Seu cadastro como fiel da comunidade foi registrado com sucesso.',
       };
-      document.getElementById('success-msg').textContent=msgs[situacao];
-      document.getElementById('form-section').style.display='none';
+      document.getElementById('success-msg').textContent = msgs[situacaoDizimista] || 'Cadastro realizado com sucesso!';
+      document.getElementById('form-section').style.display = 'none';
       document.getElementById('success-state').classList.add('show');
-      window.scrollTo({top:0,behavior:'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      toast(result.message||'Erro ao enviar. Tente novamente.','error');
+      let errorMsg = 'Erro ao enviar.';
+      if (result.message) {
+        if (Array.isArray(result.message)) {
+          errorMsg = result.message.map(e => {
+            if (e.constraints) {
+              return Object.values(e.constraints).join(', ');
+            }
+            return JSON.stringify(e);
+          }).join('; ');
+        } else {
+          errorMsg = result.message;
+        }
+      } else if (result.error) {
+        errorMsg = result.error;
+      } else {
+        errorMsg = JSON.stringify(result);
+      }
+      toast(`❌ ${errorMsg}`, 'error');
     }
-  } catch {
-    toast('Erro de conexão com o servidor.','error');
+  } catch (error) {
+    console.error('❌ Erro:', error);
+    toast(' Erro de conexão com o servidor.', 'error');
   } finally {
-    btn.disabled=false;
+    btn.disabled = false;
     btn.classList.remove('btn-loading');
   }
 }
@@ -1120,6 +1143,39 @@ function resetForm(){
   document.getElementById('s-ja').checked=true;
 }
 
+async function carregarComunidades() {
+  try {
+    console.log('Carregando comunidades...');
+    const r = await fetch(`${API_URL}/public/organizations`);
+    
+    if (!r.ok) {
+      console.error(' Erro ao carregar comunidades:', r.status);
+      return;
+    }
+    
+    const data = await r.json();
+    console.log(' Comunidades carregadas:', data);
+    
+    const select = document.getElementById('p-organization-id');
+    if (!select) {
+      console.error(' Select não encontrado!');
+      return;
+    }
+    
+    select.innerHTML = '<option value="">Selecione sua comunidade</option>';
+    
+    data.forEach(org => {
+      const opt = document.createElement('option');
+      opt.value = org.id;
+      opt.textContent = org.nome;
+      select.appendChild(opt);
+    });
+    
+    console.log(' Select populado com', data.length, 'comunidades');
+  } catch (err) {
+    console.error(' Erro ao carregar comunidades:', err);
+  }
+}
 
 // ===== WAKE UP BACKEND =====
 // Função para "acordar" o backend enquanto o usuário vê a página
@@ -1153,6 +1209,7 @@ function wakeUpBackend(retries = 3) {
 document.addEventListener('DOMContentLoaded',()=>{
   
   wakeUpBackend();
+  carregarComunidades();
 
   document.getElementById('p-tel')?.addEventListener('input',function(){ phoneMask(this); });
 

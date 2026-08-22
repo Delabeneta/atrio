@@ -6,52 +6,145 @@ datasource db {
   provider = "postgresql"
 }
 
-model Pessoa {
-  id                   String              @id @default(cuid())
-  nomeCompleto         String
-  dataNascimento       DateTime
-  telefone             String?
-  endereco             String?
-  bairro               String?
-  cep                  String?
-  comunidadeParticipa  String?
-  comunidadeContribui  String?
-  situacaoDizimista   String?             @default("DesejaSerDizimista")
-  ehDizimista          Boolean             @default(true)
-  estadoCivil          EstadoCivil         @default(Solteiro)
-  batizado             Boolean             @default(false)
-  desejaBatismo        Boolean             @default(false)
-  catequista           Boolean             @default(false)
-  desejaCatequese      Boolean             @default(false)
-  confessaRegularmente Boolean             @default(false)
-  frequenciaMissa      FrequenciaMissa     @default(Eventual)
-  temEucaristia        Boolean             @default(false)
-  temCrisma            Boolean             @default(false)
-  temMatrimonio        Boolean             @default(false)
-  createdAt            DateTime            @default(now())
-  updatedAt            DateTime            @updatedAt
-  status               String?   @default("pendente") // ativo | inativo | pendente
-  codigoDizimista      String?             @unique
-  conjuge              Json?
-  filhos               Json?
-  movimentosPastorais  MovimentoPastoral[]
-  observacoes          String?
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 
-  @@index([nomeCompleto])
-  @@index([comunidadeParticipa])
-  @@index([createdAt])
+  @@index([userId])
+  @@index([token])
+}
+
+model Paroquia {
+  id        String   @id @default(cuid())
+  nome      String
+  adminId   String?  @unique
+  admin     User?    @relation("ParoquiaAdmin", fields: [adminId], references: [id])
+
+  organizations Organization[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([nome])
+}
+
+model Organization {
+  id         String   @id @default(cuid())
+  nome       String
+  paroquiaId String
+  paroquia   Paroquia @relation(fields: [paroquiaId], references: [id])
+
+  coordenadorId String? @unique
+  coordenador   User?   @relation("OrgCoordenador", fields: [coordenadorId], references: [id])
+
+  // Sequência de código dizimista específica desta comunidade.
+  // Obrigatório no momento da criação (definido pelo admin/super admin).
+  proximoCodigoDizimista Int
+
+  pessoas  Pessoa[]
+  usuarios User[]   @relation("UserOrganization")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([nome])
+  @@index([paroquiaId])
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  COORDENADOR
+  LIDER
 }
 
 model User {
-  id        String   @id @default(cuid())
-  username  String   @unique
-  password  String
-  role      String   @default("member")
-  name      String
+  id       String  @id @default(cuid())
+  username String  @unique
+  email    String? @unique
+  password String
+  nome     String
+  role     Role    @default(LIDER)
+
+  organizationId String?
+  organization   Organization? @relation("UserOrganization", fields: [organizationId], references: [id])
+
+  coordenaOrg Organization? @relation("OrgCoordenador")
+
+  paroquiaAdmin Paroquia? @relation("ParoquiaAdmin")
+
+  sessions Session[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([username])
+  @@index([email])
+  @@index([organizationId])
+}
+
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String? // id do User que realizou a ação (null = sistema/público)
+  action    String  // CREATE | UPDATE | DELETE | APPROVE | REJECT
+  entity    String  // Pessoa | Organization | User | Paroquia
+  entityId  String
+  details   Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([actorId])
+  @@index([createdAt])
+}
+
+
+model Pessoa {
+  id             String   @id @default(cuid())
+  nomeCompleto   String
+  dataNascimento DateTime
+  telefone       String?
+  endereco       String?
+  bairro         String?
+  cep            String?
+
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  comunidadeContribui String?
+
+  situacaoDizimista String?  @default("DesejaSerDizimista")
+  ehDizimista       Boolean  @default(true)
+  estadoCivil       EstadoCivil @default(Solteiro)
+  batizado          Boolean  @default(false)
+  desejaBatismo     Boolean  @default(false)
+  catequista        Boolean  @default(false)
+  desejaCatequese   Boolean  @default(false)
+  confessaRegularmente Boolean @default(false)
+  frequenciaMissa   FrequenciaMissa @default(Eventual)
+  temEucaristia     Boolean  @default(false)
+  temCrisma         Boolean  @default(false)
+  temMatrimonio     Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  status            String?  @default("pendente") // ativo | inativo | pendente
+  codigoDizimista   String?  @unique
+  conjuge           Json?
+  filhos            Json?
+
+  // Antes era enum MovimentoPastoral[]. Agora texto livre único
+  // (a pessoa pode digitar mais de uma pastoral, tudo nesta coluna).
+  movimentosPastorais String?
+
+  observacoes String?
+
+  @@index([nomeCompleto])
+  @@index([organizationId])
+  @@index([createdAt])
 }
 
 enum EstadoCivil {
@@ -65,16 +158,4 @@ enum FrequenciaMissa {
   Diaria
   Semanal
   Eventual
-}
-
-enum MovimentoPastoral {
-  PastoralFamiliar
-  PastoralDizimista
-  GrupoOracao
-  Liturgia
-  Catequese
-  Coral
-  Acolitos
-  MinistroEucaristico
-  LegiaoMaria
 }

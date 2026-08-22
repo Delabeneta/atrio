@@ -3,46 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <title>Átrio · Gestão</title>
+  <title>Átrio · Gestão Paroquial</title>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
  
  <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500&display=swap');
 
 :root {
-  /* Superfícies */
   --bg:           #F4F3F0;
   --surface:      #FFFFFF;
   --surface-2:    #FAFAF8;
   --surface-3:    #F0EEE9;
-
-  /* Índigo (cor institucional) */
   --indigo-900:   #1E1B4B;
   --indigo-800:   #312E81;
   --indigo-700:   #3730A3;
   --indigo-600:   #4338CA;
   --indigo-100:   #E0E7FF;
   --indigo-50:    #EEF2FF;
-
-  /* Âmbar (accent principal) */
   --amber-600:    #D97706;
   --amber-500:    #F59E0B;
   --amber-400:    #FBBF24;
   --amber-100:    #FEF3C7;
   --amber-50:     #FFFBEB;
-
-  /* Texto */
   --ink:          #1C1917;
   --ink-2:        #57534E;
   --ink-3:        #A8A29E;
-
-  /* Bordas */
   --line:         #E7E5E0;
   --line-strong:  #D4D2CD;
-
-  /* Semânticas */
   --green:        #16A34A;
   --green-bg:     #DCFCE7;
   --green-text:   #14532D;
@@ -55,28 +43,19 @@
   --blue:         #2563EB;
   --blue-bg:      #DBEAFE;
   --blue-text:    #1E3A8A;
-
-  /* Forma */
   --radius-sm:   6px;
   --radius-md:   10px;
   --radius-lg:   14px;
   --radius-xl:   20px;
   --radius-pill: 999px;
-
-  /* Sombra */
   --shadow-xs: 0 1px 3px rgba(28,25,23,0.06), 0 1px 2px rgba(28,25,23,0.04);
   --shadow-sm: 0 2px 8px rgba(28,25,23,0.07), 0 1px 4px rgba(28,25,23,0.04);
   --shadow-md: 0 4px 20px rgba(28,25,23,0.09), 0 2px 8px rgba(28,25,23,0.05);
   --shadow-lg: 0 12px 40px rgba(28,25,23,0.12), 0 4px 16px rgba(28,25,23,0.06);
-
-  /* Tipografia */
   --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-serif: 'Lora', Georgia, serif;
 }
 
-/* ============================================================
-   RESET & BASE
-   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -90,9 +69,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ============================================================
-   TOAST SYSTEM
-   ============================================================ */
+/* ===== TOAST ===== */
 #toast-container {
   position: fixed;
   bottom: 24px;
@@ -127,9 +104,7 @@ body {
 .toast.info    { border-left-color: var(--amber-400); }
 .toast-icon    { font-size: 15px; flex-shrink: 0; }
 
-/* ============================================================
-   CONFIRM DIALOG
-   ============================================================ */
+/* ===== CONFIRM ===== */
 #confirm-overlay {
   position: fixed;
   inset: 0;
@@ -162,9 +137,7 @@ body {
 #confirm-box p { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
 #confirm-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
 
-/* ============================================================
-   LOGIN
-   ============================================================ */
+/* ===== LOGIN ===== */
 #login-screen {
   display: flex;
   align-items: center;
@@ -215,9 +188,7 @@ body {
 .login-box h1 span { color: var(--amber-500); }
 .login-box p.sub { color: var(--ink-2); font-size: 13px; margin-bottom: 30px; }
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
+/* ===== BUTTONS ===== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -307,9 +278,7 @@ body {
   animation: spin 0.65s linear infinite;
 }
 
-/* ============================================================
-   CAMPOS / FORM
-   ============================================================ */
+/* ===== FORMS ===== */
 .field-group {
   display: flex;
   flex-direction: column;
@@ -353,22 +322,22 @@ body {
 .field-error { font-size: 11px; color: var(--red); margin-top: 3px; display: none; }
 .field-error.show { display: block; }
 
-/* ============================================================
-   APP SHELL
-   ============================================================ */
+/* ===== APP SHELL ===== */
 #app { display: none; flex-direction: column; min-height: 100vh; }
 
 header {
   background: var(--indigo-900);
-  padding: 0 28px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 56px;
+  height: 60px;
   position: sticky;
   top: 0;
   z-index: 100;
   border-bottom: 1px solid rgba(255,255,255,0.06);
+  gap: 8px;
+  flex-wrap: wrap;
 }
 header .logo {
   font-family: var(--font-serif);
@@ -376,15 +345,129 @@ header .logo {
   font-weight: 400;
   color: #fff;
   letter-spacing: -0.01em;
+  flex-shrink: 0;
 }
 header .logo span { color: var(--amber-400); }
-.header-right { display: flex; align-items: center; gap: 14px; }
-.user-badge {
+
+/* ===== CONTEXT SELECTOR ===== */
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 150px;
+  max-width: 500px;
+}
+
+.context-selector {
+  position: relative;
+  width: 100%;
+}
+
+.context-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+  width: 100%;
+  min-height: 36px;
+}
+
+.context-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  opacity: 0.6;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.context-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.context-menu.hidden {
+  display: none;
+}
+
+.context-item {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: background 0.15s;
+  font-size: 13px;
+  color: var(--ink);
+}
+.context-item:hover {
+  background: var(--indigo-50);
+}
+.context-item.active {
+  background: var(--indigo-100);
+  font-weight: 500;
+}
+.context-item .badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  background: var(--surface-3);
+  border-radius: var(--radius-pill);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.context-item .icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.context-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 8px;
+}
+
+.header-right {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
+}
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
   color: rgba(255,255,255,0.65);
+}
+.user-badge .name {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .role-pill {
   font-size: 10px;
@@ -392,14 +475,21 @@ header .logo span { color: var(--amber-400); }
   border-radius: var(--radius-pill);
   font-weight: 600;
   letter-spacing: 0.04em;
+  flex-shrink: 0;
 }
 .role-pill.admin  { background: var(--amber-500); color: var(--indigo-900); }
 .role-pill.member { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+.role-pill.super-admin { background: #8B5CF6; color: #fff; }
+.role-pill.coordinator { background: #3B82F6; color: #fff; }
 
+.super-admin-only { display: none; }
+.coordinator-only { display: none; }
+
+/* ===== NAV ===== */
 nav {
   background: var(--surface);
   border-bottom: 1px solid var(--line);
-  padding: 0 28px;
+  padding: 0 12px;
   display: flex;
   gap: 2px;
   overflow-x: auto;
@@ -408,7 +498,7 @@ nav {
 nav::-webkit-scrollbar { display: none; }
 
 .nav-tab {
-  padding: 13px 16px;
+  padding: 12px 14px;
   border: none;
   background: transparent;
   font-family: var(--font-sans);
@@ -420,50 +510,56 @@ nav::-webkit-scrollbar { display: none; }
   white-space: nowrap;
   transition: color 0.14s, border-color 0.14s;
   margin-bottom: -1px;
+  flex-shrink: 0;
 }
 .nav-tab.active { color: var(--indigo-700); border-bottom-color: var(--indigo-600); }
 .nav-tab:hover:not(.active) { color: var(--ink); }
 
 main {
   flex: 1;
-  padding: 28px 24px;
-  max-width: 1100px;
+  padding: 16px 12px;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 .page { display: none; }
 .page.active { display: block; }
 
-/* ============================================================
-   CARDS & STATS
-   ============================================================ */
+/* ===== CARDS ===== */
 .card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 16px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--line);
+  margin-bottom: 16px;
 }
 .card-title {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   color: var(--ink);
   letter-spacing: -0.01em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
+/* ===== STATS ===== */
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
 }
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 14px 16px;
   box-shadow: var(--shadow-xs);
   position: relative;
   overflow: hidden;
@@ -483,41 +579,63 @@ main {
 .stat-card:nth-child(4)::before { background: var(--blue); }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--ink-3);
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .stat-value {
   font-family: var(--font-serif);
-  font-size: 1.9rem;
+  font-size: 1.6rem;
   font-weight: 500;
   color: var(--ink);
   line-height: 1.1;
 }
 .stat-accent { color: var(--amber-600); }
 
-/* ============================================================
-   SKELETON
-   ============================================================ */
-.skeleton {
-  background: linear-gradient(90deg, var(--line) 25%, var(--surface-3) 50%, var(--line) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: 4px;
-  height: 14px;
+/* ===== COMMUNITY CARDS ===== */
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
 }
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.community-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
 }
-.skeleton-row td { padding: 14px 16px; }
+.community-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.community-card .name {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+}
+.community-card .info {
+  font-size: 12px;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+.community-card .stats {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.community-card .stats span {
+  background: var(--surface-3);
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+}
 
-/* ============================================================
-   TABLE
-   ============================================================ */
+/* ===== TABLE ===== */
 .table-wrap {
   overflow-x: auto;
   border-radius: var(--radius-lg);
@@ -527,8 +645,8 @@ main {
 table { width: 100%; border-collapse: collapse; background: var(--surface); }
 th {
   text-align: left;
-  padding: 11px 16px;
-  font-size: 10.5px;
+  padding: 10px 14px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -538,34 +656,32 @@ th {
   white-space: nowrap;
 }
 td {
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--line);
-  font-size: 13.5px;
+  font-size: 13px;
   vertical-align: middle;
   color: var(--ink);
 }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--indigo-50); }
-.actions { display: flex; gap: 5px; }
+.actions { display: flex; gap: 4px; flex-wrap: wrap; }
 
-/* ============================================================
-   SEARCH & FILTERS
-   ============================================================ */
+/* ===== SEARCH ===== */
 .search-bar {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
 .search-bar input {
   flex: 1;
-  min-width: 200px;
+  min-width: 150px;
   border: 1.5px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 9px 13px;
+  padding: 8px 12px;
   font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 13px;
   background: var(--surface);
   outline: none;
   color: var(--ink);
@@ -579,103 +695,69 @@ tr:hover td { background: var(--indigo-50); }
 
 .filter-row {
   display: flex;
-  gap: 7px;
+  gap: 6px;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
-.filter-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 8px 3px 10px;
+.filter-btn {
+  padding: 4px 12px;
   border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: transparent;
   font-size: 12px;
-  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.14s;
+}
+.filter-btn.active {
   background: var(--indigo-700);
   color: #fff;
+  border-color: var(--indigo-700);
 }
-.filter-chip button {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.7);
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 1;
-  padding: 0 2px;
-}
-.filter-chip button:hover { color: #fff; }
-
-.adv-filters {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  margin-bottom: 14px;
-}
-.adv-filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-}
-.adv-filters .field-group { margin-bottom: 0; }
-.adv-filters-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  justify-content: flex-end;
+.filter-btn:hover:not(.active) {
+  background: var(--surface-3);
 }
 
-/* ============================================================
-   MOBILE PERSON CARDS
-   ============================================================ */
-.people-cards { display: none; flex-direction: column; gap: 9px; }
+/* ===== PEOPLE CARDS (Mobile) ===== */
+.people-cards { display: none; flex-direction: column; gap: 8px; }
 .person-card {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 14px 16px;
+  padding: 12px 14px;
   box-shadow: var(--shadow-xs);
 }
 .person-card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
-.person-card-name { font-weight: 600; font-size: 14.5px; color: var(--ink); }
+.person-card-name { font-weight: 600; font-size: 14px; color: var(--ink); }
 .person-card-name.inativo { color: var(--yellow); }
 .person-card-meta {
   font-size: 12px;
   color: var(--ink-2);
   margin-top: 2px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .person-card-meta span { display: flex; align-items: center; gap: 4px; }
-.person-card-actions { display: flex; gap: 6px; margin-top: 10px; }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.person-card-actions { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
 .status-dot.ativo   { background: var(--green); }
 .status-dot.inativo { background: var(--yellow); }
-.badge-mirim {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 1px 7px;
-  border-radius: var(--radius-pill);
-  background: var(--blue-bg);
-  color: var(--blue-text);
-}
+.status-dot.pendente { background: #F59E0B; }
+.status-dot.rejeitado { background: #EF4444; }
 
-/* ============================================================
-   BADGES (utilitários)
-   ============================================================ */
+/* ===== BADGES ===== */
 .badge {
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
   border-radius: var(--radius-pill);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -686,10 +768,16 @@ tr:hover td { background: var(--indigo-50); }
 .badge-neutral { background: var(--surface-3); color: var(--ink-2); }
 .badge-indigo  { background: var(--indigo-100); color: var(--indigo-800); }
 .badge-amber   { background: var(--amber-100); color: #92400E; }
+.badge-mirim {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--blue-bg);
+  color: var(--blue-text);
+}
 
-/* ============================================================
-   MODAL
-   ============================================================ */
+/* ===== MODAL ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -698,7 +786,7 @@ tr:hover td { background: var(--indigo-50); }
   align-items: center;
   justify-content: center;
   z-index: 200;
-  padding: 24px;
+  padding: 16px;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
@@ -706,9 +794,9 @@ tr:hover td { background: var(--indigo-50); }
 .modal {
   background: var(--surface);
   border-radius: var(--radius-xl);
-  padding: 32px;
+  padding: 24px;
   width: 100%;
-  max-width: 660px;
+  max-width: 640px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
@@ -718,11 +806,11 @@ tr:hover td { background: var(--indigo-50); }
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .modal-header h2 {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 400;
   color: var(--ink);
   letter-spacing: -0.01em;
@@ -734,7 +822,7 @@ tr:hover td { background: var(--indigo-50); }
   cursor: pointer;
   color: var(--ink-3);
   line-height: 1;
-  padding: 5px 8px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   transition: color 0.14s, background 0.14s;
 }
@@ -743,26 +831,24 @@ tr:hover td { background: var(--indigo-50); }
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  margin-top: 24px;
-  padding-top: 20px;
+  margin-top: 16px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
 }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-grid .full { grid-column: 1 / -1; }
 
-/* ============================================================
-   VIEW PERSON MODAL
-   ============================================================ */
-#view-modal .modal { max-width: 560px; }
+/* ===== VIEW MODAL ===== */
+#view-modal .modal { max-width: 540px; }
 .view-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .view-name {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 400;
   color: var(--ink);
 }
@@ -770,62 +856,71 @@ tr:hover td { background: var(--indigo-50); }
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
+  font-size: 12px;
   margin-top: 4px;
   color: var(--ink-2);
 }
-.view-section { margin-bottom: 18px; }
+.view-section { margin-bottom: 14px; }
 .view-section-title {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--ink-3);
-  margin-bottom: 10px;
-  padding-bottom: 6px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
   border-bottom: 1px solid var(--line);
 }
-.view-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+.view-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
 .view-field label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--ink-3);
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   font-weight: 500;
 }
-.view-field span { font-size: 13.5px; font-weight: 500; color: var(--ink); }
-.pastoral-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.view-field span { font-size: 13px; font-weight: 500; color: var(--ink); }
+.pastoral-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .pastoral-tag {
   background: var(--surface-3);
   border: 1px solid var(--line);
   border-radius: var(--radius-pill);
-  padding: 3px 10px;
-  font-size: 12px;
+  padding: 2px 10px;
+  font-size: 11px;
   color: var(--ink-2);
 }
-.view-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-}
 
-/* ============================================================
-   BIRTHDAYS
-   ============================================================ */
-.month-section { margin-bottom: 32px; }
+/* ===== BIRTHDAYS ===== */
+/* ===== BIRTHDAYS ===== */
+.month-section {
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
 .month-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
 }
+.month-header:hover { background: var(--surface-3); }
+.month-toggle-icon {
+  font-size: 11px;
+  color: var(--ink-3);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.month-toggle-icon.open { transform: rotate(90deg); }
 .month-name {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
-  font-weight: 400;
+  font-size: 1.25rem;
+  font-weight: 500;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
@@ -833,118 +928,151 @@ tr:hover td { background: var(--indigo-50); }
   background: var(--amber-500);
   color: #fff;
   font-size: 11px;
-  font-weight: 600;
-  padding: 2px 9px;
+  font-weight: 700;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
 }
-.month-count.current { background: var(--indigo-700); }
+.month-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.month-content {
+  padding: 4px 16px 16px;
+  border-top: 1px solid var(--line);
+}
+.month-content.collapsed { display: none; }
 
 .birthday-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 10px;
+  margin-top: 10px;
 }
 .birthday-card {
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 14px 16px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
   gap: 12px;
   box-shadow: var(--shadow-xs);
-  transition: box-shadow 0.14s, transform 0.14s;
 }
-.birthday-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
 .bday-day {
   background: var(--indigo-900);
   color: #fff;
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: var(--radius-md);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-serif);
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 600;
   flex-shrink: 0;
 }
-.birthday-card.today    .bday-day { background: var(--amber-500); }
-.birthday-card.upcoming .bday-day { background: var(--indigo-700); }
-.bday-info { min-width: 0; }
 .bday-name {
   font-weight: 600;
-  font-size: 13.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 14.5px;
   color: var(--ink);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
 }
-.bday-age { font-size: 12px; color: var(--ink-2); margin-top: 1px; }
+.bday-age {
+  font-size: 12px;
+  color: var(--ink-2);
+  margin-top: 1px;
+}
 
-/* Accordion mobile */
-.month-accordion {
-  margin-bottom: 8px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  overflow: hidden;
-  box-shadow: var(--shadow-xs);
+/* ===== SACRAMENTOS ===== */
+.sacramentos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
 }
-.month-accordion-header {
+.sacramento-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 13px 16px;
-  cursor: pointer;
-  transition: background 0.14s;
   gap: 10px;
-}
-.month-accordion-header:hover { background: var(--surface-3); }
-.month-accordion-header .left { display: flex; align-items: center; gap: 10px; flex: 1; }
-.month-accordion-header .arrow {
-  font-size: 14px;
-  transition: transform 0.2s ease;
-  color: var(--ink-3);
-}
-.month-accordion-header .arrow.open { transform: rotate(180deg); }
-.month-accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-  background: var(--bg);
-}
-.month-accordion-content.open { max-height: 2000px; }
-.birthday-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
-.birthday-item {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border: 2px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 9px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.sacramento-item:hover {
+  border-color: var(--indigo-400);
+  background: var(--indigo-50);
+}
+.sacramento-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.sacramento-item .checkmark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  background: var(--surface);
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-.birthday-item .day {
-  background: var(--indigo-900);
-  color: #fff;
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
-  font-weight: 500;
+  justify-content: center;
   flex-shrink: 0;
+  transition: all 0.2s ease;
 }
-.birthday-item .info { flex: 1; }
-.birthday-item .name { font-weight: 500; font-size: 13px; color: var(--ink); }
-.birthday-item .details { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
+.sacramento-item input[type="checkbox"]:checked + .checkmark {
+  background: var(--indigo-600);
+  border-color: var(--indigo-600);
+}
+.sacramento-item input[type="checkbox"]:checked + .checkmark::after {
+  content: "✓";
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.sacramento-item:has(input:checked) {
+  background: var(--indigo-50);
+  border-color: var(--indigo-600);
+}
+.sacramento-label { font-size: 13px; color: var(--ink); }
 
-/* ============================================================
-   IMPORT / DROP ZONE
-   ============================================================ */
+.sacramentos-view-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px;
+}
+.sacramento-view-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.sacramento-view-item.recebido {
+  background: var(--green-bg);
+  border-color: var(--green);
+  color: var(--green-text);
+}
+.sacramento-view-item.nao-recebido {
+  background: var(--surface-3);
+  border-color: var(--line);
+  color: var(--ink-2);
+  opacity: 0.7;
+}
+
+/* ===== IMPORT ===== */
 .drop-zone {
   border: 2px dashed var(--line-strong);
   border-radius: var(--radius-lg);
-  padding: 40px;
+  padding: 30px;
   text-align: center;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
@@ -957,16 +1085,14 @@ tr:hover td { background: var(--indigo-50); }
   background: var(--indigo-50);
   color: var(--indigo-700);
 }
-.drop-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.drop-icon { font-size: 2rem; margin-bottom: 8px; }
 
-/* ============================================================
-   ALERT
-   ============================================================ */
+/* ===== ALERT ===== */
 .alert {
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
   font-size: 13px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -977,286 +1103,98 @@ tr:hover td { background: var(--indigo-50); }
 .alert-error   { background: var(--red-bg);    color: var(--red-text);    border-color: #FCA5A5; }
 .alert-warning { background: var(--yellow-bg); color: var(--yellow-text); border-color: #FDE047; }
 
-/* ============================================================
-   EMPTY STATE
-   ============================================================ */
-.empty-state { text-align: center; padding: 60px 24px; color: var(--ink-2); }
-.empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 40px 16px; color: var(--ink-2); }
+.empty-state .es-icon { font-size: 2.5rem; margin-bottom: 8px; opacity: 0.5; }
 .empty-state h3 {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   color: var(--ink);
   margin-bottom: 4px;
 }
 .empty-state p { font-size: 13px; }
 
-/* ============================================================
-   PAGINATION
-   ============================================================ */
+/* ===== PAGINATION ===== */
 .pagination-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
-  margin-top: 16px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 .pagination-info { font-size: 13px; color: var(--ink-2); margin-left: 8px; }
 
-/* ============================================================
-   UTILS
-   ============================================================ */
+/* ===== UTILS ===== */
 .hidden { display: none !important; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ============================================================
-   FILTER BUTTON ACTIVE STATE
-   ============================================================ */
-.filter-btn.active {
-  background: var(--indigo-700);
-  color: #fff;
-  border-color: var(--indigo-700);
-}
-
-/* ============================================================
-   CAMPO CÓDIGO DIZIMISTA
-   ============================================================ */
 #campo-codigo-dizimista { margin-top: 8px; }
 #campo-codigo-dizimista button { width: 100%; }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  header { padding: 0 16px; }
-  header .logo { font-size: 1.05rem; }
-  .user-badge { font-size: 11px; gap: 6px; }
-  nav { padding: 0 12px; }
-  .nav-tab { padding: 10px 12px; font-size: 12.5px; }
-  main { padding: 16px 12px; }
-
-  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
-  .stat-card { padding: 14px; }
-  .stat-value { font-size: 1.5rem; }
-  .stat-label { font-size: 10px; }
-
-  .card { padding: 16px; }
-  .card-title { font-size: 1.1rem; margin-bottom: 14px; }
-
+  header { padding: 0 10px; height: auto; min-height: 56px; gap: 4px; }
+  header .logo { font-size: 1rem; }
+  .header-center { min-width: 100px; max-width: 200px; }
+  .context-btn { font-size: 12px; padding: 4px 10px; min-height: 32px; }
+  .context-menu { max-height: 250px; }
+  .context-item { font-size: 12px; padding: 8px 12px; }
+  
+  nav { padding: 0 8px; }
+  .nav-tab { padding: 8px 10px; font-size: 12px; }
+  
+  main { padding: 12px 8px; }
+  
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat-card { padding: 10px 12px; }
+  .stat-value { font-size: 1.3rem; }
+  
+  .card { padding: 12px; }
+  .card-title { font-size: 1rem; margin-bottom: 12px; }
+  
   .table-wrap { display: none; }
   .people-cards { display: flex; }
-
+  
+  .community-grid { grid-template-columns: 1fr; }
+  
   .search-bar input { min-width: unset; width: 100%; }
-
-  .modal { padding: 20px; border-radius: var(--radius-lg); }
-  .modal-header h2 { font-size: 1.1rem; }
+  
+  .modal { padding: 16px; border-radius: var(--radius-lg); }
+  .modal-header h2 { font-size: 1rem; }
   .form-grid { grid-template-columns: 1fr; }
   .form-grid .full { grid-column: 1; }
-
-  .month-section { display: none; }
-  .month-accordion { display: block; }
-
-  .adv-filters-grid { grid-template-columns: 1fr; }
+  
   .view-grid { grid-template-columns: 1fr; }
+  .birthday-grid { grid-template-columns: 1fr; }
+  .sacramentos-grid { grid-template-columns: 1fr; }
+  .sacramentos-view-grid { grid-template-columns: 1fr; }
+  
+  .login-box { padding: 24px 16px; }
+  .user-badge .name { max-width: 60px; }
+}
 
-  .login-box { padding: 32px 24px; }
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .stat-card { padding: 8px 10px; }
+  .stat-value { font-size: 1.1rem; }
+  .stat-label { font-size: 9px; }
+  
+  .context-btn { font-size: 11px; padding: 3px 8px; min-height: 28px; }
+  .header-center { min-width: 80px; max-width: 150px; }
+  
+  .nav-tab { font-size: 11px; padding: 6px 8px; }
+  
+  .person-card { padding: 10px 12px; }
+  .person-card-name { font-size: 13px; }
+  .person-card-actions .btn { font-size: 11px; padding: 3px 8px; }
 }
 
 @media (min-width: 769px) {
-  .month-accordion { display: none; }
+  .table-wrap { display: block; }
 }
-
-@media (max-width: 480px) {
-  .stats-row { gap: 8px; }
-  .stat-card { padding: 12px; }
-  .stat-value { font-size: 1.3rem; }
-}
-
-/* ============================================================
-   SACRAMENTOS - CHECKBOXES ESTILIZADOS
-   ============================================================ */
-.sacramentos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
-  padding-top: 4px;
-}
-
-.sacramento-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: var(--surface-2);
-  border: 2px solid var(--line);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  user-select: none;
-}
-
-.sacramento-item:hover {
-  border-color: var(--indigo-400);
-  background: var(--indigo-50);
-}
-
-.sacramento-item input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
-.sacramento-item .checkmark {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid var(--line-strong);
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.sacramento-item input[type="checkbox"]:checked + .checkmark {
-  background: var(--indigo-600);
-  border-color: var(--indigo-600);
-  animation: pop 0.2s ease;
-}
-
-.sacramento-item input[type="checkbox"]:checked + .checkmark::after {
-  content: "X";
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  animation: fadeIn 0.15s ease;
-}
-
-.sacramento-item:has(input:checked) {
-  background: var(--indigo-50);
-  border-color: var(--indigo-600);
-  box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
-}
-
-.sacramento-label {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--ink);
-  transition: color 0.2s;
-}
-
-.sacramento-item:has(input:checked) .sacramento-label {
-  font-weight: 500;
-  color: var(--indigo-700);
-}
-
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; transform: scale(0.5); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* ============================================================
-   SACRAMENTOS - RESPONSIVO
-   ============================================================ */
-@media (max-width: 768px) {
-  .sacramentos-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  
-  .sacramento-item {
-    padding: 14px 16px;
-  }
-  
-  .sacramento-item .checkmark {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .sacramento-item input[type="checkbox"]:checked + .checkmark::after {
-    font-size: 16px;
-  }
-  
-  .sacramento-label {
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .sacramento-item {
-    padding: 12px 14px;
-  }
-  
-  .sacramento-item .checkmark {
-    width: 26px;
-    height: 26px;
-  }
-}
-
-/* Tablet - 2 colunas */
-@media (min-width: 481px) and (max-width: 768px) {
-  .sacramentos-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* ============================================================
-   SACRAMENTOS - VIEW (Visualização)
-   ============================================================ */
-.sacramentos-view-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px;
-}
-
-.sacramento-view-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-}
-
-.sacramento-view-item.recebido {
-  background: var(--green-bg);
-  border-color: var(--green);
-  color: var(--green-text);
-}
-
-.sacramento-view-item.nao-recebido {
-  background: var(--surface-3);
-  border-color: var(--line);
-  color: var(--ink-2);
-  opacity: 0.7;
-}
-
-.sacramento-view-icon {
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  .sacramentos-view-grid {
-    grid-template-columns: 1fr;
-  }
-}
- </style>
-
+</style>
 </head>
 <body>
 
@@ -1276,8 +1214,6 @@ tr:hover td { background: var(--indigo-50); }
 </div>
 
 <!-- LOGIN -->
-  
-
 <div id="login-screen">
   <div class="login-box">
     <div class="login-icon">
@@ -1286,11 +1222,11 @@ tr:hover td { background: var(--indigo-50); }
       </svg>
     </div>
     <h1>Átrio</h1>
-    <p class="sub"></p>
+    <p class="sub">Gestão Paroquial</p>
     <div id="login-error" class="alert alert-error hidden"></div>
     <div class="field-group" style="text-align:left">
       <label>Acesso</label>
-      <input type="text" id="inp-user" placeholder="Código de acesso" autocomplete="username" />
+      <input type="text" id="inp-user" placeholder="Usuário ou Email" autocomplete="username" />
     </div>
     <div class="field-group" style="text-align:left">
       <label>Senha</label>
@@ -1299,13 +1235,11 @@ tr:hover td { background: var(--indigo-50); }
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:4px;" id="login-btn" onclick="doLogin()">Acessar</button>
   
-      <div style="margin-top: 20px; border-top: 1px solid var(--line); padding-top: 20px;">
+    <div style="margin-top: 20px; border-top: 1px solid var(--line); padding-top: 20px;">
       <a href="../cadastro/inicial.html" class="btn btn-outline" style="width:100%; text-decoration: none; display: inline-flex; justify-content: center;">
         Página de Cadastro
       </a>
     </div>
-  
-  
   </div>
 </div>
 
@@ -1313,199 +1247,181 @@ tr:hover td { background: var(--indigo-50); }
 <div id="app">
   <header>
     <div class="logo">Átrio<span>·</span></div>
-     
+    
+    <!-- Seletor de Contexto (Paróquia/Comunidade) -->
+    <div class="header-center">
+      <div class="context-selector">
+        <button class="context-btn" onclick="toggleContextMenu()" aria-label="Selecionar contexto">
+          <span id="current-context">🏛️ Carregando...</span>
+          <span class="dropdown-arrow" id="context-arrow">▼</span>
+        </button>
+        <div class="context-menu hidden" id="context-menu" role="menu">
+          <!-- Preenchido dinamicamente -->
+        </div>
+      </div>
+    </div>
+    
     <div class="header-right">
       <div class="user-badge">
-        <span id="header-user-name">—</span>
+        <span class="name" id="header-user-name">—</span>
         <span id="header-role-pill" class="role-pill admin">Admin</span>
       </div>
-         <a href="../cadastro/inicial.html" class="btn btn-ghost-light" style="text-decoration: none; display: inline-flex;">
-        Cadastro
-      </a>
-
-      <button class="btn btn-ghost" style="color:rgba(255,255,255,0.6);font-size:13px" onclick="logout()">Sair</button>
+      <button class="btn btn-ghost" style="color:rgba(255,255,255,0.6);font-size:13px;padding:4px 10px;" onclick="logout()" aria-label="Sair">Sair</button>
     </div>
   </header>
-  <nav>
-    <button class="nav-tab active" onclick="showPage('dashboard')">Painel</button>
-    <button class="nav-tab" onclick="showPage('people')">Pessoas</button>
-    <button class="nav-tab" onclick="showPage('birthdays')">Aniversários</button>
-    <button class="nav-tab admin-only" onclick="showPage('import')">Importar Excel</button>
-    <button class="nav-tab admin-only" onclick="exportToJSON()">Exportar JSON</button>
-    <button class="nav-tab admin-only" onclick="showPage('pendentes')">Pendentes</button>
-  </nav>
+  
+<nav role="tablist">
+  <button class="nav-tab active" role="tab" onclick="showPage('dashboard')">Painel</button>
+  <button class="nav-tab" role="tab" onclick="showPage('comunidades')">Comunidades</button>
+  <button class="nav-tab" role="tab" onclick="showPage('people')">Pessoas</button>
+  <button class="nav-tab" role="tab" onclick="showPage('birthdays')">Aniversários</button>
+  <button class="nav-tab admin-only" role="tab" onclick="showPage('users')">Usuários</button>
+  <button class="nav-tab" role="tab" onclick="showPage('pendentes')">Pendentes</button>
+  <button class="nav-tab admin-only" role="tab" onclick="showPage('import')">Importar</button>
+  <button class="nav-tab admin-only" role="tab" onclick="exportToJSON()">Exportar</button>
+</nav>
+  
   <main>
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="stats-row" id="stats-row">
-        <div class="stat-card"><div class="stat-label">Total de pessoas</div><div class="stat-value stat-accent" id="stat-total">0</div></div>
-        <div class="stat-card"><div class="stat-label">Aniversariantes este mês</div><div class="stat-value" id="stat-thismonth">0</div></div>
-        <div class="stat-card"><div class="stat-label">Aniversariantes hoje</div><div class="stat-value" id="stat-today">0</div></div>
-        <div class="stat-card"><div class="stat-label">Cadastros este mês</div><div class="stat-value" id="stat-new">0</div></div>
-        <div class="stat-card" style="border-left:4px solid #2196F3"><div class="stat-label">Mirins (&lt;16 anos)</div><div class="stat-value" style="color:#2196F3" id="stat-mirins">0</div></div>
-        <div class="stat-card" style="border-left:4px solid #4CAF50"><div class="stat-label">Adultos (16–60 anos)</div><div class="stat-value" style="color:#4CAF50" id="stat-adultos">0</div></div>
-        <div class="stat-card" style="border-left:4px solid #FF9800"><div class="stat-label">Idosos (&gt;60 anos)</div><div class="stat-value" style="color:#FF9800" id="stat-idosos">0</div></div>
-      </div>
-      <div class="card" style="margin-bottom:20px">
-        <div class="card-title">Aniversariantes de hoje</div>
-        <div id="today-list"><p style="color:var(--ink2);font-size:14px">Nenhum hoje.</p></div>
-      </div>
+      <!-- Dashboard da Paróquia/Comunidade selecionada -->
+      <div id="dashboard-content"></div>
+    </div>
+
+    <!-- COMUNIDADES -->
+    <div class="page" id="page-comunidades">
       <div class="card">
-        <div class="card-title">Últimos cadastros</div>
-        <div id="recent-list"><p style="color:var(--ink2);font-size:14px">Nenhum cadastro ainda.</p></div>
+        <div class="card-title">
+          <span>Comunidades da Paróquia</span>
+          <button class="btn btn-primary" onclick="openOrgModal()">+ Nova Comunidade</button>
+        </div>
+        <div id="comunidades-list"></div>
       </div>
     </div>
 
     <!-- PEOPLE -->
     <div class="page" id="page-people">
-      <!-- Search + action row -->
-      <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Buscar por nome, código, telefone, endereço…" oninput="onSearchInput()" />
-        <button class="btn btn-sm btn-outline" id="adv-toggle" onclick="toggleAdvFilters()">Filtros</button>
-        <button class="btn btn-primary admin-only" onclick="openModal()">+ Novo</button>
-      </div>
-
-      <!-- Quick filter pills -->
-      <div class="filter-row" id="quick-filters">
-        <button class="btn btn-sm btn-outline filter-btn active" id="filter-todos"          onclick="setFilter('todos')">Todos</button>
-        <button class="btn btn-sm btn-outline filter-btn"        id="filter-ativos"         onclick="setFilter('ativos')">Ativos</button>
-        <button class="btn btn-sm btn-outline filter-btn"        id="filter-inativos"       onclick="setFilter('inativos')">Inativos</button>
-        <button class="btn btn-sm btn-outline filter-btn"        id="filter-dizimistas"     onclick="setFilter('dizimistas')">Dizimistas</button>
-        <button class="btn btn-sm btn-outline filter-btn"        id="filter-nao-dizimistas" onclick="setFilter('nao-dizimistas')">Não Dizimistas</button>
-
-        <span id="filter-chips"></span>
-      </div>
-
-      <!-- Advanced filter panel -->
-      <div class="adv-filters hidden" id="adv-filters">
-        <div class="adv-filters-grid">
-          <div class="field-group">
-            <label>Movimento Pastoral</label>
-            <input type="text" id="f-adv-pastoral" placeholder="Ex: Coral, Liturgia…" />
-          </div>
-          <div class="field-group">
-            <label>Estado Civil</label>
-            <select id="f-adv-estadocivil">
-              <option value="">Todos</option>
-              <option>Solteiro</option><option>Casado</option><option>Viuvo</option><option>Divorciado</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Faixa etária</label>
-            <select id="f-adv-faixa">
-              <option value="">Todas</option>
-              <option value="mirim">Mirins (&lt;16)</option>
-              <option value="adulto">Adultos (16–60)</option>
-              <option value="idoso">Idosos (&gt;60)</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Especiais</label>
-            <select id="f-adv-especial">
-              <option value="">—</option>
-              <option value="mes">Aniversariantes do mês</option>
-              <option value="semtel">Sem telefone</option>
-            </select>
-          </div>
+      <div class="card">
+        <div class="card-title">
+          <span id="people-title">Pessoas</span>
+          <button class="btn btn-primary admin-only" onclick="openModal()">+ Nova Pessoa</button>
         </div>
-        <div class="adv-filters-actions">
-          <button class="btn btn-sm btn-outline" onclick="clearAdvFilters()">Limpar</button>
-          <button class="btn btn-sm btn-primary" onclick="applyAdvFilters()">Aplicar filtros</button>
+        
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Buscar por nome, código, telefone..." oninput="onSearchInput()" />
+          <button class="btn btn-sm btn-outline" onclick="toggleAdvFilters()">Filtros</button>
         </div>
-      </div>
 
-          <!-- Table (desktop) -->
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="cursor:pointer;" onclick="toggleSort('nomeCompleto')">
-                Nome 
-                <span id="sort-nomeCompleto" style="font-size:10px;">⬇</span>
-              </th>
-              <th style="cursor:pointer;" onclick="toggleSort('dataNascimento')">
-                Nascimento
-                <span id="sort-dataNascimento" style="font-size:10px;"></span>
-              </th>
-              <th style="cursor:pointer;" onclick="toggleSort('endereco')">
-                Endereço
-                <span id="sort-endereco" style="font-size:10px;"></span>
-              </th>
-              <th style="cursor:pointer;" onclick="toggleSort('comunidadeParticipa')">
-                Comunidade
-                <span id="sort-comunidadeParticipa" style="font-size:10px;"></span>
-              </th>
-              <th style="cursor:pointer;" onclick="toggleSort('codigoDizimista')">
-                Código
-                <span id="sort-codigoDizimista" style="font-size:10px;"></span>
-              </th>
-              <th class="admin-only">Ações</th>
-            </tr>
-          </thead>
-          <tbody id="people-tbody"></tbody>
-        </table>
-      </div>
-          
+        <div class="filter-row" id="quick-filters">
+          <button class="btn btn-sm btn-outline filter-btn active" id="filter-todos" onclick="setFilter('todos')">Todos</button>
+          <button class="btn btn-sm btn-outline filter-btn" id="filter-ativos" onclick="setFilter('ativos')">Ativos</button>
+          <button class="btn btn-sm btn-outline filter-btn" id="filter-inativos" onclick="setFilter('inativos')">Inativos</button>
+          <button class="btn btn-sm btn-outline filter-btn" id="filter-dizimistas" onclick="setFilter('dizimistas')">Dizimistas</button>
+          <span id="filter-chips"></span>
+        </div>
 
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="toggleSort('nomeCompleto')">Nome <span id="sort-nomeCompleto">⬇</span></th>
+                <th onclick="toggleSort('dataNascimento')">Nascimento <span id="sort-dataNascimento"></span></th>
+                <th onclick="toggleSort('endereco')">Endereço <span id="sort-endereco"></span></th>
+                <th onclick="toggleSort('codigoDizimista')">Código <span id="sort-codigoDizimista"></span></th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="people-tbody"></tbody>
+          </table>
+        </div>
 
-      <!-- Cards (mobile) -->
-      <div class="people-cards" id="people-cards"></div>
-
-      <div id="pagination"></div>
-      <div id="people-empty" class="empty-state hidden">
-        <div class="es-icon">👥</div>
-        <h3>Nenhuma pessoa encontrada</h3>
-        <p>Tente outra busca ou adicione um novo cadastro.</p>
+        <div class="people-cards" id="people-cards"></div>
+        <div id="pagination"></div>
+        <div id="people-empty" class="empty-state hidden">
+          <div class="es-icon">👥</div>
+          <h3>Nenhuma pessoa encontrada</h3>
+          <p>Tente outra busca ou adicione um novo cadastro.</p>
+        </div>
       </div>
     </div>
 
     <!-- BIRTHDAYS -->
-<div class="page" id="page-birthdays">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
-    <h2 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;">Aniversariantes</h2>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;">
-      <select id="birthday-year-filter" style="padding:10px 14px;border:1.5px solid var(--line);border-radius:var(--radius);font-family:'DM Sans',sans-serif;background:var(--card);color:var(--ink);font-size:14px;" onchange="renderBirthdays()"></select>
-      <select id="birthday-dizimista-filter" style="padding:10px 14px;border:1.5px solid var(--line);border-radius:var(--radius);font-family:'DM Sans',sans-serif;background:var(--card);color:var(--ink);font-size:14px;" onchange="renderBirthdays()">
-        <option value="dizimistas">Apenas dizimistas</option>
-        <option value="todos">Todos</option>
-      </select>
+    <div class="page" id="page-birthdays">
+      <div class="card">
+        <div class="card-title">Aniversariantes</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+          <select id="birthday-year-filter" style="padding:8px 12px;border:1.5px solid var(--line);border-radius:var(--radius-md);font-size:13px;" onchange="renderBirthdays()"></select>
+          <select id="birthday-dizimista-filter" style="padding:8px 12px;border:1.5px solid var(--line);border-radius:var(--radius-md);font-size:13px;" onchange="renderBirthdays()">
+            <option value="dizimistas">Apenas dizimistas</option>
+            <option value="todos">Todos</option>
+          </select>
+        </div>
+        <div id="birthday-content"></div>
+      </div>
     </div>
-  </div>
-  <div id="birthday-content"></div>
-</div>
+
+    <!-- USERS -->
+    <div class="page" id="page-users">
+      <div class="card">
+        <div class="card-title">
+          <span>Usuários do Sistema</span>
+          <button class="btn btn-primary" onclick="openUserModal()">+ Novo Usuário</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Comunidade</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+        <div id="users-empty" class="empty-state hidden">
+          <div class="es-icon">👤</div>
+          <h3>Nenhum usuário cadastrado</h3>
+          <p>Clique em "Novo Usuário" para começar.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENDENTES -->
+    <div class="page" id="page-pendentes">
+      <div class="card">
+        <div class="card-title">Cadastros pendentes de aprovação</div>
+        <div id="pendentes-list"></div>
+      </div>
+    </div>
 
     <!-- IMPORT -->
     <div class="page" id="page-import">
-      <div class="card" style="margin-bottom:20px">
+      <div class="card">
         <div class="card-title">Importar Planilha Excel</div>
-        <p style="font-size:13px;color:var(--ink2);margin-bottom:20px">Faça upload de uma planilha <strong>.xlsx</strong> ou <strong>.xls</strong>.</p>
+        <p style="font-size:13px;color:var(--ink2);margin-bottom:16px;">Faça upload de uma planilha <strong>.xlsx</strong> ou <strong>.xls</strong>.</p>
         <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
           <div class="drop-icon">📂</div>
           <p><strong>Clique para selecionar</strong> ou arraste o arquivo aqui</p>
-          <p style="font-size:12px;margin-top:4px">.xlsx · .xls</p>
+          <p style="font-size:12px;margin-top:4px;">.xlsx · .xls</p>
         </div>
         <input type="file" id="file-input" accept=".xlsx,.xls" style="display:none" onchange="handleFileImport(this)" />
-        <div id="import-result" class="hidden" style="margin-top:16px"></div>
+        <div id="import-result" class="hidden" style="margin-top:12px;"></div>
       </div>
       <div class="card">
         <div class="card-title">Modelo de planilha</div>
-        <p style="font-size:13px;color:var(--ink2);margin-bottom:16px">Baixe o modelo para preencher corretamente.</p>
+        <p style="font-size:13px;color:var(--ink2);margin-bottom:12px;">Baixe o modelo para preencher corretamente.</p>
         <button class="btn btn-outline" onclick="downloadTemplate()">Baixar modelo .xlsx</button>
       </div>
     </div>
-
-<!-- PAGE PENDENTES -->
-<div class="page" id="page-pendentes">
-  <div class="card">
-    <div class="card-title">Cadastros pendentes de aprovação</div>
-    <div id="pendentes-list"></div>
-  </div>
-</div>
+    
   </main>
 </div>
 
-<!-- EDIT/ADD MODAL -->
+<!-- MODAL PESSOA -->
 <div class="modal-overlay hidden" id="modal-overlay">
   <div class="modal">
     <div class="modal-header">
@@ -1525,20 +1441,29 @@ tr:hover td { background: var(--indigo-50); }
       </div>
       <div class="field-group">
         <label>Telefone</label>
-        <input type="tel" id="f-tel" placeholder="(21) 99999-9999" maxlength="15" />
+        <input type="tel" id="f-tel" placeholder="(21) 99999-9999" maxlength="15" oninput="phoneMask(this)" />
       </div>
       <div class="field-group">
         <label>Endereço</label>
-        <input type="text" id="f-endereco" placeholder="Ex: Magé" />
+        <input type="text" id="f-endereco" placeholder="Ex: Rua das Flores, 123" />
       </div>
       <div class="field-group">
         <label>Bairro</label>
         <input type="text" id="f-bairro" placeholder="Ex: Centro" />
       </div>
-      <div class="field-group full">
-        <label>Comunidade que participa</label>
-        <input type="text" id="f-comunidade" placeholder="Ex: Nossa Senhora Aparecida" />
+    
+      
+      <!-- Campo de organização (apenas admin) -->
+      <div class="field-group full" id="campo-organization" style="display:none;">
+        <label>Comunidade (vínculo oficial)</label>
+        <select id="f-organization-id">
+          <option value="">Selecione uma comunidade</option>
+        </select>
+        <div style="font-size:11px;color:var(--ink-3);margin-top:4px;">
+          Define a comunidade oficial para este fiel. Controla a geração do código dizimista.
+        </div>
       </div>
+      
       <div class="field-group">
         <label>Estado Civil</label>
         <select id="f-estadoCivil">
@@ -1548,7 +1473,7 @@ tr:hover td { background: var(--indigo-50); }
           <option value="Divorciado">Divorciado(a)</option>
         </select>
       </div>
-      <div id="conjuge-fields" style="display:none" class="full">
+      <div id="conjuge-fields" style="display:none;" class="full">
         <div class="form-grid">
           <div class="field-group">
             <label>Nome do cônjuge</label>
@@ -1563,84 +1488,67 @@ tr:hover td { background: var(--indigo-50); }
       <div class="field-group full">
         <label>Filhos</label>
         <button type="button" class="btn btn-sm btn-outline" onclick="addFilhoField()">+ Filho</button>
-        <div id="filhos-list" style="margin-top:8px"></div>
+        <div id="filhos-list" style="margin-top:8px;"></div>
       </div>
 
-   <!-- ===== VIDA ESPIRITUAL ===== -->
-<div class="full" style="margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--line);">
-  <h3 style="font-family: var(--font-serif); font-size: 1.1rem; font-weight: 400; margin-bottom: 16px; color: var(--ink);">
-    Vida Espiritual
-  </h3>
-  
-  <div class="form-grid">
-    <!-- Batismo -->
-    <div class="field-group">
-      <label>É batizado(a)?</label>
-      <select id="f-batizado">
-        <option value="true">Sim, sou batizado(a)</option>
-        <option value="false" selected>Não sou batizado(a)</option>
-        <option value="deseja">Não, mas desejo ser batizado(a)</option>
-      </select>
-    </div>
-
-    <!-- Catequese -->
-    <div class="field-group">
-      <label>Participa da Catequese?</label>
-      <select id="f-catequese">
-        <option value="true">Sim, participo da catequese</option>
-        <option value="false" selected>Não participo da catequese</option>
-        <option value="deseja">Não, mas desejo participar</option>
-      </select>
-    </div>
-<!-- Sacramentos -->
-<div class="field-group full">
-  <label>Quais sacramentos já recebeu?</label>
-  <div class="sacramentos-grid">
-    <label class="sacramento-item" for="f-sacramento-eucaristia">
-      <input type="checkbox" id="f-sacramento-eucaristia" value="eucaristia" />
-      <span class="checkmark"></span>
-      <span class="sacramento-label">Primeira Eucaristia</span>
-    </label>
-    
-    <label class="sacramento-item" for="f-sacramento-crisma">
-      <input type="checkbox" id="f-sacramento-crisma" value="crisma" />
-      <span class="checkmark"></span>
-      <span class="sacramento-label">Crisma</span>
-    </label>
-    
-    <label class="sacramento-item" for="f-sacramento-matrimonio">
-      <input type="checkbox" id="f-sacramento-matrimonio" value="matrimonio" />
-      <span class="checkmark"></span>
-      <span class="sacramento-label">Matrimônio</span>
-    </label>
-  </div>
-  <div style="font-size: 12px; color: var(--ink-3); margin-top: 6px;">
-    Marque todos os sacramentos que já recebeu
-  </div>
-</div>
-
-    <!-- Confissão -->
-    <div class="field-group">
-      <label>Confessa-se regularmente?</label>
-      <select id="f-confessa">
-        <option value="true">Sim, confesso-me regularmente</option>
-        <option value="false" selected>Não me confesso regularmente</option>
-      </select>
-    </div>
-
-    <!-- Frequência nas Missas -->
-    <div class="field-group">
-      <label>Participa das missas?</label>
-      <select id="f-frequencia-missa">
-        <option value="Diaria">Diariamente</option>
-        <option value="Semanal">Semanalmente</option>
-        <option value="Eventual" selected>Eventualmente</option>
-        <option value="Nunca">Não participo</option>
-      </select>
-    </div>
-  </div>
-</div>
-
+      <!-- VIDA ESPIRITUAL -->
+      <div class="full" style="margin-top:12px;padding-top:12px;border-top:2px solid var(--line);">
+        <h3 style="font-family:var(--font-serif);font-size:1rem;font-weight:400;margin-bottom:12px;color:var(--ink);">Vida Espiritual</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label>É batizado(a)?</label>
+            <select id="f-batizado">
+              <option value="true">Sim, sou batizado(a)</option>
+              <option value="false" selected>Não sou batizado(a)</option>
+              <option value="deseja">Não, mas desejo ser batizado(a)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Participa da Catequese?</label>
+            <select id="f-catequese">
+              <option value="true">Sim, participo</option>
+              <option value="false" selected>Não participo</option>
+              <option value="deseja">Não, mas desejo participar</option>
+            </select>
+          </div>
+          <div class="field-group full">
+            <label>Sacramentos recebidos</label>
+            <div class="sacramentos-grid">
+              <label class="sacramento-item" for="f-sacramento-eucaristia">
+                <input type="checkbox" id="f-sacramento-eucaristia" value="eucaristia" />
+                <span class="checkmark"></span>
+                <span class="sacramento-label">Primeira Eucaristia</span>
+              </label>
+              <label class="sacramento-item" for="f-sacramento-crisma">
+                <input type="checkbox" id="f-sacramento-crisma" value="crisma" />
+                <span class="checkmark"></span>
+                <span class="sacramento-label">Crisma</span>
+              </label>
+              <label class="sacramento-item" for="f-sacramento-matrimonio">
+                <input type="checkbox" id="f-sacramento-matrimonio" value="matrimonio" />
+                <span class="checkmark"></span>
+                <span class="sacramento-label">Matrimônio</span>
+              </label>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Confessa-se regularmente?</label>
+            <select id="f-confessa">
+              <option value="true">Sim</option>
+              <option value="false" selected>Não</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Frequência nas Missas</label>
+            <select id="f-frequencia-missa">
+              <option value="Diaria">Diariamente</option>
+              <option value="Semanal">Semanalmente</option>
+              <option value="Eventual" selected>Eventualmente</option>
+              <option value="Nunca">Não participo</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="field-group full">
         <label>Movimentos e Pastorais</label>
@@ -1648,15 +1556,15 @@ tr:hover td { background: var(--indigo-50); }
       </div>
       <div class="field-group">
         <label>É dizimista?</label>
-        <select id="f-ehDizimista">
+        <select id="f-ehDizimista" onchange="toggleCampoCodigo()">
           <option value="true">Sim, é dizimista</option>
           <option value="false">Não é dizimista</option>
         </select>
       </div>
-      <div class="field-group" id="campo-codigo-dizimista" style="display:none">
+      <div class="field-group" id="campo-codigo-dizimista" style="display:none;">
         <label>Código do dizimista</label>
         <input type="text" id="f-codigo-dizimista" placeholder="Gerado automaticamente" />
-        <button type="button" class="btn btn-sm btn-outline" onclick="gerarCodigoDizimista()" style="margin-top:8px">Gerar código</button>
+        <button type="button" class="btn btn-sm btn-outline" onclick="gerarCodigoDizimista()" style="margin-top:8px;">Gerar código</button>
       </div>
     </div>
     <div class="modal-footer">
@@ -1666,31 +1574,124 @@ tr:hover td { background: var(--indigo-50); }
   </div>
 </div>
 
-<!-- VIEW PERSON MODAL (fora do modal de edição) -->
+<!-- MODAL USUÁRIO -->
+<div class="modal-overlay hidden" id="user-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="user-modal-title">Novo Usuário</h2>
+      <button class="close-btn" onclick="closeUserModal()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="field-group full">
+        <label>Nome completo <span style="color:var(--accent)">*</span></label>
+        <input type="text" id="fu-nome" placeholder="Ex: João Silva" />
+      </div>
+      <div class="field-group">
+        <label>Email <span style="color:var(--accent)">*</span></label>
+        <input type="email" id="fu-email" placeholder="joao@email.com" />
+      </div>
+      <div class="field-group">
+        <label>Username <span style="color:var(--accent)">*</span></label>
+        <input type="text" id="fu-username" placeholder="joaosilva" />
+      </div>
+      <div class="field-group">
+        <label>Papel/Role <span style="color:var(--accent)">*</span></label>
+        <select id="fu-role">
+          <option value="SUPER_ADMIN">Super Admin</option>
+          <option value="ADMIN">Admin</option>
+          <option value="COORDENADOR">Coordenador</option>
+          <option value="LIDER">Líder</option>
+        </select>
+      </div>
+      <div class="field-group full" id="campo-user-organization">
+        <label>Comunidade (para Coordenador e Líder)</label>
+        <select id="fu-organization-id">
+          <option value="">Selecione uma comunidade</option>
+        </select>
+        <div style="font-size:11px;color:var(--ink-3);margin-top:4px;">
+          Obrigatório para Coordenador e Líder. Opcional para Admin e Super Admin.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeUserModal()">Cancelar</button>
+      <button class="btn btn-primary" id="save-user-btn" onclick="saveUser()">Salvar usuário</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL COMUNIDADE -->
+<div class="modal-overlay hidden" id="org-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="org-modal-title">Nova Comunidade</h2>
+      <button class="close-btn" onclick="closeOrgModal()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="field-group full">
+        <label>Nome da Comunidade <span style="color:var(--accent)">*</span></label>
+        <input type="text" id="fo-nome" placeholder="Ex: Capela São Sebastião" />
+      </div>
+      <div class="field-group full">
+        <label>Coordenador (usuário existente)</label>
+        <select id="fo-coordenador-id">
+          <option value="">Selecione um coordenador</option>
+        </select>
+      </div>
+      <div class="field-group full">
+        <label>Próximo Código Dizimista</label>
+        <input type="number" id="fo-codigo-inicial" placeholder="10000" value="10000" />
+        <div style="font-size:11px;color:var(--ink-3);margin-top:4px;">
+          Número inicial para a sequência de códigos dizimistas desta comunidade.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOrgModal()">Cancelar</button>
+      <button class="btn btn-primary" id="save-org-btn" onclick="saveOrganization()">Salvar comunidade</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VIEW -->
 <div class="modal-overlay hidden" id="view-modal">
-  <div class="modal" style="max-width:540px">
+  <div class="modal" style="max-width:540px;">
     <div id="view-modal-content"></div>
   </div>
 </div>
 
 <script src="../config.js"></script>
-
-
 <script>
 // ===== CONFIG =====
-  const API_URL = CONFIG.API_URL;
-  
+const API_URL = CONFIG.API_URL;
+
 // ===== STATE =====
-let currentUser   = null;
-let allPeople     = [];
-let editId        = null;
+let currentUser = null;
+let allPeople = [];
+let allUsers = [];
+let allOrganizations = [];
+let allParoquias = [];
+let currentContext = { type: 'paroquia', id: null, name: 'Todas as comunidades' };
+let editId = null;
+let editUserId = null;
+let editOrgId = null;
 let currentFilter = 'todos';
-let currentPage   = 1;
+let currentPage = 1;
 const ITEMS_PER_PAGE = 15;
-let advFilters    = {};
-let sortField     = 'nomeCompleto';  
-let sortOrder     = 'asc';           
-const MONTHS      = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+let advFilters = {};
+let sortField = 'nomeCompleto';
+let sortOrder = 'asc';
+const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+let contextMenuOpen = false;
+
+// ===== WAKE UP BACKEND =====
+function wakeUpBackend() {
+  console.log('🌐 Backend wakeup called');
+  fetch(`${API_URL}/healthz`)
+    .then(res => res.json())
+    .then(data => console.log(' Backend ativo:', data))
+    .catch(err => console.log('⚠️ Backend indisponível:', err));
+}
 
 // ===== TOAST =====
 function toast(msg, type = 'success') {
@@ -1706,63 +1707,23 @@ function toast(msg, type = 'success') {
   }, 3200);
 }
 
-// ===== ORDENAÇÃO =====
-function sortData(data, field, order) {
-    if (!data || !data.length) return data;
-
-  return [...data].sort((a, b) => {
-    let valA = a[field] || '';
-    let valB = b[field] || '';
-    
-    // Se for número, converte
-    if (field === 'codigoDizimista' || field === 'dataNascimento') {
-      // Para código, compara como número
-      if (field === 'codigoDizimista') {
-        valA = parseInt(valA) || 0;
-        valB = parseInt(valB) || 0;
-      }
-      // Para data, compara como data
-      if (field === 'dataNascimento') {
-        valA = new Date(valA).getTime() || 0;
-        valB = new Date(valB).getTime() || 0;
-      }
-    }
-    
-    // Comparação
-    if (valA < valB) return order === 'asc' ? -1 : 1;
-    if (valA > valB) return order === 'asc' ? 1 : -1;
-    return 0;
-  });
-}
-
-// Função para alternar ordenação
-function toggleSort(field) {
-  if (sortField === field) {
-    // Alterna a ordem
-    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-  } else {
-    sortField = field;
-    sortOrder = 'asc';
-  }
-  renderTable();
-}
-// ===== CONFIRM DIALOG =====
+// ===== CONFIRM =====
 function confirmDialog(title, message, okLabel = 'Confirmar', danger = true) {
   return new Promise(resolve => {
-    document.getElementById('confirm-title').textContent   = title;
+    document.getElementById('confirm-title').textContent = title;
     document.getElementById('confirm-message').textContent = message;
     const okBtn = document.getElementById('confirm-ok');
-    okBtn.textContent  = okLabel;
-    okBtn.className    = `btn btn-sm ${danger ? 'btn-danger' : 'btn-primary'}`;
+    okBtn.textContent = okLabel;
+    okBtn.className = `btn btn-sm ${danger ? 'btn-danger' : 'btn-primary'}`;
     document.getElementById('confirm-overlay').classList.remove('hidden');
     const cleanup = (val) => {
       document.getElementById('confirm-overlay').classList.add('hidden');
-      okBtn.onclick     = null;
+      okBtn.onclick = null;
       cancelBtn.onclick = null;
       resolve(val);
     };
     const cancelBtn = document.getElementById('confirm-cancel');
-    okBtn.onclick     = () => cleanup(true);
+    okBtn.onclick = () => cleanup(true);
     cancelBtn.onclick = () => cleanup(false);
   });
 }
@@ -1771,8 +1732,8 @@ function confirmDialog(title, message, okLabel = 'Confirmar', danger = true) {
 function phoneMask(el) {
   let v = el.value.replace(/\D/g,'').slice(0,11);
   if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/,'($1) $2-$3');
-  else if (v.length > 6)  v = v.replace(/^(\d{2})(\d{4,5})(\d{0,4})$/,'($1) $2-$3');
-  else if (v.length > 2)  v = v.replace(/^(\d{2})(\d+)$/,'($1) $2');
+  else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4,5})(\d{0,4})$/,'($1) $2-$3');
+  else if (v.length > 2) v = v.replace(/^(\d{2})(\d+)$/,'($1) $2');
   el.value = v;
 }
 
@@ -1809,8 +1770,8 @@ function ajustarDataLocal(iso) {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
 }
 
+// ===== MAP PERSON =====
 function mapPerson(p) {
-
   return {
     id: p.id,
     nomeCompleto: p.nomeCompleto,
@@ -1819,7 +1780,7 @@ function mapPerson(p) {
     telefone: p.telefone || '',
     endereco: p.endereco || '',
     bairro: p.bairro || '',
-    comunidadeParticipa: p.comunidadeParticipa || '',
+    comunidadeParticipa: p.comunidadeContribui || p.comunidadeParticipa || '',
     estadoCivil: p.estadoCivil || 'Solteiro',
     status: p.status || 'ativo',
     observacao: p.observacoes || '',
@@ -1831,9 +1792,8 @@ function mapPerson(p) {
       nome: f.nome,
       dataNascimento: f.dataNascimento ? ajustarDataLocal(f.dataNascimento) : ''
     })),
-    movimentosPastorais: p.movimentosPastorais || [],
+    movimentosPastorais: p.movimentosPastorais || '',
     createdAt: p.createdAt || new Date().toISOString(),
-
     batizado: p.batizado || false,
     desejaBatismo: p.desejaBatismo || false,
     catequista: p.catequista || false,
@@ -1842,140 +1802,156 @@ function mapPerson(p) {
     frequenciaMissa: p.frequenciaMissa || 'Eventual',
     temEucaristia: p.temEucaristia || false,
     temCrisma: p.temCrisma || false,
-    temMatrimonio: p.temMatrimonio || false
+    temMatrimonio: p.temMatrimonio || false,
+    organizationId: p.organizationId || null
   };
 }
 
-async function loadPeople(silent = false) {
-  if (!silent) showTableSkeleton();
+// ===== LOAD DATA =====
+async function loadAllData() {
+  await loadPeople();
+  const isAdmin = currentUser?.role === 'SUPER_ADMIN' || currentUser?.role === 'ADMIN';
+  const isCoordinator = currentUser?.role === 'COORDENADOR';
+  // /users é restrito a SUPER_ADMIN/ADMIN no backend
+  if (isAdmin) {
+    await loadUsersList();
+  }
+  // /organizations é restrito a SUPER_ADMIN/ADMIN/COORDENADOR no backend (LIDER não acessa)
+  if (isAdmin || isCoordinator) {
+    await loadOrganizationsList();
+    await loadParoquiasList();
+  }
+  updateContextMenu();
+  renderDashboard();
+  renderComunidades();
+}
+
+async function loadPeople() {
   const result = await apiRequest('/pessoas?incluirInativos=true');
   if (result.ok) {
     allPeople = result.data.map(mapPerson);
   } else {
-    if (!silent) toast('Erro ao carregar pessoas.', 'error');
     allPeople = [];
   }
-  renderDashboard();
   renderTable();
   renderBirthdays();
 }
 
-function showTableSkeleton() {
-  const tbody = document.getElementById('people-tbody');
-  if (!tbody) return;
-  tbody.innerHTML = Array(6).fill(0).map(() =>
-    `<tr class="skeleton-row">
-      <td><div class="skeleton" style="width:70%"></div></td>
-      <td><div class="skeleton" style="width:60%"></div></td>
-      <td><div class="skeleton" style="width:50%"></div></td>
-      <td><div class="skeleton" style="width:80px"></div></td>
-    </tr>`
-  ).join('');
-  const cards = document.getElementById('people-cards');
-  if (cards) cards.innerHTML = Array(4).fill(0).map(() =>
-    `<div class="person-card"><div class="skeleton" style="height:80px"></div></div>`
-  ).join('');
+async function loadUsersList() {
+  const result = await apiRequest('/users');
+  if (result.ok) {
+    allUsers = result.data;
+    renderUsersTable(allUsers);
+  }
 }
 
-// ===== LOGIN =====
-async function doLogin() {
-  const btn  = document.getElementById('login-btn');
-  const errDiv = document.getElementById('login-error');
-  const username = document.getElementById('inp-user').value.trim().toLowerCase();
-  const password = document.getElementById('inp-pass').value;
-
-  errDiv.classList.add('hidden');
-  if (!username || !password) {
-    errDiv.classList.remove('hidden');
-    errDiv.textContent = 'Preencha usuário e senha.';
-    return;
+async function loadOrganizationsList() {
+  const result = await apiRequest('/organizations');
+  if (result.ok) {
+    allOrganizations = result.data;
+    renderComunidades();
+    updateContextMenu();
   }
-  btn.disabled = true;
-  btn.classList.add('btn-loading');
-  btn.textContent = 'Entrando…';
-  try {
+}
 
-    const usersResp = await fetch(`${API_URL}/users`);
-    const users = await usersResp.json();
-    const foundUser = users.find(u => u.username === username);
-    
-    if (!foundUser) {
-      errDiv.classList.remove('hidden');
-      errDiv.textContent = 'Usuário não encontrado.';
-      return;
-    }
-    
-    const role = foundUser.role;
-    
-    const resp = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, role })
+async function loadParoquiasList() {
+  const result = await apiRequest('/paroquias');
+  if (result.ok) {
+    allParoquias = result.data;
+    updateContextMenu();
+  }
+}
+
+
+async function loadOrganizationsSelect() {
+  const result = await apiRequest('/organizations');
+  if (result.ok && result.data.length > 0) {
+    allOrganizations = result.data;
+    const selects = document.querySelectorAll('#f-organization-id, #fu-organization-id, #fo-coordenador-id');
+    selects.forEach(select => {
+      const currentValue = select.value;
+      select.innerHTML = '<option value="">Selecione uma comunidade</option>';
+      result.data.forEach(org => {
+        const option = document.createElement('option');
+        option.value = org.id;
+        option.textContent = org.nome;
+        select.appendChild(option);
+      });
+      // ✅ Mantém o valor selecionado
+      if (currentValue) {
+        select.value = currentValue;
+      }
     });
-
-    const result = await resp.json();
-    if (result.success) {
-      if (result.token) sessionStorage.setItem('token', result.token);
-      currentUser = { name: username, role: result.user?.role || role, label: result.user?.role === 'admin' ? 'Admin' : 'Laura' };
-      applyRole();
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
-      await loadPeople();
-      showPage('dashboard');
-    } else {
-      errDiv.classList.remove('hidden');
-      errDiv.textContent = result.message || 'Usuário ou senha incorretos.';
-    }
-  } catch {
-    errDiv.classList.remove('hidden');
-    errDiv.textContent = 'Erro ao conectar com o servidor.';
-  } finally {
-    btn.disabled = false;
-    btn.classList.remove('btn-loading');
-    btn.textContent = 'Acessar';
   }
 }
 
-function logout() {
-  currentUser = null;
-  sessionStorage.removeItem('token');
-  allPeople = [];
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('inp-user').value = '';
-  document.getElementById('inp-pass').value = '';
+// ===== CONTEXT MENU =====
+function toggleContextMenu() {
+  contextMenuOpen = !contextMenuOpen;
+  const menu = document.getElementById('context-menu');
+  const arrow = document.getElementById('context-arrow');
+  menu.classList.toggle('hidden', !contextMenuOpen);
+  arrow.classList.toggle('open', contextMenuOpen);
 }
 
-function applyRole() {
-  const isAdmin = currentUser?.role === 'admin';
-  document.getElementById('header-user-name').textContent = currentUser?.name || '';
-  const pill = document.getElementById('header-role-pill');
-  pill.textContent  = currentUser?.label || '';
-  pill.className    = 'role-pill ' + (isAdmin ? 'admin' : 'member');
-  document.querySelectorAll('.admin-only').forEach(el => {
-    el.style.display = isAdmin ? '' : 'none';
-  });
+function selectContext(type, id, name) {
+  currentContext = { type, id, name };
+  document.getElementById('current-context').textContent = name;
+  toggleContextMenu();
+  renderDashboard();
+  renderTable();
+  renderComunidades();
+  renderBirthdays();
+  updateContextMenu();
 }
 
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
-  const pageEl = document.getElementById("page-" + id);
-  if (pageEl) pageEl.classList.add("active");
-  const map = { dashboard: 0, people: 1, birthdays: 2, import: 3, pendentes: 4 };
-  const tabs = document.querySelectorAll(".nav-tab");
-  if (tabs[map[id]]) tabs[map[id]].classList.add("active");
-  if (id === "people") renderTable();
-  if (id === "birthdays") { buildYearFilter(); renderBirthdays(); }
-  if (id === "dashboard") renderDashboard();
-  if (id === "pendentes") carregarPendentes();
+function updateContextMenu() {
+  const menu = document.getElementById('context-menu');
+  if (!menu) return;
+  
+  let html = '';
+  
+  // Opção Paróquia (todas as comunidades)
+  const isParoquiaActive = currentContext.type === 'paroquia';
+  html += `
+    <div class="context-item ${isParoquiaActive ? 'active' : ''}" onclick="selectContext('paroquia', null, '🏛️ Paróquia Matriz')">
+      <span><span class="icon">🏛️</span> Paróquia Matriz</span>
+      <span class="badge">Todas as comunidades</span>
+    </div>
+  `;
+  
+  if (allOrganizations.length > 0) {
+    html += `<div class="context-divider"></div>`;
+    allOrganizations.forEach(org => {
+      const isActive = currentContext.type === 'comunidade' && currentContext.id === org.id;
+      const pessoasCount = org._count?.pessoas || 0;
+      const coordNome = org.coordenador?.nome || 'Sem coordenador';
+      html += `
+        <div class="context-item ${isActive ? 'active' : ''}" onclick="selectContext('comunidade', '${org.id}', ' ${org.nome}')">
+          <span><span class="icon"></span> ${org.nome}</span>
+          <span class="badge">${pessoasCount} pessoas</span>
+        </div>
+      `;
+    });
+  }
+  
+  menu.innerHTML = html;
 }
 
 // ===== DASHBOARD =====
 function renderDashboard() {
-  const ativos = allPeople.filter(p => p.status === 'ativo');
+  const container = document.getElementById('dashboard-content');
+  if (!container) return;
+  
+  // Filtrar pessoas pelo contexto
+  let pessoas = allPeople;
+  if (currentContext.type === 'comunidade' && currentContext.id) {
+    pessoas = pessoas.filter(p => p.organizationId === currentContext.id);
+  }
+  
+  const ativos = pessoas.filter(p => p.status === 'ativo');
   const now = new Date(), cm = now.getMonth(), cd = now.getDate(), cy = now.getFullYear();
-
+  
   const calc = (fn) => ativos.filter(fn).length;
   const byDate = (p, mFilter, dFilter) => {
     if (!p.dataNascimento) return false;
@@ -1983,177 +1959,155 @@ function renderDashboard() {
     return (dFilter == null ? m-1 === mFilter : m-1 === mFilter && d === dFilter);
   };
   const age = (p) => { if(!p.dataNascimento) return null; return cy - +p.dataNascimento.split('-')[0]; };
-
-  document.getElementById('stat-total').textContent      = ativos.length;
-  document.getElementById('stat-thismonth').textContent  = calc(p => byDate(p, cm));
-  document.getElementById('stat-today').textContent      = calc(p => byDate(p, cm, cd));
-  document.getElementById('stat-new').textContent        = calc(p => { const d=new Date(p.createdAt); return d.getMonth()===cm && d.getFullYear()===cy; });
-  document.getElementById('stat-mirins').textContent     = calc(p => { const a=age(p); return a!=null && a<16; });
-  document.getElementById('stat-adultos').textContent    = calc(p => { const a=age(p); return a!=null && a>=16 && a<=60; });
-  document.getElementById('stat-idosos').textContent     = calc(p => { const a=age(p); return a!=null && a>60; });
-
-  const today = ativos.filter(p => byDate(p, cm, cd));
-  const todayEl = document.getElementById('today-list');
-  todayEl.innerHTML = today.length === 0
-    ? '<p style="color:var(--ink2);font-size:14px">Nenhum aniversariante hoje.</p>'
-    : today.map(p => {
-        const a = age(p), mirim = a < 16;
-        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)">
-          <span style="font-size:1.4rem">${mirim?'':'🎉'}</span>
-          <div>
-            <div style="font-weight:500;${mirim?'color:#2196F3':''}">${esc(p.nomeCompleto)}</div>
-            <div style="font-size:12px;color:var(--ink2)">${a} anos hoje!${mirim?' (Mirim)':''}</div>
+  
+  const total = ativos.length;
+  const thisMonth = calc(p => byDate(p, cm));
+  const today = calc(p => byDate(p, cm, cd));
+  const newThisMonth = calc(p => { const d=new Date(p.createdAt); return d.getMonth()===cm && d.getFullYear()===cy; });
+  const mirins = calc(p => { const a=age(p); return a!=null && a<16; });
+  const adultos = calc(p => { const a=age(p); return a!=null && a>=16 && a<=60; });
+  const idosos = calc(p => { const a=age(p); return a!=null && a>60; });
+  
+  const contextName = currentContext.type === 'paroquia' ? 'Paróquia Matriz' : currentContext.name;
+  
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-title"> Dashboard - ${contextName}</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Total de pessoas</div><div class="stat-value stat-accent">${total}</div></div>
+        <div class="stat-card"><div class="stat-label">Aniversariantes este mês</div><div class="stat-value">${thisMonth}</div></div>
+        <div class="stat-card"><div class="stat-label">Aniversariantes hoje</div><div class="stat-value">${today}</div></div>
+        <div class="stat-card"><div class="stat-label">Cadastros este mês</div><div class="stat-value">${newThisMonth}</div></div>
+        <div class="stat-card" style="border-left:4px solid #2196F3;"><div class="stat-label">Mirins (&lt;16)</div><div class="stat-value" style="color:#2196F3;">${mirins}</div></div>
+        <div class="stat-card" style="border-left:4px solid #4CAF50;"><div class="stat-label">Adultos (16–60)</div><div class="stat-value" style="color:#4CAF50;">${adultos}</div></div>
+        <div class="stat-card" style="border-left:4px solid #FF9800;"><div class="stat-label">Idosos (&gt;60)</div><div class="stat-value" style="color:#FF9800;">${idosos}</div></div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">🎂 Aniversariantes de hoje</div>
+      <div id="today-list">${today === 0 ? '<p style="color:var(--ink2);font-size:14px;">Nenhum aniversariante hoje.</p>' : 
+        ativos.filter(p => byDate(p, cm, cd)).map(p => {
+          const a = age(p);
+          return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);">
+            <span style="font-size:1.2rem;">🎉</span>
+            <div>
+              <div style="font-weight:500;">${esc(p.nomeCompleto)}</div>
+              <div style="font-size:12px;color:var(--ink2);">${a} anos hoje!</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">📋 Últimos cadastros</div>
+      <div id="recent-list">${ativos.length === 0 ? '<p style="color:var(--ink2);font-size:14px;">Nenhum cadastro ainda.</p>' :
+        [...ativos].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,5).map(p => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);">
+            <span style="font-weight:500;">${esc(p.nomeCompleto)}</span>
+            <span style="font-size:12px;color:var(--ink2);">${formatDate(p.dataNascimento)}</span>
           </div>
-        </div>`;
-      }).join('');
-
-  const recent = [...ativos].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,5);
-  const recentEl = document.getElementById('recent-list');
-  recentEl.innerHTML = recent.length === 0
-    ? '<p style="color:var(--ink2);font-size:14px">Nenhum cadastro ainda.</p>'
-    : recent.map(p => {
-        const a = age(p), mirim = a && a < 16;
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)">
-          <span style="font-weight:500;${mirim?'color:#2196F3':''}">${esc(p.nomeCompleto)}</span>
-          <span style="font-size:12px;color:var(--ink2)">${formatDate(p.dataNascimento)}</span>
-        </div>`;
-      }).join('');
+        `).join('')}
+      </div>
+    </div>
+  `;
 }
 
-// ===== FILTERS =====
-let searchTimeout = null;
-function onSearchInput() {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => { currentPage = 1; renderTable(); }, 180);
-}
-
-function setFilter(f) {
-  currentFilter = f;
-  currentPage   = 1;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('filter-' + f)?.classList.add('active');
-  renderTable();
-}
-
-function toggleAdvFilters() {
-  document.getElementById('adv-filters').classList.toggle('hidden');
-}
-
-function applyAdvFilters() {
-  advFilters = {
-    pastoral:    document.getElementById('f-adv-pastoral').value.trim().toLowerCase(),
-    estadocivil: document.getElementById('f-adv-estadocivil').value,
-    faixa:       document.getElementById('f-adv-faixa').value,
-    especial:    document.getElementById('f-adv-especial').value,
-  };
-  currentPage = 1;
-  renderFilterChips();
-  renderTable();
-  document.getElementById('adv-filters').classList.add('hidden');
-}
-
-function clearAdvFilters() {
-  advFilters = {};
-  ['f-adv-pastoral','f-adv-estadocivil','f-adv-faixa','f-adv-especial'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  renderFilterChips();
-  renderTable();
-}
-
-function removeAdvFilter(key) {
-  delete advFilters[key];
-  const el = document.getElementById('f-adv-' + key);
-  if (el) el.value = '';
-  renderFilterChips();
-  renderTable();
-}
-
-function renderFilterChips() {
-  const labels = { pastoral:'Pastoral', estadocivil:'Est. Civil', faixa:'Faixa Etária', especial:'Especial' };
-  const chips  = document.getElementById('filter-chips');
-  if (!chips) return;
-  chips.innerHTML = Object.entries(advFilters)
-    .filter(([,v]) => v)
-    .map(([k,v]) => `<span class="filter-chip">${labels[k]}: ${v}<button onclick="removeAdvFilter('${k}')">×</button></span>`)
-    .join('');
-}
-
-function getFilteredData() {
-  const cy   = new Date().getFullYear();
-  const cm   = new Date().getMonth();
-  let data   = allPeople;
-
-   if (currentFilter === 'ativos') {
-    data = data.filter(p => p.status === 'ativo');
-  } else if (currentFilter === 'inativos') {
-    data = data.filter(p => p.status === 'inativo');
-  } else if (currentFilter === 'dizimistas') {
-    data = data.filter(p => p.status === 'ativo' && p.codigoDizimista);
-  } else if (currentFilter === 'nao-dizimistas') {
-    data = data.filter(p => p.status === 'ativo' && !p.codigoDizimista);
+// ===== COMUNIDADES =====
+function renderComunidades() {
+  const container = document.getElementById('comunidades-list');
+  if (!container) return;
+  
+  if (allOrganizations.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="es-icon">🏛️</div><h3>Nenhuma comunidade cadastrada</h3><p>Clique em "Nova Comunidade" para começar.</p></div>`;
+    return;
   }
-
-  const term = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
-  if (term) {
-    data = data.filter(p =>
-      (p.nomeCompleto    || '').toLowerCase().includes(term) ||
-      (p.telefone        || '').toLowerCase().includes(term) ||
-      (p.endereco        || '').toLowerCase().includes(term) ||
-      (p.codigoDizimista || '').toString().toLowerCase().includes(term)
-    );
+  
+  // Filtrar comunidades pelo contexto
+  let comunidades = allOrganizations;
+  if (currentContext.type === 'comunidade' && currentContext.id) {
+    comunidades = comunidades.filter(c => c.id === currentContext.id);
   }
-
-  if (advFilters.pastoral) {
-    data = data.filter(p => (p.movimentosPastorais||[]).join(',').toLowerCase().includes(advFilters.pastoral));
-  }
-  if (advFilters.estadocivil) {
-    data = data.filter(p => p.estadoCivil === advFilters.estadocivil);
-  }
-  if (advFilters.faixa) {
-    data = data.filter(p => {
-      const a = p.dataNascimento ? cy - +p.dataNascimento.split('-')[0] : null;
-      if (a == null) return false;
-      if (advFilters.faixa === 'mirim')  return a < 16;
-      if (advFilters.faixa === 'adulto') return a >= 16 && a <= 60;
-      if (advFilters.faixa === 'idoso')  return a > 60;
-    });
-  }
-  if (advFilters.especial === 'mes') {
-    data = data.filter(p => {
-      if (!p.dataNascimento) return false;
-      return +p.dataNascimento.split('-')[1] - 1 === cm;
-    });
-  }
-  if (advFilters.especial === 'semtel') {
-    data = data.filter(p => !p.telefone);
-  }
-
-  return data;
+  
+  container.innerHTML = `
+    <div class="community-grid">
+      ${comunidades.map(c => {
+        const pessoasCount = c._count?.pessoas || 0;
+        const coordNome = c.coordenador?.nome || 'Sem coordenador';
+        const isActive = currentContext.type === 'comunidade' && currentContext.id === c.id;
+        return `
+          <div class="community-card" onclick="selectContext('comunidade', '${c.id}', ' ${c.nome}')" style="${isActive ? 'border-color:var(--indigo-600);background:var(--indigo-50);' : ''}">
+            <div class="name">${esc(c.nome)}</div>
+            <div class="info">👤 Coordenador: ${esc(coordNome)}</div>
+            <div class="stats">
+              <span>${pessoasCount} pessoas</span>
+              <span>Código: ${c.proximoCodigoDizimista || '—'}</span>
+            </div>
+            <div style="margin-top:8px;display:flex;gap:6px;">
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();editOrganization('${c.id}')">✏️</button>
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();selectContext('comunidade', '${c.id}', ' ${c.nome}');showPage('people')">Ver pessoas</button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }
 
 // ===== TABLE / CARDS =====
 function renderTable() {
   if (!currentUser) return;
-  const isAdmin  = currentUser?.role === 'admin';
-  const cy       = new Date().getFullYear();
+  const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
+  const isAdmin = currentUser?.role === 'ADMIN' || isSuperAdmin;
+  const isCoordinator = currentUser?.role === 'COORDENADOR';
+  const canEdit = isAdmin || isCoordinator;
+  const canDelete = isAdmin;
+  const canInactivate = isAdmin || isCoordinator;
+  const cy = new Date().getFullYear();
 
-  const filtered = getFilteredData();
+  // Filtrar pessoas pelo contexto
+  let pessoas = allPeople;
+  if (currentContext.type === 'comunidade' && currentContext.id) {
+    pessoas = pessoas.filter(p => p.organizationId === currentContext.id);
+  }
   
-  const sorted = sortData(filtered, sortField, sortOrder);
+  // Aplicar filtros
+  let filtered = pessoas;
+  if (currentFilter === 'ativos') {
+    filtered = filtered.filter(p => p.status === 'ativo');
+  } else if (currentFilter === 'inativos') {
+    filtered = filtered.filter(p => p.status === 'inativo');
+  } else if (currentFilter === 'dizimistas') {
+    filtered = filtered.filter(p => p.status === 'ativo' && p.codigoDizimista);
+  }
 
+  const term = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+  if (term) {
+    filtered = filtered.filter(p =>
+      (p.nomeCompleto || '').toLowerCase().includes(term) ||
+      (p.telefone || '').toLowerCase().includes(term) ||
+      (p.endereco || '').toLowerCase().includes(term) ||
+      (p.codigoDizimista || '').toString().toLowerCase().includes(term)
+    );
+  }
+
+  const sorted = sortData(filtered, sortField, sortOrder);
   updateSortIcons();
   
-  const total    = filtered.length;
-  const start    = (currentPage - 1) * ITEMS_PER_PAGE;
-  const items    = filtered.slice(start, start + ITEMS_PER_PAGE);
+  const total = filtered.length;
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const items = sorted.slice(start, start + ITEMS_PER_PAGE);
 
   renderPagination(total);
 
   const tbody = document.getElementById('people-tbody');
   const cards = document.getElementById('people-cards');
   const empty = document.getElementById('people-empty');
+  
+  // Atualizar título
+  const contextName = currentContext.type === 'paroquia' ? 'Todas as comunidades' : currentContext.name;
+  document.getElementById('people-title').textContent = `Pessoas - ${contextName}`;
 
   if (items.length === 0) {
     if (tbody) tbody.innerHTML = '';
@@ -2166,7 +2120,7 @@ function renderTable() {
   if (tbody) {
     tbody.innerHTML = items.map(p => {
       const anoNasc = p.dataNascimento ? +p.dataNascimento.split('-')[0] : 0;
-      const idade   = anoNasc ? cy - anoNasc : null;
+      const idade = anoNasc ? cy - anoNasc : null;
       const isMirim = idade != null && idade < 16;
       const isInativo = p.status === 'inativo';
       const isPendente = p.status === 'pendente';
@@ -2174,24 +2128,27 @@ function renderTable() {
       const nomeColor = isInativo ? '#e67e22' : (isPendente ? '#f39c12' : 'var(--accent)');
       const statusText = isInativo ? '(Inativo)' : (isPendente ? '(Pendente)' : '');
       
+      const actionsHtml = (canEdit || canDelete) ? `<td><div class="actions">
+        <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')" title="Ver">👁️</button>
+        ${canEdit ? `<button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')" title="Editar">✏️</button>` : ''}
+        ${canInactivate ? (p.status === 'ativo' 
+          ? `<button class="btn btn-sm btn-danger" onclick="inativarPerson('${p.id}')" title="Inativar">🔴</button>`
+          : `<button class="btn btn-sm btn-green" onclick="reativarPerson('${p.id}')" title="Reativar">🟢</button>`) : ''}
+        ${canDelete ? `<button class="btn btn-sm btn-danger" onclick="excluirPerson('${p.id}')" title="Excluir">🗑️</button>` : ''}
+      </div></td>` : '';
+
       return `<tr>
         <td>
           <strong style="cursor:pointer;color:${nomeColor}" onclick="viewPerson('${p.id}')">
             ${esc(p.nomeCompleto)} ${statusText}
           </strong>
           ${p.codigoDizimista ? `<br><span style="font-size:11px;color:var(--ink2)">Cód: ${p.codigoDizimista}</span>` : ''}
-          ${isMirim && !isInativo ? `<span class="badge-mirim" style="margin-left:6px">Mirim</span>` : ''}
+          ${isMirim && !isInativo ? `<span class="badge-mirim" style="margin-left:6px;">Mirim</span>` : ''}
         </td>
         <td>${formatDate(p.dataNascimento)}${idade ? ` (${idade}a)` : ''}</td>
         <td>${esc(p.endereco || p.bairro || '—')}</td>
-        <td>${esc(p.comunidadeParticipa || '-')}
-        ${isAdmin ? `<td><div class="actions">
-          <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')" title="Gerar PDF">📄</button>
-          <button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')" title="Editar">✏️</button>
-          ${p.status === 'ativo'
-            ? `<button class="btn btn-sm btn-danger"  onclick="inativarPerson('${p.id}')" title="Inativar">🔴</button>`
-            : `<button class="btn btn-sm btn-green"   onclick="reativarPerson('${p.id}')" title="Reativar">🟢</button>`}
-        </div></td>` : ''}
+        <td>${p.codigoDizimista || '-'}</td>
+        ${actionsHtml}
       </tr>`;
     }).join('');
   }
@@ -2199,40 +2156,104 @@ function renderTable() {
   if (cards) {
     cards.innerHTML = items.map(p => {
       const anoNasc = p.dataNascimento ? +p.dataNascimento.split('-')[0] : 0;
-      const idade   = anoNasc ? cy - anoNasc : null;
+      const idade = anoNasc ? cy - anoNasc : null;
       const isMirim = idade != null && idade < 16;
       const inativo = p.status === 'inativo';
-      return `<div class="person-card">
-        <div class="person-card-top">
-          <div>
-            <div class="person-card-name ${inativo?'inativo':''}" onclick="viewPerson('${p.id}')" style="cursor:pointer">
-              ${esc(p.nomeCompleto)}
-              ${isMirim && !inativo ? `<span class="badge-mirim" style="margin-left:6px">Mirim</span>` : ''}
-            </div>
-            <div class="person-card-meta">
-              ${idade ? `<span>🎂 ${formatDate(p.dataNascimento)} (${idade}a)</span>` : ''}
-              ${p.endereco || p.bairro ? `<span> ${esc(p.endereco||p.bairro)}</span>` : ''}
-              ${p.codigoDizimista ? `<span>Cód: ${p.codigoDizimista}</span>` : ''}
-              ${p.comunidadeParticipa ? `<span>🏛️ ${esc(p.comunidadeParticipa)}</span>` : ''}
-              </div>
-          </div>
-          <div class="status-dot ${inativo?'inativo':'ativo'}"></div>
-        </div>
-        ${isAdmin ? `<div class="person-card-actions">
+      
+      const actionsHtml = (canEdit || canDelete) ? `
+        <div class="person-card-actions">
           <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')">Ver</button>
-          <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')">📄</button>
-          <button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')">✏️</button>
-          ${p.status === 'ativo'
+          ${canEdit ? `<button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')">✏️</button>` : ''}
+          ${canInactivate ? (p.status === 'ativo' 
             ? `<button class="btn btn-sm btn-danger" onclick="inativarPerson('${p.id}')">Inativar</button>`
-            : `<button class="btn btn-sm btn-green" onclick="reativarPerson('${p.id}')">Reativar</button>`}
-        </div>` : ''}
-      </div>`;
+            : `<button class="btn btn-sm btn-green" onclick="reativarPerson('${p.id}')">Reativar</button>`) : ''}
+          ${canDelete ? `<button class="btn btn-sm btn-danger" onclick="excluirPerson('${p.id}')">🗑️</button>` : ''}
+        </div>
+      ` : '';
+
+      return `
+        <div class="person-card">
+          <div class="person-card-top">
+            <div>
+              <div class="person-card-name ${inativo?'inativo':''}" onclick="viewPerson('${p.id}')" style="cursor:pointer;">
+                ${esc(p.nomeCompleto)}
+                ${isMirim && !inativo ? `<span class="badge-mirim" style="margin-left:6px;">Mirim</span>` : ''}
+                ${p.status === 'pendente' ? `<span class="badge badge-warning" style="margin-left:6px;">Pendente</span>` : ''}
+              </div>
+              <div class="person-card-meta">
+                ${idade ? `<span>🎂 ${formatDate(p.dataNascimento)} (${idade}a)</span>` : ''}
+                ${p.endereco || p.bairro ? `<span> ${esc(p.endereco||p.bairro)}</span>` : ''}
+                ${p.codigoDizimista ? `<span>Cód: ${p.codigoDizimista}</span>` : ''}
+              </div>
+            </div>
+            <div class="status-dot ${inativo ? 'inativo' : (p.status === 'pendente' ? 'pendente' : 'ativo')}"></div>
+          </div>
+          ${actionsHtml}
+        </div>
+      `;
     }).join('');
   }
 }
 
+function renderPagination(total) {
+  const el = document.getElementById('pagination');
+  if (!el) return;
+  const pages = Math.ceil(total / ITEMS_PER_PAGE);
+  if (pages <= 1) { el.innerHTML = `<div class="pagination-info" style="text-align:center;margin-top:10px;">${total} registros</div>`; return; }
+
+  let html = `<div class="pagination-wrap">`;
+  html += `<button class="btn btn-sm btn-outline" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}>←</button>`;
+
+  let s = Math.max(1, currentPage-2), e = Math.min(pages, currentPage+2);
+  if (s > 1) { html += `<button class="btn btn-sm btn-outline" onclick="changePage(1)">1</button>`; if (s>2) html += `<span style="padding:0 4px;">…</span>`; }
+  for (let i=s;i<=e;i++) html += `<button class="btn btn-sm ${i===currentPage?'btn-primary':'btn-outline'}" onclick="changePage(${i})">${i}</button>`;
+  if (e < pages) { if (e<pages-1) html += `<span style="padding:0 4px;">…</span>`; html += `<button class="btn btn-sm btn-outline" onclick="changePage(${pages})">${pages}</button>`; }
+  html += `<button class="btn btn-sm btn-outline" onclick="changePage(${currentPage+1})" ${currentPage===pages?'disabled':''}>→</button>`;
+  html += `<span class="pagination-info">${total} registros</span>`;
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function changePage(p) {
+  const total = allPeople.length; // Simplified
+  const max = Math.ceil(total / ITEMS_PER_PAGE);
+  if (p < 1 || p > max) return;
+  currentPage = p;
+  renderTable();
+}
+
+// ===== SORT =====
+function sortData(data, field, order) {
+  if (!data || !data.length) return data;
+  return [...data].sort((a, b) => {
+    let valA = a[field] || '';
+    let valB = b[field] || '';
+    if (field === 'codigoDizimista') {
+      valA = parseInt(valA) || 0;
+      valB = parseInt(valB) || 0;
+    }
+    if (field === 'dataNascimento') {
+      valA = new Date(valA).getTime() || 0;
+      valB = new Date(valB).getTime() || 0;
+    }
+    if (valA < valB) return order === 'asc' ? -1 : 1;
+    if (valA > valB) return order === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+function toggleSort(field) {
+  if (sortField === field) {
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortField = field;
+    sortOrder = 'asc';
+  }
+  renderTable();
+}
+
 function updateSortIcons() {
-  const fields = ['nomeCompleto', 'dataNascimento', 'endereco', 'comunidadeParticipa', 'codigoDizimista'];
+  const fields = ['nomeCompleto', 'dataNascimento', 'endereco', 'codigoDizimista'];
   fields.forEach(field => {
     const icon = document.getElementById(`sort-${field}`);
     if (icon) {
@@ -2245,73 +2266,52 @@ function updateSortIcons() {
   });
 }
 
-function renderPagination(total) {
-  const el = document.getElementById('pagination');
-  if (!el) return;
-  const pages = Math.ceil(total / ITEMS_PER_PAGE);
-  if (pages <= 1) { el.innerHTML = `<div class="pagination-info" style="text-align:center;margin-top:10px">${total} registros</div>`; return; }
-
-  let html = `<div class="pagination-wrap">`;
-  html += `<button class="btn btn-sm btn-outline" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}>←</button>`;
-
-  let s = Math.max(1, currentPage-2), e = Math.min(pages, currentPage+2);
-  if (s > 1) { html += `<button class="btn btn-sm btn-outline" onclick="changePage(1)">1</button>`; if (s>2) html += `<span style="padding:0 4px">…</span>`; }
-  for (let i=s;i<=e;i++) html += `<button class="btn btn-sm ${i===currentPage?'btn-primary':'btn-outline'}" onclick="changePage(${i})">${i}</button>`;
-  if (e < pages) { if (e<pages-1) html += `<span style="padding:0 4px">…</span>`; html += `<button class="btn btn-sm btn-outline" onclick="changePage(${pages})">${pages}</button>`; }
-  html += `<button class="btn btn-sm btn-outline" onclick="changePage(${currentPage+1})" ${currentPage===pages?'disabled':''}>→</button>`;
-  html += `<span class="pagination-info">${total} registros</span>`;
-  html += `</div>`;
-  el.innerHTML = html;
+function setFilter(f) {
+  currentFilter = f;
+  currentPage = 1;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('filter-' + f)?.classList.add('active');
+  renderTable();
 }
 
-function changePage(p) {
-  const total = getFilteredData().length;
-  const max   = Math.ceil(total / ITEMS_PER_PAGE);
-  if (p < 1 || p > max) return;
-  currentPage = p;
-  renderTable();
+function onSearchInput() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => { currentPage = 1; renderTable(); }, 300);
+}
+let searchTimeout = null;
+
+function toggleAdvFilters() {
+  // Simple toggle for now
+  toast('Filtros avançados em desenvolvimento', 'info');
 }
 
 // ===== VIEW PERSON =====
 function viewPerson(id) {
-  
-  if (!allPeople || allPeople.length === 0) {
-    console.warn('allPeople vazio, recarregando...');
-    loadPeople().then(() => {
-      viewPerson(id);
-    });
-    return;
-  }
-  
   const p = allPeople.find(x => x.id == id);
   if (!p) {
-    console.error(' Pessoa não encontrada:', id);
     toast('Pessoa não encontrada.', 'error');
     return;
   }
   
-  
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = currentUser?.role === 'SUPER_ADMIN' || currentUser?.role === 'ADMIN';
   const cy = new Date().getFullYear();
   const idade = p.dataNascimento ? cy - parseInt(p.dataNascimento.split('-')[0]) : null;
   
   let statusTxt = 'Ativo';
   let statusColor = 'var(--green)';
-  if (p.status === 'inativo') {
-    statusTxt = 'Inativo';
-    statusColor = '#e67e22';
-  } else if (p.status === 'pendente') {
-    statusTxt = 'Pendente';
-    statusColor = '#f39c12';
-  }
+  if (p.status === 'inativo') { statusTxt = 'Inativo'; statusColor = '#e67e22'; }
+  else if (p.status === 'pendente') { statusTxt = 'Pendente'; statusColor = '#f39c12'; }
+  else if (p.status === 'rejeitado') { statusTxt = 'Rejeitado'; statusColor = '#ef4444'; }
   
-  // Constrói o HTML
+  const orgName = p.organizationId ? allOrganizations.find(o => o.id === p.organizationId)?.nome || p.organizationId.substring(0,8) : null;
+
+
   let html = `
     <div class="view-header">
       <div>
         <div class="view-name">${esc(p.nomeCompleto)}</div>
         <div class="view-status" style="color:${statusColor}">● ${statusTxt}</div>
-        ${p.codigoDizimista ? `<div style="font-size:12px;color:var(--ink2);margin-top:4px">Código: ${p.codigoDizimista}</div>` : ''}
+        ${p.codigoDizimista ? `<div style="font-size:12px;color:var(--ink2);margin-top:4px;">Código: ${p.codigoDizimista}</div>` : ''}
       </div>
       <button class="close-btn" onclick="document.getElementById('view-modal').classList.add('hidden')">×</button>
     </div>
@@ -2323,13 +2323,11 @@ function viewPerson(id) {
         <div class="view-field"><label>Telefone</label><span>${esc(p.telefone || '—')}</span></div>
         <div class="view-field"><label>Endereço</label><span>${esc(p.endereco || '—')}</span></div>
         <div class="view-field"><label>Bairro</label><span>${esc(p.bairro || '—')}</span></div>
-        <div class="view-field"><label>Comunidade</label><span>${esc(p.comunidadeParticipa || '—')}</span></div>
-        <div class="view-field"><label>Estado Civil</label><span>${esc(p.estadoCivil || '—')}</span></div>
+        <div class="view-field"><label>Comunidade</label><span>${orgName || '—'}</span></div>
       </div>
     </div>
   `;
   
-  // Cônjuge
   if (p.conjuge && p.conjuge.nome) {
     html += `
       <div class="view-section">
@@ -2342,89 +2340,73 @@ function viewPerson(id) {
     `;
   }
   
-  // Filhos
   if (p.filhos && p.filhos.length > 0) {
     html += `
       <div class="view-section">
         <div class="view-section-title">Filhos (${p.filhos.length})</div>
         ${p.filhos.map(f => `
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line);font-size:13px;">
             <span>${esc(f.nome)}</span>
-            <span style="color:var(--ink2)">${formatDate(f.dataNascimento)}</span>
+            <span style="color:var(--ink2);">${formatDate(f.dataNascimento)}</span>
           </div>
         `).join('')}
       </div>
     `;
   }
   
-  // Movimentos Pastorais
-  if (p.movimentosPastorais && p.movimentosPastorais.length > 0) {
-    html += `
-      <div class="view-section">
-        <div class="view-section-title">Movimentos e Pastorais</div>
-        <div class="pastoral-tags">${p.movimentosPastorais.map(m => `<span class="pastoral-tag">${esc(m)}</span>`).join('')}</div>
-      </div>
-    `;
+  if (p.movimentosPastorais) {
+    const movimentosArray = p.movimentosPastorais.split(',').map(s => s.trim()).filter(Boolean);
+    if (movimentosArray.length > 0) {
+      html += `
+        <div class="view-section">
+          <div class="view-section-title">Movimentos e Pastorais</div>
+          <div class="pastoral-tags">${movimentosArray.map(m => `<span class="pastoral-tag">${esc(m)}</span>`).join('')}</div>
+        </div>
+      `;
+    }
   }
 
-
-// ===== SACRAMENTOS NA VIEW =====
-html += `
-  <div class="view-section">
-    <div class="view-section-title">Sacramentos</div>
-    <div class="sacramentos-view-grid">
-      <div class="sacramento-view-item ${p.temEucaristia ? 'recebido' : 'nao-recebido'}">
-        <span class="sacramento-view-icon">${p.temEucaristia ? '✅' : '⬜'}</span>
-        <span>Primeira Eucaristia</span>
-      </div>
-      <div class="sacramento-view-item ${p.temCrisma ? 'recebido' : 'nao-recebido'}">
-        <span class="sacramento-view-icon">${p.temCrisma ? '✅' : '⬜'}</span>
-        <span>Crisma</span>
-      </div>
-      <div class="sacramento-view-item ${p.temMatrimonio ? 'recebido' : 'nao-recebido'}">
-        <span class="sacramento-view-icon">${p.temMatrimonio ? '✅' : '⬜'}</span>
-        <span>Matrimônio</span>
-      </div>
-    </div>
-  </div>
-`;
-
-// ===== VIDA ESPIRITUAL NA VIEW =====
-html += `
-  <div class="view-section">
-    <div class="view-section-title">Vida Espiritual</div>
-    <div class="view-grid">
-      <div class="view-field">
-        <label>Batizado</label>
-        <span>${p.batizado ? '✅ Sim' : (p.desejaBatismo ? '⏳ Deseja ser batizado' : '❌ Não')}</span>
-      </div>
-      <div class="view-field">
-        <label>Catequese</label>
-        <span>${p.catequista ? '✅ Sim' : (p.desejaCatequese ? '⏳ Deseja participar' : '❌ Não')}</span>
-      </div>
-      <div class="view-field">
-        <label>Confissão Regular</label>
-        <span>${p.confessaRegularmente ? '✅ Sim' : '❌ Não'}</span>
-      </div>
-      <div class="view-field">
-        <label>Frequência Missa</label>
-        <span>${p.frequenciaMissa || 'Eventual'}</span>
+  html += `
+    <div class="view-section">
+      <div class="view-section-title">Sacramentos</div>
+      <div class="sacramentos-view-grid">
+        <div class="sacramento-view-item ${p.temEucaristia ? 'recebido' : 'nao-recebido'}">
+          <span>${p.temEucaristia ? '' : '⬜'}</span>
+          <span>Primeira Eucaristia</span>
+        </div>
+        <div class="sacramento-view-item ${p.temCrisma ? 'recebido' : 'nao-recebido'}">
+          <span>${p.temCrisma ? '' : '⬜'}</span>
+          <span>Crisma</span>
+        </div>
+        <div class="sacramento-view-item ${p.temMatrimonio ? 'recebido' : 'nao-recebido'}">
+          <span>${p.temMatrimonio ? '' : '⬜'}</span>
+          <span>Matrimônio</span>
+        </div>
       </div>
     </div>
-  </div>
-`;
+  `;
+
+  html += `
+    <div class="view-section">
+      <div class="view-section-title">Vida Espiritual</div>
+      <div class="view-grid">
+        <div class="view-field"><label>Batizado</label><span>${p.batizado ? ' Sim' : (p.desejaBatismo ? ' Deseja' : ' Não')}</span></div>
+        <div class="view-field"><label>Catequese</label><span>${p.catequista ? ' Sim' : (p.desejaCatequese ? ' Deseja' : ' Não')}</span></div>
+        <div class="view-field"><label>Confissão</label><span>${p.confessaRegularmente ? ' Sim' : ' Não'}</span></div>
+        <div class="view-field"><label>Frequência Missa</label><span>${p.frequenciaMissa || 'Eventual'}</span></div>
+      </div>
+    </div>
+  `;
   
-  // Observação
   if (p.observacao) {
     html += `
       <div class="view-section">
         <div class="view-section-title">Observação</div>
-        <div style="font-size:13px;color:var(--ink2)">${esc(p.observacao)}</div>
+        <div style="font-size:13px;color:var(--ink2);">${esc(p.observacao)}</div>
       </div>
     `;
   }
   
-  // Ações admin
   if (isAdmin) {
     html += `
       <div class="view-actions">
@@ -2437,110 +2419,109 @@ html += `
   const modalContent = document.getElementById('view-modal-content');
   if (modalContent) {
     modalContent.innerHTML = html;
-    const modal = document.getElementById('view-modal');
-    modal.classList.remove('hidden');
-  } else {
-    console.error(' Elemento view-modal-content não encontrado no DOM');
+    document.getElementById('view-modal').classList.remove('hidden');
   }
 }
 
+// ===== OPEN MODAL =====
 function openModal(id = null) {
-  
-  if (currentUser?.role !== 'admin') {
-    toast('Acesso negado. Apenas administradores podem editar.', 'error');
+  if (currentUser?.role !== 'SUPER_ADMIN' && currentUser?.role !== 'ADMIN' && currentUser?.role !== 'COORDENADOR') {
+    toast('Acesso negado.', 'error');
     return;
   }
   
   editId = id;
   document.getElementById('modal-title').textContent = id ? 'Editar pessoa' : 'Novo cadastro';
-  document.getElementById('modal-error')?.classList.add('hidden');
   
   // Limpar campos
-  const campos = ['nome', 'nasc', 'tel', 'endereco', 'bairro', 'comunidade', 'estadoCivil', 'conjuge-nome', 'conjuge-data', 'obs', 'ehDizimista', 'codigo-dizimista'];
+  const campos = ['nome', 'nasc', 'tel', 'endereco', 'bairro', 'estadoCivil', 'conjuge-nome', 'conjuge-data', 'obs', 'ehDizimista', 'codigo-dizimista'];
   campos.forEach(f => { 
     const el = document.getElementById('f-' + f); 
     if (el) el.value = ''; 
   });
   
-  const filhosContainer = document.getElementById('filhos-list');
-  if (filhosContainer) filhosContainer.innerHTML = '';
-  
+  document.getElementById('f-organization-id').value = '';
+  document.getElementById('filhos-list').innerHTML = '';
   document.querySelectorAll('.field-error').forEach(el => el.classList.remove('show'));
-  const campoCodigo = document.getElementById('campo-codigo-dizimista');
-  if (campoCodigo) campoCodigo.style.display = 'none';
+  document.getElementById('campo-codigo-dizimista').style.display = 'none';
   
-  if (id) {
-    const p = allPeople.find(x => x.id == id);
-    if (!p) {
-      console.error(' Pessoa não encontrada para editar:', id);
-      toast('Pessoa não encontrada.', 'error');
-      return;
-    }
-    
-    
-    document.getElementById('f-nome').value = p.nomeCompleto || '';
-    document.getElementById('f-nasc').value = p.dataNascimento || '';
-    document.getElementById('f-tel').value = p.telefone || '';
-    document.getElementById('f-endereco').value = p.endereco || '';
-    document.getElementById('f-bairro').value = p.bairro || '';
-    document.getElementById('f-comunidade').value = p.comunidadeParticipa || '';
-    document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
-    document.getElementById('f-obs').value = (p.movimentosPastorais || []).join(', ');
-
-        carregarDadosEspirituais(p);
-
-    
-    // Dados de dizimista
-    const ehDizimistaSelect = document.getElementById('f-ehDizimista');
-    if (ehDizimistaSelect) {
-      ehDizimistaSelect.value = p.codigoDizimista ? 'true' : 'false';
-    }
-    
-    if (p.codigoDizimista) {
-      const codigoInput = document.getElementById('f-codigo-dizimista');
-      if (codigoInput) codigoInput.value = p.codigoDizimista;
-      if (campoCodigo) campoCodigo.style.display = 'block';
-    }
-    
-    if (p.conjuge) {
-      document.getElementById('f-conjuge-nome').value = p.conjuge.nome || '';
-      document.getElementById('f-conjuge-data').value = p.conjuge.dataNascimento || '';
-    }
-    
-    const conjugeDiv = document.getElementById('conjuge-fields');
-    if (conjugeDiv) conjugeDiv.style.display = p.estadoCivil === 'Casado' ? 'block' : 'none';
-    
-    if (p.filhos && p.filhos.length > 0) {
-      p.filhos.forEach(filho => addFilhoField(filho.nome, filho.dataNascimento));
-    }
+  // Mostrar campo de organização para ADMIN e SUPER_ADMIN
+  const isAdmin = currentUser?.role === 'SUPER_ADMIN' || currentUser?.role === 'ADMIN';
+  const orgField = document.getElementById('campo-organization');
+  if (orgField) {
+    orgField.style.display = isAdmin ? 'block' : 'none';
   }
   
-  const modalOverlay = document.getElementById('modal-overlay');
-  if (modalOverlay) {
-    modalOverlay.classList.remove('hidden');
-  } else {
-    console.error(' Elemento modal-overlay não encontrado');
-  }
+  // Carregar organizações no select
+  loadOrganizationsSelect().then(() => {
+    if (id) {
+      const p = allPeople.find(x => x.id == id);
+      if (!p) { toast('Pessoa não encontrada.', 'error'); return; }
+      
+      document.getElementById('f-nome').value = p.nomeCompleto || '';
+      document.getElementById('f-nasc').value = p.dataNascimento || '';
+      document.getElementById('f-tel').value = p.telefone || '';
+      document.getElementById('f-endereco').value = p.endereco || '';
+      document.getElementById('f-bairro').value = p.bairro || '';
+      document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
+      document.getElementById('f-obs').value = p.movimentosPastorais || '';
+      
+      // ✅ CORRIGIDO: definir o valor do select
+      if (p.organizationId) {
+        document.getElementById('f-organization-id').value = p.organizationId;
+        console.log(' Organização carregada:', p.organizationId);
+      }
+      
+      carregarDadosEspirituais(p);
+      
+      document.getElementById('f-ehDizimista').value = p.codigoDizimista ? 'true' : 'false';
+      if (p.codigoDizimista) {
+        document.getElementById('f-codigo-dizimista').value = p.codigoDizimista;
+        document.getElementById('campo-codigo-dizimista').style.display = 'block';
+      }
+      
+      if (p.conjuge) {
+        document.getElementById('f-conjuge-nome').value = p.conjuge.nome || '';
+        document.getElementById('f-conjuge-data').value = p.conjuge.dataNascimento || '';
+      }
+      document.getElementById('conjuge-fields').style.display = p.estadoCivil === 'Casado' ? 'block' : 'none';
+      
+      if (p.filhos && p.filhos.length > 0) {
+        p.filhos.forEach(filho => addFilhoField(filho.nome, filho.dataNascimento));
+      }
+    }
+  });
+  
+  document.getElementById('modal-overlay').classList.remove('hidden');
 }
 
-// Controle de exibição do campo de código
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+  editId = null;
+}
+
+// ===== FILHOS =====
+function addFilhoField(nome = '', data = '') {
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;';
+  div.innerHTML = `<input type="text" placeholder="Nome do filho" value="${esc(nome)}" style="flex:2;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;background:#fff;outline:none;" class="filho-nome">
+    <input type="date" value="${data}" style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;background:#fff;outline:none;" class="filho-data">
+    <button type="button" class="btn btn-sm btn-outline" onclick="this.parentElement.remove()">✖</button>`;
+  document.getElementById('filhos-list').appendChild(div);
+}
+
+// ===== TOGGLE CODIGO =====
 function toggleCampoCodigo() {
   const ehDizimista = document.getElementById('f-ehDizimista').value === 'true';
   const campoCodigo = document.getElementById('campo-codigo-dizimista');
-  const inputCodigo = document.getElementById('f-codigo-dizimista');
-  
   if (ehDizimista) {
     campoCodigo.style.display = 'block';
-    if (!inputCodigo.value) {
-      inputCodigo.placeholder = 'Clique em "Gerar código" ou digite manualmente';
-    }
   } else {
     campoCodigo.style.display = 'none';
-    inputCodigo.value = '';
+    document.getElementById('f-codigo-dizimista').value = '';
   }
 }
 
-// Gerar código automático
 async function gerarCodigoDizimista() {
   const inputCodigo = document.getElementById('f-codigo-dizimista');
   const ultimosCodigos = allPeople
@@ -2548,286 +2529,114 @@ async function gerarCodigoDizimista() {
     .map(p => parseInt(p.codigoDizimista))
     .sort((a, b) => b - a);
   
-  let proximoNumero = 10142;
+  let proximoNumero = 10000;
   if (ultimosCodigos.length > 0) {
     proximoNumero = ultimosCodigos[0] + 1;
   }
-  
   inputCodigo.value = proximoNumero.toString();
-  toast(`Código ${proximoNumero} gerado. Você pode alterar se necessário.`, 'info');
+  toast(`Código ${proximoNumero} gerado.`, 'info');
 }
 
-function addFilhoField(nome = '', data = '') {
-  const div = document.createElement('div');
-  div.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
-  div.innerHTML = `<input type="text" placeholder="Nome do filho" value="${esc(nome)}" style="flex:2;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:DM Sans,sans-serif;font-size:14px;background:#fff;outline:none" class="filho-nome">
-    <input type="date" value="${data}" style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:DM Sans,sans-serif;font-size:14px;background:#fff;outline:none" class="filho-data">
-    <button type="button" class="btn btn-sm btn-outline" onclick="this.parentElement.remove()">✖</button>`;
-  document.getElementById('filhos-list').appendChild(div);
+// ===== DADOS ESPIRITUAIS =====
+function carregarDadosEspirituais(pessoa) {
+  const batizadoSelect = document.getElementById('f-batizado');
+  if (pessoa.batizado && !pessoa.desejaBatismo) batizadoSelect.value = 'true';
+  else if (pessoa.desejaBatismo) batizadoSelect.value = 'deseja';
+  else batizadoSelect.value = 'false';
+
+  const catequeseSelect = document.getElementById('f-catequese');
+  if (pessoa.catequista && !pessoa.desejaCatequese) catequeseSelect.value = 'true';
+  else if (pessoa.desejaCatequese) catequeseSelect.value = 'deseja';
+  else catequeseSelect.value = 'false';
+
+  document.getElementById('f-sacramento-eucaristia').checked = pessoa.temEucaristia || false;
+  document.getElementById('f-sacramento-crisma').checked = pessoa.temCrisma || false;
+  document.getElementById('f-sacramento-matrimonio').checked = pessoa.temMatrimonio || false;
+  document.getElementById('f-confessa').value = pessoa.confessaRegularmente ? 'true' : 'false';
+  document.getElementById('f-frequencia-missa').value = pessoa.frequenciaMissa || 'Eventual';
 }
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.add('hidden');
-  editId = null;
-}
-// ===== COLETA DADOS ESPIRITUAIS =====
 function coletarDadosEspirituais() {
-  // Batismo
   const batizadoSelect = document.getElementById('f-batizado');
   const batizadoValue = batizadoSelect?.value || 'false';
   const batizado = batizadoValue === 'true';
   const desejaBatismo = batizadoValue === 'deseja';
 
-  // Catequese
   const catequeseSelect = document.getElementById('f-catequese');
   const catequeseValue = catequeseSelect?.value || 'false';
   const catequista = catequeseValue === 'true';
   const desejaCatequese = catequeseValue === 'deseja';
 
-  // SACRAMENTOS - CAPTURAR CHECKBOX
   const temEucaristia = document.getElementById('f-sacramento-eucaristia')?.checked || false;
   const temCrisma = document.getElementById('f-sacramento-crisma')?.checked || false;
   const temMatrimonio = document.getElementById('f-sacramento-matrimonio')?.checked || false;
-
-  // Confissão
   const confessaRegularmente = document.getElementById('f-confessa')?.value === 'true';
-
-  // Frequência Missa
   const frequenciaMissa = document.getElementById('f-frequencia-missa')?.value || 'Eventual';
 
-  console.log('Dados espirituais coletados:', {
-    batizado,
-    desejaBatismo,
-    catequista,
-    desejaCatequese,
-    temEucaristia,
-    temCrisma,
-    temMatrimonio,
-    confessaRegularmente,
-    frequenciaMissa
-  });
-
   return {
-    batizado,
-    desejaBatismo,
-    catequista,
-    desejaCatequese,
-    confessaRegularmente: confessaRegularmente,
-    frequenciaMissa: frequenciaMissa,
-    temEucaristia: temEucaristia,
-    temCrisma: temCrisma,
-    temMatrimonio: temMatrimonio
+    batizado, desejaBatismo, catequista, desejaCatequese,
+    confessaRegularmente, frequenciaMissa,
+    temEucaristia, temCrisma, temMatrimonio
   };
 }
 
-// ===== CARREGAR DADOS ESPIRITUAIS NA EDIÇÃO =====
-function carregarDadosEspirituais(pessoa) {
-  // Batismo
-  const batizadoSelect = document.getElementById('f-batizado');
-  if (pessoa.batizado && !pessoa.desejaBatismo) {
-    batizadoSelect.value = 'true';
-  } else if (pessoa.desejaBatismo) {
-    batizadoSelect.value = 'deseja';
-  } else {
-    batizadoSelect.value = 'false';
-  }
-
-  // Catequese
-  const catequeseSelect = document.getElementById('f-catequese');
-  if (pessoa.catequista && !pessoa.desejaCatequese) {
-    catequeseSelect.value = 'true';
-  } else if (pessoa.desejaCatequese) {
-    catequeseSelect.value = 'deseja';
-  } else {
-    catequeseSelect.value = 'false';
-  }
-
-  // 🆕 SACRAMENTOS - MARCAR CHECKBOX
-  document.getElementById('f-sacramento-eucaristia').checked = pessoa.temEucaristia || false;
-  document.getElementById('f-sacramento-crisma').checked = pessoa.temCrisma || false;
-  document.getElementById('f-sacramento-matrimonio').checked = pessoa.temMatrimonio || false;
-
-  // Confissão
-  document.getElementById('f-confessa').value = pessoa.confessaRegularmente ? 'true' : 'false';
-
-  // Frequência Missa
-  document.getElementById('f-frequencia-missa').value = pessoa.frequenciaMissa || 'Eventual';
-}
-
-
+// ===== SAVE PERSON =====
 async function savePerson() {
   const saveBtn = document.getElementById('save-btn');
   const currentEditId = editId;
   
-  // ===== VALIDAÇÃO DETALHADA =====
-  const errors = [];
-  
-  // 1. Validar Nome
   const nome = document.getElementById('f-nome')?.value.trim();
-  if (!nome) {
-    errors.push('Nome completo é obrigatório.');
-    document.getElementById('f-nome')?.classList.add('error');
-    document.getElementById('err-nome')?.classList.add('show');
-  } else {
-    document.getElementById('f-nome')?.classList.remove('error');
-    document.getElementById('err-nome')?.classList.remove('show');
-  }
-  
-  // 2. Validar Data de Nascimento
   const nasc = document.getElementById('f-nasc')?.value;
-  if (!nasc || !validateDate(nasc)) {
-    errors.push('Data de nascimento é obrigatória e deve ser válida.');
-    document.getElementById('f-nasc')?.classList.add('error');
-    document.getElementById('err-nasc')?.classList.add('show');
-  } else {
-    document.getElementById('f-nasc')?.classList.remove('error');
-    document.getElementById('err-nasc')?.classList.remove('show');
-  }
-  
-  // 3. Validar Telefone (se preenchido)
   const tel = document.getElementById('f-tel')?.value.trim();
-  if (tel && !/^\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}$/.test(tel)) {
-    errors.push('Telefone inválido. Use o formato (21) 99999-9999.');
-  }
-  
-  // 4. Validar Endereço (opcional, mas se preenchido deve ter tamanho mínimo)
   const endereco = document.getElementById('f-endereco')?.value.trim();
-  if (endereco && endereco.length < 3) {
-    errors.push('Endereço muito curto. Verifique o campo.');
-  }
-  
-  // 5. Validar Bairro (opcional)
   const bairro = document.getElementById('f-bairro')?.value.trim();
-  if (bairro && bairro.length < 2) {
-    errors.push('Bairro muito curto. Verifique o campo.');
-  }
-  
-  // 6. Validar Código do Dizimista (se for dizimista)
+  const ec = document.getElementById('f-estadoCivil')?.value;
   const ehDizimista = document.getElementById('f-ehDizimista')?.value === 'true';
   const codigoDizimista = document.getElementById('f-codigo-dizimista')?.value.trim();
-  
-  if (ehDizimista && !codigoDizimista) {
-    errors.push('Para dizimistas, é necessário informar um código.');
-  }
-  
-  if (codigoDizimista && !/^\d+$/.test(codigoDizimista)) {
-    errors.push('Código do dizimista deve conter apenas números.');
-  }
-  
-  // 7. Validar Movimentos Pastorais (opcional)
   const movsRaw = document.getElementById('f-obs')?.value.trim() || '';
   const movs = movsRaw.split(',').map(s => s.trim()).filter(Boolean);
-  if (movs.length > 0 && movs.some(m => m.length > 50)) {
-    errors.push('Movimentos pastorais muito longos (máx 50 caracteres por item).');
-  }
+  const textoCompleto = movs.join(', ');
+  const orgId = document.getElementById('f-organization-id')?.value || undefined;
   
-  // ===== SE HOUVER ERROS, EXIBE =====
-  if (errors.length > 0) {
-    const errorMessage = errors.join('\n');
-    console.error('Erros de validação:', errors);
-    toast(errorMessage, 'error');
-    document.getElementById('modal-error')?.classList.remove('hidden');
-    document.getElementById('modal-error').textContent = ' Corrija os erros antes de salvar.';
-    return;
-  }
-  
-  // ===== COLETA OS DADOS =====
-  
-  // 1. Filhos
+  // Filhos
   const filhos = [];
-  document.querySelectorAll('.filho-item, #filhos-list > div').forEach(item => {
+  document.querySelectorAll('#filhos-list > div').forEach(item => {
     const nf = item.querySelector('.filho-nome')?.value.trim();
     const df = item.querySelector('.filho-data')?.value;
     if (nf && df) filhos.push({ nome: nf, dataNascimento: df });
   });
   
-  // 2. Movimentos Pastorais
-  const movimentosDigitados = movs;
-  const movimentosValidos = [
-    'PastoralFamiliar', 'PastoralDizimista', 'GrupoOracao',
-    'Liturgia', 'Catequese', 'Coral', 'Acolitos',
-    'MinistroEucaristico', 'LegiaoMaria'
-  ];
-  const movimentosParaEnviar = movimentosDigitados.filter(
-    s => movimentosValidos.includes(s)
-  );
-  const textoCompleto = movimentosDigitados.join(', ');
-  
-  // 3. Cônjuge
   const conjugeNome = document.getElementById('f-conjuge-nome')?.value.trim();
   const conjugeData = document.getElementById('f-conjuge-data')?.value;
+  const espiritual = coletarDadosEspirituais();
   
-  // 4. Estado Civil e Status
-  const ec = document.getElementById('f-estadoCivil')?.value;
-  const status = 'ativo';
+  // Validações básicas
+  if (!nome) { toast('Nome completo é obrigatório.', 'error'); return; }
+  if (!nasc || !validateDate(nasc)) { toast('Data de nascimento inválida.', 'error'); return; }
+  if (ehDizimista && !codigoDizimista) { toast('Para dizimistas, é necessário um código.', 'error'); return; }
   
-  // ===== 🆕 COLETA DADOS ESPIRITUAIS =====
-  
-  // Batismo
-  const batizadoSelect = document.getElementById('f-batizado');
-  const batizadoValue = batizadoSelect?.value || 'false';
-  const batizado = batizadoValue === 'true';
-  const desejaBatismo = batizadoValue === 'deseja';
-  
-  // Catequese
-  const catequeseSelect = document.getElementById('f-catequese');
-  const catequeseValue = catequeseSelect?.value || 'false';
-  const catequista = catequeseValue === 'true';
-  const desejaCatequese = catequeseValue === 'deseja';
-  
-  // Sacramentos
-  const temEucaristia = document.getElementById('f-sacramento-eucaristia')?.checked || false;
-  const temCrisma = document.getElementById('f-sacramento-crisma')?.checked || false;
-  const temMatrimonio = document.getElementById('f-sacramento-matrimonio')?.checked || false;
-  
-  // Confissão
-  const confessaRegularmente = document.getElementById('f-confessa')?.value === 'true';
-  
-  // Frequência Missa
-  const frequenciaMissa = document.getElementById('f-frequencia-missa')?.value || 'Eventual';
-  
-  // ===== MONTA OBJETO =====
   const data = {
-    // Dados básicos
     nomeCompleto: nome,
     dataNascimento: nasc,
-    telefone: tel || undefined,
-    endereco: endereco || undefined,
-    bairro: bairro || undefined,
-    comunidadeParticipa: document.getElementById('f-comunidade')?.value.trim() || undefined,
-    estadoCivil: ec || 'Solteiro',
-    
-    // Dados de dizimista
+    status: 'ativo',
+    ...(tel && { telefone: tel }),
+    ...(endereco && { endereco: endereco }),
+    ...(bairro && { bairro: bairro }),
+    ...(ec && { estadoCivil: ec }),
+    ...(orgId && { organizationId: orgId }),  
     ehDizimista: ehDizimista,
-    codigoDizimista: ehDizimista ? codigoDizimista : null,
-    
-    //  VIDA ESPIRITUAL
-    batizado: batizado,
-    desejaBatismo: desejaBatismo,
-    catequista: catequista,
-    desejaCatequese: desejaCatequese,
-    confessaRegularmente: confessaRegularmente,
-    frequenciaMissa: frequenciaMissa,
-    temEucaristia: temEucaristia,
-    temCrisma: temCrisma,
-    temMatrimonio: temMatrimonio,
-    
-    // Família
-    conjuge: conjugeNome ? { 
-      nome: conjugeNome, 
-      dataNascimento: conjugeData || null 
-    } : undefined,
-    filhos: filhos.length > 0 ? filhos : undefined,
-    
-    // Movimentos e observações
-    movimentosPastorais: movimentosParaEnviar,
-    observacoes: textoCompleto,
-    
-    // Status
-    status: status,
+    ...(codigoDizimista && { codigoDizimista: codigoDizimista }),
+    ...espiritual,
+    ...(conjugeNome && { conjuge: { nome: conjugeNome, dataNascimento: conjugeData || null } }),
+    ...(filhos.length > 0 && { filhos: filhos }),
+    ...(textoCompleto && { movimentosPastorais: textoCompleto }),
+    ...(textoCompleto && { observacoes: textoCompleto }),
   };
   
-  // ===== ENVIA PARA API =====
+  Object.keys(data).forEach(key => {
+    if (data[key] === undefined) delete data[key];
+  });
+  
   saveBtn.disabled = true;
   saveBtn.classList.add('btn-loading');
   saveBtn.textContent = 'Salvando…';
@@ -2838,31 +2647,17 @@ async function savePerson() {
     const result = await apiRequest(endpoint, { method, body: JSON.stringify(data) });
     
     if (!result.ok) {
-      const apiError = result.data?.message || 'Erro ao salvar no servidor.';
-      console.error('Erro da API:', apiError);
-      
-      if (result.data?.errors) {
-        const detalhes = result.data.errors.map(e => `- ${e.field}: ${e.message}`).join('\n');
-        toast(`Erro de validação:\n${detalhes}`, 'error');
-      } else {
-        toast(`${apiError}`, 'error');
-      }
-      
-      throw new Error(apiError);
+      toast(result.data?.message || 'Erro ao salvar.', 'error');
+      return;
     }
     
     closeModal();
-    await loadPeople(true);
-    
-    toast(currentEditId ? ' Pessoa atualizada com sucesso!' : ' Pessoa cadastrada com sucesso!', 'success');
+    await loadAllData();
+    toast(currentEditId ? ' Pessoa atualizada!' : '✅ Pessoa cadastrada!', 'success');
     
   } catch (err) {
     console.error('Erro:', err);
-    const errDiv = document.getElementById('modal-error');
-    if (errDiv) {
-      errDiv.classList.remove('hidden');
-      errDiv.textContent = `${err.message || 'Erro ao salvar. Tente novamente.'}`;
-    }
+    toast('Erro ao salvar.', 'error');
   } finally {
     saveBtn.disabled = false;
     saveBtn.classList.remove('btn-loading');
@@ -2870,18 +2665,16 @@ async function savePerson() {
   }
 }
 
+
+// ===== INATIVAR / REATIVAR =====
 async function inativarPerson(id) {
   const p = allPeople.find(x => x.id == id);
   if (!p) return;
-  const ok = await confirmDialog('Inativar pessoa', `Desativar "${esc(p.nomeCompleto)}"? Os dados serão mantidos.`, 'Inativar', true);
+  const ok = await confirmDialog('Inativar pessoa', `Desativar "${esc(p.nomeCompleto)}"?`, 'Inativar', true);
   if (!ok) return;
   const result = await apiRequest(`/pessoas/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'inativo' }) });
-  if (result.ok) {
-    await loadPeople(true);
-    toast('Pessoa inativada.', 'info');
-  } else {
-    toast(result.data.message || 'Erro ao inativar.', 'error');
-  }
+  if (result.ok) { await loadAllData(); toast('Pessoa inativada.', 'info'); }
+  else toast(result.data?.message || 'Erro ao inativar.', 'error');
 }
 
 async function reativarPerson(id) {
@@ -2890,12 +2683,225 @@ async function reativarPerson(id) {
   const ok = await confirmDialog('Reativar pessoa', `Reativar "${esc(p.nomeCompleto)}"?`, 'Reativar', false);
   if (!ok) return;
   const result = await apiRequest(`/pessoas/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'ativo' }) });
-  if (result.ok) {
-    await loadPeople(true);
-    toast('Pessoa reativada.', 'success');
-  } else {
-    toast(result.data.message || 'Erro ao reativar.', 'error');
+  if (result.ok) { await loadAllData(); toast('Pessoa reativada.', 'success'); }
+  else toast(result.data?.message || 'Erro ao reativar.', 'error');
+}
+
+async function excluirPerson(id) {
+  if (currentUser?.role !== 'SUPER_ADMIN' && currentUser?.role !== 'ADMIN') {
+    toast('Apenas administradores podem excluir.', 'error');
+    return;
   }
+  const p = allPeople.find(x => x.id == id);
+  if (!p) return;
+  const ok = await confirmDialog('Excluir pessoa', `Excluir permanentemente "${esc(p.nomeCompleto)}"?`, 'Excluir', true);
+  if (!ok) return;
+  const result = await apiRequest(`/pessoas/${id}`, { method: 'DELETE' });
+  if (result.ok) { await loadAllData(); toast('Pessoa excluída.', 'info'); }
+  else toast(result.data?.message || 'Erro ao excluir.', 'error');
+}
+
+// ===== USERS =====
+function openUserModal(id = null) {
+  editUserId = id;
+  document.getElementById('user-modal-title').textContent = id ? 'Editar Usuário' : 'Novo Usuário';
+  document.getElementById('fu-nome').value = '';
+  document.getElementById('fu-email').value = '';
+  document.getElementById('fu-username').value = '';
+  document.getElementById('fu-role').value = 'LIDER';
+  document.getElementById('fu-organization-id').value = '';
+  
+  loadOrganizationsSelect();
+  
+  if (id) {
+    const user = allUsers.find(u => u.id === id);
+    if (user) {
+      document.getElementById('fu-nome').value = user.nome || '';
+      document.getElementById('fu-email').value = user.email || '';
+      document.getElementById('fu-username').value = user.username || '';
+      document.getElementById('fu-role').value = user.role || 'LIDER';
+      document.getElementById('fu-organization-id').value = user.organizationId || '';
+    }
+  }
+  document.getElementById('user-modal').classList.remove('hidden');
+}
+
+function closeUserModal() {
+  document.getElementById('user-modal').classList.add('hidden');
+  editUserId = null;
+}
+
+async function saveUser() {
+  const btn = document.getElementById('save-user-btn');
+  const nome = document.getElementById('fu-nome').value.trim();
+  const email = document.getElementById('fu-email').value.trim();
+  const username = document.getElementById('fu-username').value.trim().toLowerCase();
+  const role = document.getElementById('fu-role').value;
+  const organizationId = document.getElementById('fu-organization-id').value || undefined;
+  
+  if (!nome || !email || !username) {
+    toast('Preencha todos os campos obrigatórios.', 'error');
+    return;
+  }
+  
+  if ((role === 'COORDENADOR' || role === 'LIDER') && !organizationId) {
+    const confirm = await confirmDialog('Atenção', `${getRoleLabel(role)} deve estar vinculado a uma comunidade. Continuar?`, 'Continuar', false);
+    if (!confirm) return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = 'Salvando…';
+  
+  try {
+    const data = { nome, email, username, role, organizationId, password: 'jesus33' };
+    const endpoint = editUserId ? `/users/${editUserId}` : '/users';
+    const method = editUserId ? 'PATCH' : 'POST';
+    
+    if (editUserId) {
+      delete data.username;
+      delete data.password;
+    }
+    
+    const result = await apiRequest(endpoint, { method, body: JSON.stringify(data) });
+    
+    if (result.ok) {
+      closeUserModal();
+      await loadAllData();
+      toast(editUserId ? ' Usuário atualizado!' : ' Usuário criado! Senha: jesus33', 'success');
+    } else {
+      toast(result.data?.message || 'Erro ao salvar.', 'error');
+    }
+  } catch (err) {
+    toast('Erro ao salvar.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Salvar';
+  }
+}
+
+function renderUsersTable(users) {
+  const tbody = document.getElementById('users-tbody');
+  const empty = document.getElementById('users-empty');
+  if (!tbody) return;
+  
+  if (!users || users.length === 0) {
+    tbody.innerHTML = '';
+    empty?.classList.remove('hidden');
+    return;
+  }
+  empty?.classList.add('hidden');
+  
+  tbody.innerHTML = users.map(u => {
+    const orgName = u.organizationId ? allOrganizations.find(o => o.id === u.organizationId)?.nome || 'ID: ' + u.organizationId.substring(0,8) : '—';
+    return `
+      <tr>
+        <td><strong>${esc(u.nome)}</strong></td>
+        <td>${esc(u.email || '-')}</td>
+        <td><span class="badge badge-${u.role === 'SUPER_ADMIN' ? 'indigo' : u.role === 'ADMIN' ? 'amber' : u.role === 'COORDENADOR' ? 'info' : 'neutral'}">${getRoleLabel(u.role)}</span></td>
+        <td>${esc(orgName)}</td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-sm btn-outline" onclick="editUser('${u.id}')">✏️</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function editUser(id) { openUserModal(id); }
+async function deleteUser(id) {
+  const user = allUsers.find(u => u.id === id);
+  if (!user) return;
+  const ok = await confirmDialog('Excluir Usuário', `Excluir "${user.nome}"?`, 'Excluir', true);
+  if (!ok) return;
+  const result = await apiRequest(`/users/${id}`, { method: 'DELETE' });
+  if (result.ok) { await loadAllData(); toast('Usuário excluído.', 'info'); }
+  else toast(result.data?.message || 'Erro ao excluir.', 'error');
+}
+
+// ===== ORGANIZATIONS =====
+function openOrgModal(id = null) {
+  editOrgId = id;
+  document.getElementById('org-modal-title').textContent = id ? 'Editar Comunidade' : 'Nova Comunidade';
+  document.getElementById('fo-nome').value = '';
+  document.getElementById('fo-coordenador-id').value = '';
+  document.getElementById('fo-codigo-inicial').value = '10000';
+  
+  loadOrganizationsSelect();
+  // Carregar usuários para o select de coordenador
+  loadUsersList().then(() => {
+    const select = document.getElementById('fo-coordenador-id');
+    const currentValue = select.value;
+    select.innerHTML = '<option value="">Selecione um coordenador</option>';
+    allUsers.forEach(u => {
+      const option = document.createElement('option');
+      option.value = u.id;
+      option.textContent = `${u.nome} (${getRoleLabel(u.role)})`;
+      select.appendChild(option);
+    });
+    if (currentValue) select.value = currentValue;
+  });
+  
+  if (id) {
+    const org = allOrganizations.find(o => o.id === id);
+    if (org) {
+      document.getElementById('fo-nome').value = org.nome || '';
+      document.getElementById('fo-coordenador-id').value = org.coordenador?.id || '';
+      document.getElementById('fo-codigo-inicial').value = org.proximoCodigoDizimista || '10000';
+    }
+  }
+  document.getElementById('org-modal').classList.remove('hidden');
+}
+
+function closeOrgModal() {
+  document.getElementById('org-modal').classList.add('hidden');
+  editOrgId = null;
+}
+
+async function saveOrganization() {
+  const btn = document.getElementById('save-org-btn');
+  const nome = document.getElementById('fo-nome').value.trim();
+  const coordenadorId = document.getElementById('fo-coordenador-id').value || undefined;
+  const ultimoCodigoDizimista = parseInt(document.getElementById('fo-codigo-inicial').value) || 10000;
+  
+  if (!nome) { toast('Informe o nome da comunidade.', 'error'); return; }
+  
+  btn.disabled = true;
+  btn.textContent = 'Salvando…';
+  
+  try {
+    const data = { nome, coordenadorId, ultimoCodigoDizimista };
+    const endpoint = editOrgId ? `/organizations/${editOrgId}` : '/organizations';
+    const method = editOrgId ? 'PATCH' : 'POST';
+    
+    const result = await apiRequest(endpoint, { method, body: JSON.stringify(data) });
+    
+    if (result.ok) {
+      closeOrgModal();
+      await loadAllData();
+      toast(editOrgId ? ' Comunidade atualizada!' : ' Comunidade criada!', 'success');
+    } else {
+      toast(result.data?.message || 'Erro ao salvar.', 'error');
+    }
+  } catch (err) {
+    toast('Erro ao salvar.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Salvar';
+  }
+}
+
+function editOrganization(id) { openOrgModal(id); }
+async function deleteOrganization(id) {
+  const org = allOrganizations.find(o => o.id === id);
+  if (!org) return;
+  const ok = await confirmDialog('Excluir Comunidade', `Excluir "${org.nome}"?`, 'Excluir', true);
+  if (!ok) return;
+  const result = await apiRequest(`/organizations/${id}`, { method: 'DELETE' });
+  if (result.ok) { await loadAllData(); toast('Comunidade excluída.', 'info'); }
+  else toast(result.data?.message || 'Erro ao excluir.', 'error');
 }
 
 // ===== BIRTHDAYS =====
@@ -2910,35 +2916,24 @@ function buildYearFilter() {
     sel.appendChild(o);
   }
 }
-
-let currentOpenMonth = null;
-function toggleMonth(mi) {
-  if (currentOpenMonth != null && currentOpenMonth !== mi) {
-    document.getElementById(`content-${currentOpenMonth}`)?.classList.remove('open');
-    document.getElementById(`arrow-${currentOpenMonth}`)?.classList.remove('open');
-  }
-  const c = document.getElementById(`content-${mi}`);
-  const a = document.getElementById(`arrow-${mi}`);
-  c?.classList.toggle('open');
-  a?.classList.toggle('open');
-  currentOpenMonth = c?.classList.contains('open') ? mi : null;
-}
+let _birthdayMonthsData = [];
+let _openMonths = new Set();
 
 function renderBirthdays() {
   const container = document.getElementById('birthday-content');
   if (!container) return;
 
-  const dizimistaFilter = document.getElementById('birthday-dizimista-filter')?.value || 'dizimistas';
-  
   let ativos = allPeople.filter(p => p.status === 'ativo');
-  
+  if (currentContext.type === 'comunidade' && currentContext.id) {
+    ativos = ativos.filter(p => p.organizationId === currentContext.id);
+  }
+
+  const dizimistaFilter = document.getElementById('birthday-dizimista-filter')?.value || 'dizimistas';
   if (dizimistaFilter === 'dizimistas') {
     ativos = ativos.filter(p => p.codigoDizimista);
   }
 
-  const now = new Date(),
-    cm = now.getMonth(),
-    cd = now.getDate();
+  const now = new Date(), cm = now.getMonth(), cd = now.getDate();
   const sel = document.getElementById('birthday-year-filter');
   const yr = sel ? parseInt(sel.value) : now.getFullYear();
 
@@ -2947,40 +2942,35 @@ function renderBirthdays() {
     if (!p.dataNascimento) return;
     const partes = p.dataNascimento.split('-');
     if (partes.length !== 3) return;
-    const ano = parseInt(partes[0]);
-    const mes = parseInt(partes[1]);
-    const dia = parseInt(partes[2]);
+    const ano = parseInt(partes[0]), mes = parseInt(partes[1]), dia = parseInt(partes[2]);
     if (isNaN(ano) || isNaN(mes) || isNaN(dia)) return;
-    byMonth[mes - 1].push({ 
-      ...p, 
-      _day: dia, 
-      _idade: yr - ano, 
-      _mirim: (yr - ano) < 16 
-    });
+    byMonth[mes - 1].push({ ...p, _day: dia, _idade: yr - ano, _mirim: (yr - ano) < 16 });
   });
   byMonth.forEach(m => m.sort((a, b) => a._day - b._day));
 
-  const mirimStyle = (m) => m ? 'background:#2196F3' : '';
-  const mirimName = (m) => m ? 'color:#2196F3' : '';
+  _birthdayMonthsData = byMonth;
 
-  const desktopHtml = MONTHS.map((mn, mi) => {
+  const html = MONTHS.map((mn, mi) => {
     if (!byMonth[mi].length) return '';
-    const isThis = mi === cm && yr === now.getFullYear();
+    const isOpen = _openMonths.has(mi);
     return `<div class="month-section">
-      <div class="month-header">
+      <div class="month-header" onclick="toggleMonth(${mi})">
+        <span class="month-toggle-icon ${isOpen ? 'open' : ''}" id="month-icon-${mi}">▸</span>
         <span class="month-name">${mn}</span>
         <span class="month-count">${byMonth[mi].length}</span>
-        <button class="btn btn-sm btn-outline" onclick="copyMonthList(${mi})" style="padding:4px 10px;font-size:12px">Copiar lista</button>
-        ${isThis ? '<span style="font-size:12px;color:var(--amber-500);font-weight:500">✦ Este mês</span>' : ''}
+        <div class="month-actions" onclick="event.stopPropagation()">
+          <button class="btn btn-sm btn-outline" onclick="copyMonthList(${mi}, false)">Copiar</button>
+          <button class="btn btn-sm btn-outline" onclick="copyMonthList(${mi}, true)">Copiar com data</button>
+        </div>
       </div>
-      <div class="birthday-grid">
+      <div class="birthday-grid month-content ${isOpen ? '' : 'collapsed'}" id="month-content-${mi}">
         ${byMonth[mi].map(p => {
-          const today = isThis && p._day === cd;
-          return `<div class="birthday-card" style="${p._mirim ? 'border-color:#2196F3;background:rgba(33,150,243,0.04)' : ''}${today ? ';border-color:var(--amber-500);background:#fffbeb' : ''}">
-            <div class="bday-day" style="${mirimStyle(p._mirim)}${today ? ';background:var(--amber-500)' : ''}">${p._day}</div>
-            <div class="bday-info">
-              <div class="bday-name" style="${mirimName(p._mirim)}">${esc(p.nomeCompleto)}</div>
-              <div class="bday-age">${p._idade} anos${today ? ' 🎉' : ''}${p._mirim ? ' · Mirim' : ''}</div>
+          const today = mi === cm && p._day === cd;
+          return `<div class="birthday-card" style="${today ? 'border-color:var(--amber-500);background:#fffbeb;' : ''}">
+            <div class="bday-day" style="${today ? 'background:var(--amber-500);' : ''}">${p._day}</div>
+            <div>
+              <div class="bday-name">${esc(p.nomeCompleto)}</div>
+              <div class="bday-age">${p._idade} anos${today ? ' 🎉' : ''}</div>
             </div>
           </div>`;
         }).join('')}
@@ -2988,60 +2978,40 @@ function renderBirthdays() {
     </div>`;
   }).join('');
 
-  const mobileHtml = MONTHS.map((mn, mi) => {
-    if (!byMonth[mi].length) return '';
-    const isThis = mi === cm && yr === now.getFullYear();
-    return `<div class="month-accordion">
-      <div class="month-accordion-header" onclick="toggleMonth(${mi})">
-        <div class="left">
-          <span class="month-name" style="font-size:1.1rem;font-weight:500">${mn}</span>
-          <span class="month-count">${byMonth[mi].length}</span>
-          ${isThis ? '<span style="font-size:11px;color:var(--amber-500)">✦</span>' : ''}
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();copyMonthList(${mi})" style="padding:3px 8px;font-size:11px">Copiar</button>
-          <span class="arrow" id="arrow-${mi}">▼</span>
-        </div>
-      </div>
-      <div class="month-accordion-content" id="content-${mi}">
-        <div class="birthday-list">
-          ${byMonth[mi].map(p => `<div class="birthday-item">
-            <div class="day" style="${mirimStyle(p._mirim)}">${p._day}</div>
-            <div class="info">
-              <div class="name" style="${mirimName(p._mirim)}">${esc(p.nomeCompleto)}</div>
-              <div class="details">${p._idade} anos${p._mirim ? ' · Mirim' : ''}</div>
-            </div>
-          </div>`).join('')}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-
-  const isMobile = window.innerWidth <= 768;
-  const content = (isMobile ? mobileHtml : desktopHtml) || `<div class="empty-state"><div class="es-icon">🎂</div><h3>Nenhum aniversariante</h3></div>`;
-  container.innerHTML = content;
+  container.innerHTML = html || `<div class="empty-state"><div class="es-icon">🎂</div><h3>Nenhum aniversariante</h3></div>`;
 }
 
-function copyMonthList(mi) {
-  const yr = parseInt(document.getElementById('birthday-year-filter')?.value) || new Date().getFullYear();
-  
-  const dizimistaFilter = document.getElementById('birthday-dizimista-filter')?.value || 'dizimistas';
-  
-  let list = allPeople.filter(p => p.status === 'ativo' && p.dataNascimento && +p.dataNascimento.split('-')[1] - 1 === mi);
-  
-  if (dizimistaFilter === 'dizimistas') {
-    list = list.filter(p => p.codigoDizimista);
-  }
-  
-  list.sort((a, b) => +a.dataNascimento.split('-')[2] - +b.dataNascimento.split('-')[2]);
-  
-  if (!list.length) {
-    toast(`Nenhum aniversariante em ${MONTHS[mi]}.`, 'info');
-    return;
-  }
-  
-  const txt = `${MONTHS[mi]}:\n\n${list.map((p, i) => `${i + 1}. ${esc(p.nomeCompleto)}`).join('\n')}`;
-  navigator.clipboard.writeText(txt).then(() => toast(`Lista de ${list.length} aniversariantes copiada!`, 'success'));
+function toggleMonth(mi) {
+  const content = document.getElementById(`month-content-${mi}`);
+  const icon = document.getElementById(`month-icon-${mi}`);
+  if (!content) return;
+  const willOpen = content.classList.contains('collapsed');
+  content.classList.toggle('collapsed', !willOpen);
+  icon?.classList.toggle('open', willOpen);
+  if (willOpen) _openMonths.add(mi); else _openMonths.delete(mi);
+}
+
+function copyMonthList(mi, withDate) {
+  const pessoas = _birthdayMonthsData[mi] || [];
+  if (!pessoas.length) { toast('Nenhum aniversariante neste mês.', 'info'); return; }
+
+  const lines = pessoas.map(p => {
+    const nomeMaiusculo = (p.nomeCompleto || '').toUpperCase();
+    if (withDate) {
+      const diaFmt = String(p._day).padStart(2, '0');
+      const mesFmt = String(mi + 1).padStart(2, '0');
+      return `${p.nomeCompleto} - ${diaFmt}/${mesFmt}`;
+    }
+    return nomeMaiusculo;
+  });
+
+  const texto = lines.join('\n');
+
+  navigator.clipboard.writeText(texto).then(() => {
+    toast(withDate ? 'Lista com datas copiada!' : 'Lista de nomes copiada!', 'success');
+  }).catch(() => {
+    toast('Não foi possível copiar. Tente novamente.', 'error');
+  });
 }
 
 
@@ -3055,229 +3025,351 @@ async function processExcelFile(file) {
     document.head.appendChild(s);
     await new Promise(res => s.onload = res);
   }
+  
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
-      const wb   = XLSX.read(e.target.result, { type: 'binary' });
+      const wb = XLSX.read(e.target.result, { type: 'binary' });
       const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+      
       let added = 0, errors = 0;
-      for (const row of rows) {
+      const errorDetails = [];
+      
+      for (const [index, row] of rows.entries()) {
         try {
           const nome = (row['Nome'] || row['nome'] || '').toString().trim();
-          if (!nome) { errors++; continue; }
-          const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString();
-          const partes  = nascRaw.split('/');
-          if (partes.length !== 3) { errors++; continue; }
-          const dataNascimento = `${partes[2]}-${partes[1]}-${partes[0]}`;
-          const pd = { nomeCompleto: nome, dataNascimento, ehDizimista: true, status: 'ativo', movimentosPastorais: [], filhos: [] };
-          const tel = (row['Telefone']||'').toString().trim(); if (tel) pd.telefone = tel;
-          const end = (row['Endereco']||row['Endereço']||'').toString().trim(); if (end) pd.endereco = end;
-          const bai = (row['Bairro']||'').toString().trim(); if (bai) pd.bairro = bai;
-          const cod = (row['Código dizimista']||'').toString().trim(); if (cod) pd.codigoDizimista = cod;
-          const resp = await fetch(`${API_URL}/pessoas`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pd) });
-          resp.ok ? added++ : errors++;
-        } catch { errors++; }
+          if (!nome) { errors++; errorDetails.push(`Linha ${index+2}: Nome vazio`); continue; }
+          
+          const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString().trim();
+          let dataNascimento = null;
+          if (nascRaw) {
+            const partes = nascRaw.split('/');
+            if (partes.length === 3) {
+              dataNascimento = `${partes[2]}-${partes[1].padStart(2,'0')}-${partes[0].padStart(2,'0')}`;
+            }
+          }
+          if (!dataNascimento) { errors++; errorDetails.push(`Linha ${index+2}: Data inválida`); continue; }
+          
+          const pessoaData = {
+            nomeCompleto: nome,
+            dataNascimento: dataNascimento,
+            status: 'ativo',
+            ehDizimista: true,
+          };
+          
+          const codigo = (row['Código dizimista'] || '').toString().trim();
+          if (codigo) pessoaData.codigoDizimista = codigo;
+          
+          const conjuge = (row['Conjuge'] || '').toString().trim();
+          if (conjuge) pessoaData.conjuge = { nome: conjuge, dataNascimento: null };
+          
+          const comunidade = (row['comunidade'] || row['Comunidade'] || '').toString().trim();
+          if (comunidade) pessoaData.comunidadeContribui = comunidade;
+          
+          const endereco = (row['Endereço'] || row['Endereco'] || '').toString().trim();
+          if (endereco) pessoaData.endereco = endereco;
+          
+          const bairro = (row['Bairro'] || '').toString().trim();
+          if (bairro) pessoaData.bairro = bairro;
+          
+          const telefone = (row['Telefone'] || '').toString().trim();
+          if (telefone) pessoaData.telefone = telefone;
+          
+          const resp = await fetch(`${API_URL}/pessoas`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            },
+            body: JSON.stringify(pessoaData)
+          });
+          
+          if (resp.ok) added++;
+          else { errors++; errorDetails.push(`Linha ${index+2}: ${await resp.text()}`); }
+          
+        } catch (err) {
+          errors++;
+          errorDetails.push(`Linha ${index+2}: ${err.message}`);
+        }
       }
-      await loadPeople(true);
+      
+      await loadAllData();
       const res = document.getElementById('import-result');
       res.classList.remove('hidden');
-      res.innerHTML = `<div class="alert alert-success">✓ ${added} pessoa(s) importadas!${errors ? ` ${errors} erro(s) ignorados.` : ''}</div>`;
-      setTimeout(() => res.classList.add('hidden'), 5000);
-      toast(`Importação concluída: ${added} adicionados.`, 'success');
-    } catch (err) { toast('Erro ao processar o arquivo.', 'error'); }
+      res.innerHTML = `<div class="alert alert-${errors > 0 ? 'error' : 'success'}">
+        <strong>${added} importadas!</strong> ${errors > 0 ? `${errors} erros.` : ''}
+        ${errorDetails.slice(0,3).join('<br>')}
+      </div>`;
+      setTimeout(() => res.classList.add('hidden'), 8000);
+      
+    } catch (err) {
+      toast('Erro ao processar: ' + err.message, 'error');
+    }
   };
   reader.readAsBinaryString(file);
 }
 
 window.downloadTemplate = function() {
-  if (!window.XLSX) { toast('Aguarde, carregando biblioteca…', 'info'); return; }
-  const ws = XLSX.utils.aoa_to_sheet([['Nome','Código dizimista','Data de nascimento','Conjuge','Data nascimento conjuge','Telefone','Endereco','Bairro']]);
+  if (!window.XLSX) { toast('Carregando...', 'info'); return; }
+  const ws = XLSX.utils.aoa_to_sheet([['Nome','Código dizimista','Data de nascimento','Conjuge','Telefone','Endereco','Bairro']]);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Dizimistas');
   XLSX.writeFile(wb, 'modelo_dizimistas.xlsx');
 };
 
 // ===== PDF =====
-let pdfLibLoaded = false;
-let fileSaverLoaded = false;
-
-async function loadPDFLib() {
-  if (pdfLibLoaded) return;
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js');
-  pdfLibLoaded = true;
-}
-
-async function loadFileSaver() {
-  if (fileSaverLoaded) return;
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js');
-  fileSaverLoaded = true;
-}
-
 async function generatePDF(id) {
   const person = allPeople.find(p => p.id == id);
   if (!person) { toast('Pessoa não encontrada.', 'error'); return; }
-  
-  toast('Preparando PDF...', 'info');
-  
-  await Promise.all([loadPDFLib(), loadFileSaver()]);
-  
-  try {
-    let pdfDoc;
-    try {
-      const r = await fetch('templates/ficha_dizimistas_modelo.pdf');
-      if (!r.ok) throw new Error();
-      pdfDoc = await PDFLib.PDFDocument.load(await r.arrayBuffer());
-    } catch {
-      pdfDoc = await PDFLib.PDFDocument.create();
-      pdfDoc.addPage([600, 800]);
-    }
-    const pages = pdfDoc.getPages(), page = pages[0], { height } = page.getSize();
-    const font     = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
-    const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-    const draw = (txt, x, y, size = 11, bold = false) => {
-      if (txt) try { page.drawText(String(txt), { x, y: height - y, size, font: bold ? fontBold : font }); } catch {}
-    };
-    const fmtDate = s => { if (!s) return ''; const d = new Date(s); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; };
-
-    draw(person.nomeCompleto, 80, 120, 14, true);
-    draw('Nascimento: ' + fmtDate(person.dataNascimento), 80, 150, 11);
-    draw('Telefone: ' + (person.telefone||'—'), 80, 170, 11);
-    draw('Endereço: ' + (person.endereco||'—'), 80, 210, 11);
-    draw('Bairro: '   + (person.bairro||'—'),   80, 230, 11);
-    if (person.conjuge?.nome) {
-      draw('CÔNJUGE:', 80, 290, 12, true);
-      draw('Nome: ' + person.conjuge.nome, 80, 310, 11);
-      draw('Data: ' + fmtDate(person.conjuge.dataNascimento), 80, 330, 11);
-    }
-    if (person.filhos?.length) {
-      draw('FILHOS:', 80, 370, 12, true);
-      person.filhos.slice(0,6).forEach((f,i) => draw(`${i+1}. ${f.nome}`, 80, 390 + i*18, 10));
-    }
-    if (person.movimentosPastorais?.length) {
-      draw('MOVIMENTOS:', 80, 500, 12, true);
-      draw(person.movimentosPastorais.join(', '), 80, 520, 10);
-    }
-    const bytes = await pdfDoc.save();
-    saveAs(new Blob([bytes], { type: 'application/pdf' }), `Ficha_${person.nomeCompleto.replace(/\s+/g,'_')}.pdf`);
-    toast('PDF gerado com sucesso.', 'success');
-  } catch (err) { toast('Erro ao gerar PDF: ' + err.message, 'error'); }
-}
-
-function loadScript(src) {
-  return new Promise((res, rej) => {
-    if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
-    const s = document.createElement('script'); s.src = src;
-    s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
-  });
+  toast('PDF em desenvolvimento.', 'info');
 }
 
 // ===== EXPORT =====
 function exportToJSON() {
   const data = allPeople.map(({ id, createdAt, ...rest }) => rest);
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a    = document.createElement('a');
-  a.href     = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
   a.download = `dados_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(a.href);
   toast('Dados exportados.', 'success');
 }
 
-
 // ===== PENDENTES =====
 async function carregarPendentes() {
   const container = document.getElementById('pendentes-list');
   if (!container) return;
   
-  container.innerHTML = '<div class="loading">Carregando...</div>';
+  container.innerHTML = '<div style="text-align:center;padding:20px;">Carregando...</div>';
   
+  //  Usando a rota correta que existe no backend
   const result = await apiRequest('/pessoas/pendentes/aprovar');
   
-  if (!result.ok || !result.data.length) {
+  if (!result.ok) {
+    container.innerHTML = `<div class="alert alert-error">Erro ao carregar pendentes: ${result.data?.message || 'Erro desconhecido'}</div>`;
+    return;
+  }
+  
+  if (!result.data || result.data.length === 0) {
     container.innerHTML = '<div class="empty-state"><div class="es-icon"></div><h3>Nenhum pendente</h3><p>Todos os cadastros foram processados.</p></div>';
     return;
   }
-container.innerHTML = result.data.map(p => {
-  const diasPendente = Math.floor((new Date() - new Date(p.createdAt)) / (1000 * 60 * 60 * 24));
-  const tempoTexto = diasPendente === 0 ? 'hoje' : `há ${diasPendente} dias`;
   
-  return `
-    <div class="pendente-card" style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
-        <div style="flex:1">
-          <strong style="font-size:1rem">${esc(p.nomeCompleto)}</strong>
-          
-          <div style="font-size:12px;color:var(--ink2);margin-top:4px">
-             ${formatDate(p.dataNascimento)} |  ${p.telefone || '—'}
+  // Mapear os dados
+  const pendentes = result.data.map(mapPerson);
+  
+  container.innerHTML = pendentes.map(p => `
+    <div class="person-card" style="border-left:4px solid var(--amber-500);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-weight:600;">${esc(p.nomeCompleto)}</div>
+          <div style="font-size:12px;color:var(--ink2);">
+            📅 ${formatDate(p.dataNascimento)} | 📞 ${p.telefone || '—'}
           </div>
-          
-          <div style="font-size:12px;color:var(--ink2);margin-top:2px">
-             ${p.endereco || ''} ${p.bairro ? `- ${p.bairro}` : ''}
+          <div style="font-size:12px;color:var(--ink2);">
+            🏛️ ${p.comunidadeParticipa || 'Sem comunidade'}
           </div>
-          
-          <div style="font-size:12px;color:var(--ink2);margin-top:4px">
-             Situação: ${p.situacaoDizimista === 'JaDizimista' ? 'Já é dizimista' : 'Deseja ser dizimista'}
-          </div>
-          
-          <div style="font-size:11px;color:var(--ink2);margin-top:6px;display:flex;align-items:center;gap:4px">
-             Cadastrado ${tempoTexto}
+          <div style="font-size:11px;color:var(--ink-3);margin-top:2px;">
+            🕐 Cadastrado em: ${new Date(p.createdAt).toLocaleDateString('pt-BR')}
           </div>
         </div>
-        
-        <div style="display:flex;gap:8px;flex-shrink:0">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="btn btn-sm btn-green" onclick="aprovarPendente('${p.id}', true)"> Aprovar</button>
           <button class="btn btn-sm btn-danger" onclick="aprovarPendente('${p.id}', false)"> Rejeitar</button>
+          <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')">👁️ Ver</button>
         </div>
       </div>
     </div>
-  `;
-}).join('');
+  `).join('');
 }
+
 
 async function aprovarPendente(id, aprovado) {
   const acao = aprovado ? 'aprovar' : 'rejeitar';
-  if (!confirm(`Tem certeza que deseja ${acao} este cadastro?`)) return;
   
-  const motivo = aprovado ? null : prompt('Informe o motivo da rejeição (opcional):');
+  //  Usar confirmDialog (mais bonito)
+  const ok = await confirmDialog(
+    acao === 'aprovar' ? ' Aprovar cadastro' : ' Rejeitar cadastro',
+    `Tem certeza que deseja ${acao} este cadastro?`,
+    acao === 'aprovar' ? 'Aprovar' : 'Rejeitar',
+    !aprovado // danger = true para rejeitar
+  );
   
+  if (!ok) return;
+  
+  let motivo = null;
+  if (!aprovado) {
+    motivo = prompt('Informe o motivo da rejeição (opcional):');
+    if (motivo === null) return; // Cancelou
+  }
+  
+  //  Rota correta
   const result = await apiRequest(`/pessoas/${id}/aprovar`, {
     method: 'PATCH',
     body: JSON.stringify({ 
       aprovado, 
-      observacao: motivo || undefined 
+      observacao: motivo || (aprovado ? 'Aprovado' : 'Rejeitado')
     })
   });
   
   if (result.ok) {
-    toast(`Cadastro ${aprovado ? 'aprovado' : 'rejeitado'} com sucesso!`, 'success');
-    carregarPendentes();
-    loadPeople();
+    toast(` Cadastro ${aprovado ? 'aprovado' : 'rejeitado'} com sucesso!`, 'success');
+    await carregarPendentes();
+    await loadAllData();
   } else {
-    toast('Erro ao processar aprovação', 'error');
+    toast(` Erro ao ${acao}: ${result.data?.message || 'Erro desconhecido'}`, 'error');
   }
+}
+
+
+// ===== LOGIN =====
+async function doLogin() {
+  const btn = document.getElementById('login-btn');
+  const errDiv = document.getElementById('login-error');
+  const usernameOuEmail = document.getElementById('inp-user').value.trim();
+  const password = document.getElementById('inp-pass').value;
+
+  errDiv.classList.add('hidden');
+  if (!usernameOuEmail || !password) {
+    errDiv.classList.remove('hidden');
+    errDiv.textContent = 'Preencha usuário e senha.';
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.classList.add('btn-loading');
+  btn.textContent = 'Entrando…';
+  
+  try {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usernameOuEmail, password })
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      if (result.token) sessionStorage.setItem('token', result.token);
+      
+      const user = result.user || {};
+      currentUser = { 
+        id: user.id,
+        name: user.nome || usernameOuEmail, 
+        role: user.role || 'LIDER',
+        organizationId: user.organizationId || null,
+        organizationName: user.organizationName || null,
+        label: getRoleLabel(user.role)
+      };
+      
+      sessionStorage.setItem('user', JSON.stringify(currentUser));
+      
+      applyRole();
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      
+      await loadAllData();
+      showPage('dashboard');
+      toast('Login realizado com sucesso!', 'success');
+      
+    } else {
+      errDiv.classList.remove('hidden');
+      errDiv.textContent = result.message || 'Usuário ou senha incorretos.';
+    }
+    
+  } catch (error) {
+    errDiv.classList.remove('hidden');
+    errDiv.textContent = 'Erro ao conectar com o servidor.';
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('btn-loading');
+    btn.textContent = 'Acessar';
+  }
+}
+
+function getRoleLabel(role) {
+  const labels = {
+    'SUPER_ADMIN': 'Super Admin',
+    'ADMIN': 'Admin',
+    'COORDENADOR': 'Coordenador',
+    'LIDER': 'Líder'
+  };
+  return labels[role] || 'Usuário';
+}
+
+function logout() {
+  currentUser = null;
+  sessionStorage.removeItem('token');
+  allPeople = [];
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('inp-user').value = '';
+  document.getElementById('inp-pass').value = '';
+}
+
+function applyRole() {
+  const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
+  const isAdmin = currentUser?.role === 'ADMIN' || isSuperAdmin;
+  const isCoordinator = currentUser?.role === 'COORDENADOR';
+
+  document.getElementById('header-user-name').textContent = currentUser?.name || '';
+  const pill = document.getElementById('header-role-pill');
+  pill.textContent = getRoleLabel(currentUser?.role);
+  pill.className = 'role-pill ' + (isSuperAdmin ? 'super-admin' : isAdmin ? 'admin' : isCoordinator ? 'coordinator' : 'member');
+    
+  // SUPER_ADMIN only
+  document.querySelectorAll('.super-admin-only').forEach(el => {
+    el.style.display = isSuperAdmin ? '' : 'none';
+  });
+  
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = isAdmin ? '' : 'none';
+  });
+  
+  document.querySelectorAll('.coordinator-only').forEach(el => {
+    el.style.display = (isAdmin || isCoordinator) ? '' : 'none';
+  });
+}
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("page-" + id)?.classList.add("active");
+  const map = { dashboard: 0, comunidades: 1, people: 2, birthdays: 3, users: 4, pendentes: 5, import: 6 };
+  const tabs = document.querySelectorAll(".nav-tab");
+  if (tabs[map[id]]) tabs[map[id]].classList.add("active");
+  
+  if (id === "people") renderTable();
+  if (id === "birthdays") { buildYearFilter(); renderBirthdays(); }
+  if (id === "dashboard") renderDashboard();
+  if (id === "comunidades") renderComunidades();
+  if (id === "pendentes") carregarPendentes();
 }
 
 // ===== UTILS =====
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
 function formatDate(s) {
   if (!s) return '—';
-  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const [a,m,d] = s.split('-'); return `${d}/${m}/${a}`; }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+    const [a,m,d] = s.split('-');
+    return `${d}/${m}/${a}`;
+  }
   const d = new Date(s);
   return isNaN(d.getTime()) ? '—' : `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}/${d.getUTCFullYear()}`;
 }
 
 // ===== EVENTS =====
-let resizeTimeout;
 document.addEventListener('DOMContentLoaded', () => {
-  
   wakeUpBackend();
 
+  // Drop zone
   const dz = document.getElementById('drop-zone');
   if (dz) {
-    dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
     dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
     dz.addEventListener('drop', e => {
       e.preventDefault(); dz.classList.remove('drag-over');
@@ -3285,48 +3377,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Event listeners
   document.getElementById('f-estadoCivil')?.addEventListener('change', function() {
-  document.getElementById('conjuge-fields').style.display = this.value === 'Casado' ? 'block' : 'none';
+    document.getElementById('conjuge-fields').style.display = this.value === 'Casado' ? 'block' : 'none';
   });
   
   document.getElementById('f-ehDizimista')?.addEventListener('change', toggleCampoCodigo);
   document.getElementById('f-tel')?.addEventListener('input', function() { phoneMask(this); });
 
-  document.getElementById('f-nome')?.addEventListener('input', function() {
-    const ok = this.value.trim().length > 0;
-    this.classList.toggle('error', !ok);
-    document.getElementById('err-nome')?.classList.toggle('show', !ok);
-  });
-  document.getElementById('f-nasc')?.addEventListener('change', function() {
-    const ok = validateDate(this.value);
-    this.classList.toggle('error', !ok);
-    document.getElementById('err-nasc')?.classList.toggle('show', !ok);
-  });
-
-  document.getElementById('view-modal')?.addEventListener('click', function(e) {
-    if (e.target === this) this.classList.add('hidden');
-  });
-  document.getElementById('modal-overlay')?.addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  document.querySelectorAll('.nav-tab').forEach(t => {
-    t.addEventListener('click', () => {
-      if (t.textContent.includes('Importar') && !window.XLSX) {
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+  // Clique fora do modal para fechar
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.add('hidden');
+        if (this.id === 'modal-overlay') closeModal();
+        if (this.id === 'user-modal') closeUserModal();
+        if (this.id === 'org-modal') closeOrgModal();
       }
     });
   });
-  
+
+  // ESC key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.getElementById('view-modal')?.classList.add('hidden');
+      document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(m => m.classList.add('hidden'));
       closeModal();
+      closeUserModal();
+      closeOrgModal();
     }
   });
   
+  // Fechar context menu ao clicar fora
+  document.addEventListener('click', function(e) {
+    const selector = document.querySelector('.context-selector');
+    if (selector && !selector.contains(e.target) && contextMenuOpen) {
+      toggleContextMenu();
+    }
+  });
 });
 
+// ===== RESIZE =====
+let resizeTimeout;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => renderBirthdays(), 200);

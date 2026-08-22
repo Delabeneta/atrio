@@ -1,18 +1,41 @@
+// src/auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
+
+const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 dias
 
 @Injectable()
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async login(username: string, password: string, role: string) {
+  // src/auth/auth.service.ts
+  async login(usernameOuEmail: string, password: string) {
     try {
-      const user = await this.prisma.user.findUnique({
-        where: { username: username },
+      console.log('🔐 Tentativa de login:');
+      console.log('  usernameOuEmail:', usernameOuEmail);
+      console.log('  password:', password ? '***' : 'vazia');
+
+      const user = await this.prisma.user.findFirst({
+        where: {
+          OR: [{ username: usernameOuEmail }, { email: usernameOuEmail }],
+        },
       });
 
+      console.log('  Usuário encontrado?', !!user);
+      if (user) {
+        console.log('  ID:', user.id);
+        console.log('  Username:', user.username);
+        console.log('  Role:', user.role);
+        console.log(
+          '  Password hash (primeiros 20 chars):',
+          user.password.substring(0, 20) + '...',
+        );
+      }
+
       if (!user) {
+        console.log('❌ Usuário não encontrado');
         return {
           success: false,
           message: 'Usuário inválido',
@@ -20,30 +43,37 @@ export class AuthService {
       }
 
       const passwordValid = await bcrypt.compare(password, user.password);
+      console.log('  Senha válida?', passwordValid);
 
       if (!passwordValid) {
+        console.log('❌ Senha inválida');
         return {
           success: false,
           message: 'Senha inválida',
         };
       }
 
-      if (user.role !== role) {
-        return {
-          success: false,
-          message: `Acesso negado. Você não tem permissão como ${role}.`,
-        };
-      }
+      const token = crypto.randomBytes(32).toString('hex');
+      const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
+
+      await this.prisma.session.create({
+        data: {
+          token,
+          userId: user.id,
+          expiresAt,
+        },
+      });
 
       return {
         success: true,
         user: {
           id: user.id,
-          name: user.name,
+          nome: user.nome,
           username: user.username,
           role: user.role,
+          organizationId: user.organizationId,
         },
-        token: `token-${Date.now()}-${user.id}`,
+        token,
       };
     } catch (error) {
       console.error('Erro no login:', error);
@@ -54,8 +84,39 @@ export class AuthService {
     }
   }
 
+  async logout(token: string) {
+    await this.prisma.session.deleteMany({ where: { token } });
+    return { success: true };
+  }
+
+  // Usado pelo AuthGuard para descobrir quem é o dono do token.
+  // Retorna null se o token não existir ou já tiver expirado.
   async validateToken(token: string) {
-    // Implementar validação JWT depois
-    return { valid: true };
+    const session = await this.prisma.session.findUnique({
+      where: { token },
+      include: { user: true },
+    });
+
+    if (!session) {
+      return null;
+    }
+
+    if (session.expiresAt < new Date()) {
+      // Sessão expirada: limpa e recusa.
+      await this.prisma.session
+        .delete({ where: { id: session.id } })
+        .catch(() => {
+          // Se já foi removida por outra requisição concorrente, ignora.
+        });
+      return null;
+    }
+
+    return {
+      id: session.user.id,
+      nome: session.user.nome,
+      username: session.user.username,
+      role: session.user.role,
+      organizationId: session.user.organizationId,
+    };
   }
 }

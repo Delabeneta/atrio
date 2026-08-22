@@ -6,13 +6,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(
-    @Body() body: { username: string; password: string; role: string },
-  ) {
+  async login(@Body() body: { usernameOuEmail: string; password: string }) {
     const result = await this.authService.login(
-      body.username,
+      body.usernameOuEmail,
       body.password,
-      body.role,
     );
 
     if (!result.success) {
@@ -20,5 +17,10 @@ export class AuthController {
     }
 
     return result;
+  }
+
+  @Post('logout')
+  async logout(@Body() body: { token: string }) {
+    return this.authService.logout(body.token);
   }
 }

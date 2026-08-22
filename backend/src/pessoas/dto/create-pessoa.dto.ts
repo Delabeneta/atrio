@@ -6,15 +6,10 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
-  IsArray,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import {
-  EstadoCivil,
-  FrequenciaMissa,
-  MovimentoPastoral,
-} from '@prisma/client';
+import { EstadoCivil, FrequenciaMissa } from '@prisma/client';
 
 class ConjugeDto {
   @IsString()
@@ -60,9 +55,11 @@ export class CreatePessoaDto {
   @IsOptional()
   cep?: string;
 
+  // Antes era `comunidadeParticipa: string` (texto livre).
+  // Agora a pessoa seleciona uma comunidade já cadastrada.
   @IsString()
   @IsOptional()
-  comunidadeParticipa?: string;
+  organizationId?: string;
 
   @IsString()
   @IsOptional()
@@ -121,16 +118,16 @@ export class CreatePessoaDto {
   @IsOptional()
   conjuge?: ConjugeDto;
 
-  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => FilhoDto)
   @IsOptional()
   filhos?: FilhoDto[];
 
-  @IsArray()
-  @IsEnum(MovimentoPastoral, { each: true })
+  // Antes era `MovimentoPastoral[]` (enum). Agora texto livre único —
+  // a pessoa pode digitar mais de uma pastoral, tudo nesta string.
+  @IsString()
   @IsOptional()
-  movimentosPastorais?: MovimentoPastoral[];
+  movimentosPastorais?: string;
 
   @IsString()
   @IsOptional()

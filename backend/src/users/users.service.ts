@@ -1,18 +1,32 @@
+// src/users/users.service.ts
 import {
-  ConflictException,
   Injectable,
+  ConflictException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Role } from '@prisma/client';
+import { DEFAULT_USER_PASSWORD } from '../auth/constants';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
+    if (
+      (createUserDto.role === 'COORDENADOR' ||
+        createUserDto.role === 'LIDER') &&
+      !createUserDto.organizationId
+    ) {
+      console.warn(
+        `Usuário ${createUserDto.username} criado sem organização. Role: ${createUserDto.role}`,
+      );
+    }
+
     const existingUser = await this.prisma.user.findUnique({
       where: { username: createUserDto.username.toLowerCase() },
     });
@@ -21,20 +35,24 @@ export class UsersService {
       throw new ConflictException('Username já está em uso');
     }
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const hashedPassword = await bcrypt.hash(DEFAULT_USER_PASSWORD, 10);
 
     return this.prisma.user.create({
       data: {
-        username: createUserDto.username,
+        username: createUserDto.username.toLowerCase(),
         password: hashedPassword,
-        name: createUserDto.name,
-        role: createUserDto.role || 'member',
+        email: createUserDto.email,
+        nome: createUserDto.nome,
+        role: createUserDto.role as Role,
+        organizationId: createUserDto.organizationId || null,
       },
       select: {
         id: true,
         username: true,
-        name: true,
+        nome: true,
+        email: true,
         role: true,
+        organizationId: true,
         createdAt: true,
       },
     });
@@ -45,10 +63,11 @@ export class UsersService {
       select: {
         id: true,
         username: true,
-        name: true,
+        nome: true,
+        email: true,
         role: true,
+        organizationId: true,
         createdAt: true,
-        updatedAt: true,
       },
     });
   }
@@ -59,8 +78,10 @@ export class UsersService {
       select: {
         id: true,
         username: true,
-        name: true,
+        nome: true,
+        email: true,
         role: true,
+        organizationId: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -76,16 +97,30 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     await this.findOne(id);
 
-    const data: any = {};
+    if (
+      (updateUserDto.role === 'COORDENADOR' ||
+        updateUserDto.role === 'LIDER') &&
+      !updateUserDto.organizationId
+    ) {
+      throw new BadRequestException(
+        `${updateUserDto.role} deve estar vinculado a uma organização`,
+      );
+    }
 
-    if (updateUserDto.name) data.name = updateUserDto.name;
-    if (updateUserDto.role) data.role = updateUserDto.role;
+    const data: any = {};
+    if (updateUserDto.nome) data.nome = updateUserDto.nome;
+    if (updateUserDto.role) data.role = updateUserDto.role as Role;
     if (updateUserDto.username) {
       data.username = updateUserDto.username.toLowerCase();
     }
+    if (updateUserDto.organizationId !== undefined) {
+      data.organizationId = updateUserDto.organizationId || null;
+    }
 
-    if (updateUserDto.password) {
-      data.password = await bcrypt.hash(updateUserDto.password, 10);
+    // Reset de senha volta para a senha padrão (não aceita senha arbitrária
+    // vinda do corpo da requisição, para manter a política de senha inicial).
+    if ((updateUserDto as any).resetPassword) {
+      data.password = await bcrypt.hash(DEFAULT_USER_PASSWORD, 10);
     }
 
     return this.prisma.user.update({
@@ -94,23 +129,55 @@ export class UsersService {
       select: {
         id: true,
         username: true,
-        name: true,
+        nome: true,
+        email: true,
         role: true,
+        organizationId: true,
         createdAt: true,
         updatedAt: true,
       },
     });
   }
 
+  async linkToOrganization(userId: string, organizationId: string) {
+    const user = await this.findOne(userId);
+
+    if (user.role === 'SUPER_ADMIN' || user.role === 'ADMIN') {
+      throw new BadRequestException(
+        `${user.role} não precisa estar vinculado a uma organização`,
+      );
+    }
+
+    const org = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+    });
+
+    if (!org) {
+      throw new NotFoundException('Organização não encontrada');
+    }
+
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { organizationId },
+      select: {
+        id: true,
+        username: true,
+        nome: true,
+        email: true,
+        role: true,
+        organizationId: true,
+      },
+    });
+  }
+
   async remove(id: string) {
     await this.findOne(id);
-
     return this.prisma.user.delete({
       where: { id },
       select: {
         id: true,
         username: true,
-        name: true,
+        nome: true,
         role: true,
       },
     });
