@@ -10,12 +10,9 @@ const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 dias
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // src/auth/auth.service.ts
   async login(usernameOuEmail: string, password: string) {
     try {
-      console.log('🔐 Tentativa de login:');
-      console.log('  usernameOuEmail:', usernameOuEmail);
-      console.log('  password:', password ? '***' : 'vazia');
+      console.log('Tentativa de login:');
 
       const user = await this.prisma.user.findFirst({
         where: {
@@ -25,17 +22,10 @@ export class AuthService {
 
       console.log('  Usuário encontrado?', !!user);
       if (user) {
-        console.log('  ID:', user.id);
-        console.log('  Username:', user.username);
-        console.log('  Role:', user.role);
-        console.log(
-          '  Password hash (primeiros 20 chars):',
-          user.password.substring(0, 20) + '...',
-        );
       }
 
       if (!user) {
-        console.log('❌ Usuário não encontrado');
+        console.log(' Usuário não encontrado');
         return {
           success: false,
           message: 'Usuário inválido',
@@ -46,7 +36,7 @@ export class AuthService {
       console.log('  Senha válida?', passwordValid);
 
       if (!passwordValid) {
-        console.log('❌ Senha inválida');
+        console.log(' Senha inválida');
         return {
           success: false,
           message: 'Senha inválida',
@@ -89,8 +79,6 @@ export class AuthService {
     return { success: true };
   }
 
-  // Usado pelo AuthGuard para descobrir quem é o dono do token.
-  // Retorna null se o token não existir ou já tiver expirado.
   async validateToken(token: string) {
     const session = await this.prisma.session.findUnique({
       where: { token },

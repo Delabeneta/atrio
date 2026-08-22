@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from '@prisma/client';
-import { DEFAULT_USER_PASSWORD } from '../auth/constants';
+import { getDefaultPasswordForRole } from 'src/auth/constants';
 
 @Injectable()
 export class UsersService {
@@ -35,7 +35,10 @@ export class UsersService {
       throw new ConflictException('Username já está em uso');
     }
 
-    const hashedPassword = await bcrypt.hash(DEFAULT_USER_PASSWORD, 10);
+    const senhaPadrao = getDefaultPasswordForRole(
+      createUserDto.role || 'LIDER',
+    );
+    const hashedPassword = await bcrypt.hash(senhaPadrao, 10);
 
     return this.prisma.user.create({
       data: {
@@ -95,8 +98,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    await this.findOne(id);
-
+    const usuarioAtual = await this.findOne(id);
     if (
       (updateUserDto.role === 'COORDENADOR' ||
         updateUserDto.role === 'LIDER') &&
@@ -117,10 +119,10 @@ export class UsersService {
       data.organizationId = updateUserDto.organizationId || null;
     }
 
-    // Reset de senha volta para a senha padrão (não aceita senha arbitrária
-    // vinda do corpo da requisição, para manter a política de senha inicial).
     if ((updateUserDto as any).resetPassword) {
-      data.password = await bcrypt.hash(DEFAULT_USER_PASSWORD, 10);
+      const roleParaSenha = updateUserDto.role || usuarioAtual.role;
+      const senhaPadrao = getDefaultPasswordForRole(roleParaSenha);
+      data.password = await bcrypt.hash(senhaPadrao, 10);
     }
 
     return this.prisma.user.update({

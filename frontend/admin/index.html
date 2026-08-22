@@ -1812,11 +1812,9 @@ async function loadAllData() {
   await loadPeople();
   const isAdmin = currentUser?.role === 'SUPER_ADMIN' || currentUser?.role === 'ADMIN';
   const isCoordinator = currentUser?.role === 'COORDENADOR';
-  // /users é restrito a SUPER_ADMIN/ADMIN no backend
   if (isAdmin) {
     await loadUsersList();
   }
-  // /organizations é restrito a SUPER_ADMIN/ADMIN/COORDENADOR no backend (LIDER não acessa)
   if (isAdmin || isCoordinator) {
     await loadOrganizationsList();
     await loadParoquiasList();
@@ -1877,7 +1875,6 @@ async function loadOrganizationsSelect() {
         option.textContent = org.nome;
         select.appendChild(option);
       });
-      // ✅ Mantém o valor selecionado
       if (currentValue) {
         select.value = currentValue;
       }
@@ -2062,7 +2059,7 @@ function renderTable() {
   const isAdmin = currentUser?.role === 'ADMIN' || isSuperAdmin;
   const isCoordinator = currentUser?.role === 'COORDENADOR';
   const canEdit = isAdmin || isCoordinator;
-  const canDelete = isAdmin;
+  const canDelete = isAdmin || isCoordinator;
   const canInactivate = isAdmin || isCoordinator;
   const cy = new Date().getFullYear();
 
@@ -2215,7 +2212,7 @@ function renderPagination(total) {
 }
 
 function changePage(p) {
-  const total = allPeople.length; // Simplified
+  const total = allPeople.length; 
   const max = Math.ceil(total / ITEMS_PER_PAGE);
   if (p < 1 || p > max) return;
   currentPage = p;
@@ -2452,7 +2449,6 @@ function openModal(id = null) {
     orgField.style.display = isAdmin ? 'block' : 'none';
   }
   
-  // Carregar organizações no select
   loadOrganizationsSelect().then(() => {
     if (id) {
       const p = allPeople.find(x => x.id == id);
@@ -2466,7 +2462,6 @@ function openModal(id = null) {
       document.getElementById('f-estadoCivil').value = p.estadoCivil || 'Solteiro';
       document.getElementById('f-obs').value = p.movimentosPastorais || '';
       
-      // ✅ CORRIGIDO: definir o valor do select
       if (p.organizationId) {
         document.getElementById('f-organization-id').value = p.organizationId;
         console.log(' Organização carregada:', p.organizationId);
@@ -2653,7 +2648,7 @@ async function savePerson() {
     
     closeModal();
     await loadAllData();
-    toast(currentEditId ? ' Pessoa atualizada!' : '✅ Pessoa cadastrada!', 'success');
+    toast(currentEditId ? ' Pessoa atualizada!' : 'Pessoa cadastrada!', 'success');
     
   } catch (err) {
     console.error('Erro:', err);
@@ -2688,7 +2683,7 @@ async function reativarPerson(id) {
 }
 
 async function excluirPerson(id) {
-  if (currentUser?.role !== 'SUPER_ADMIN' && currentUser?.role !== 'ADMIN') {
+  if (currentUser?.role == 'LIDER') {
     toast('Apenas administradores podem excluir.', 'error');
     return;
   }
@@ -2753,7 +2748,7 @@ async function saveUser() {
   btn.textContent = 'Salvando…';
   
   try {
-    const data = { nome, email, username, role, organizationId, password: 'jesus33' };
+    const data = { nome, email, username, role, organizationId};
     const endpoint = editUserId ? `/users/${editUserId}` : '/users';
     const method = editUserId ? 'PATCH' : 'POST';
     
@@ -2767,8 +2762,8 @@ async function saveUser() {
     if (result.ok) {
       closeUserModal();
       await loadAllData();
-      toast(editUserId ? ' Usuário atualizado!' : ' Usuário criado! Senha: jesus33', 'success');
-    } else {
+      toast(editUserId ? 'Usuário atualizado!' : 'Usuário criado! Peça a senha padrão do papel ao administrador.', 'success');  
+      } else {
       toast(result.data?.message || 'Erro ao salvar.', 'error');
     }
   } catch (err) {
@@ -2830,7 +2825,6 @@ function openOrgModal(id = null) {
   document.getElementById('fo-codigo-inicial').value = '10000';
   
   loadOrganizationsSelect();
-  // Carregar usuários para o select de coordenador
   loadUsersList().then(() => {
     const select = document.getElementById('fo-coordenador-id');
     const currentValue = select.value;
@@ -3143,7 +3137,6 @@ async function carregarPendentes() {
   
   container.innerHTML = '<div style="text-align:center;padding:20px;">Carregando...</div>';
   
-  //  Usando a rota correta que existe no backend
   const result = await apiRequest('/pessoas/pendentes/aprovar');
   
   if (!result.ok) {
@@ -3156,7 +3149,6 @@ async function carregarPendentes() {
     return;
   }
   
-  // Mapear os dados
   const pendentes = result.data.map(mapPerson);
   
   container.innerHTML = pendentes.map(p => `
@@ -3188,12 +3180,11 @@ async function carregarPendentes() {
 async function aprovarPendente(id, aprovado) {
   const acao = aprovado ? 'aprovar' : 'rejeitar';
   
-  //  Usar confirmDialog (mais bonito)
   const ok = await confirmDialog(
     acao === 'aprovar' ? ' Aprovar cadastro' : ' Rejeitar cadastro',
     `Tem certeza que deseja ${acao} este cadastro?`,
     acao === 'aprovar' ? 'Aprovar' : 'Rejeitar',
-    !aprovado // danger = true para rejeitar
+    !aprovado 
   );
   
   if (!ok) return;
@@ -3201,10 +3192,9 @@ async function aprovarPendente(id, aprovado) {
   let motivo = null;
   if (!aprovado) {
     motivo = prompt('Informe o motivo da rejeição (opcional):');
-    if (motivo === null) return; // Cancelou
+    if (motivo === null) return; 
   }
   
-  //  Rota correta
   const result = await apiRequest(`/pessoas/${id}/aprovar`, {
     method: 'PATCH',
     body: JSON.stringify({ 
