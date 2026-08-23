@@ -8,10 +8,11 @@ import {
   IsEnum,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { EstadoCivil, FrequenciaMissa } from '@prisma/client';
 
 class ConjugeDto {
+  @Transform(({ value }) => value?.toUpperCase())
   @IsString()
   nome!: string;
 
@@ -21,6 +22,7 @@ class ConjugeDto {
 }
 
 class FilhoDto {
+  @Transform(({ value }) => value?.toUpperCase())
   @IsString()
   nome!: string;
 
@@ -29,6 +31,7 @@ class FilhoDto {
 }
 
 export class CreatePessoaDto {
+  @Transform(({ value }) => value?.toUpperCase())
   @IsString()
   nomeCompleto!: string;
 
@@ -43,6 +46,7 @@ export class CreatePessoaDto {
   @IsOptional()
   telefone?: string;
 
+  @Transform(({ value }) => value?.toUpperCase())
   @IsString()
   @IsOptional()
   bairro?: string;
@@ -55,8 +59,6 @@ export class CreatePessoaDto {
   @IsOptional()
   cep?: string;
 
-  // Antes era `comunidadeParticipa: string` (texto livre).
-  // Agora a pessoa seleciona uma comunidade já cadastrada.
   @IsString()
   @IsOptional()
   organizationId?: string;
@@ -113,6 +115,7 @@ export class CreatePessoaDto {
   @IsOptional()
   codigoDizimista?: string;
 
+  @Transform(({ value }) => value?.toUpperCase())
   @ValidateNested()
   @Type(() => ConjugeDto)
   @IsOptional()
@@ -123,8 +126,7 @@ export class CreatePessoaDto {
   @IsOptional()
   filhos?: FilhoDto[];
 
-  // Antes era `MovimentoPastoral[]` (enum). Agora texto livre único —
-  // a pessoa pode digitar mais de uma pastoral, tudo nesta string.
+  @Transform(({ value }) => value?.toUpperCase())
   @IsString()
   @IsOptional()
   movimentosPastorais?: string;

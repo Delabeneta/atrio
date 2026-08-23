@@ -325,6 +325,7 @@ body {
 /* ===== APP SHELL ===== */
 #app { display: none; flex-direction: column; min-height: 100vh; }
 
+/* ===== HEADER SIMPLIFICADO ===== */
 header {
   background: var(--indigo-900);
   padding: 0 16px;
@@ -336,9 +337,8 @@ header {
   top: 0;
   z-index: 100;
   border-bottom: 1px solid rgba(255,255,255,0.06);
-  gap: 8px;
-  flex-wrap: wrap;
 }
+
 header .logo {
   font-family: var(--font-serif);
   font-size: 1.2rem;
@@ -349,141 +349,144 @@ header .logo {
 }
 header .logo span { color: var(--amber-400); }
 
-/* ===== CONTEXT SELECTOR ===== */
-.header-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  min-width: 150px;
-  max-width: 500px;
-}
-
-.context-selector {
-  position: relative;
-  width: 100%;
-}
-
-.context-btn {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: var(--radius-md);
-  padding: 6px 12px;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.2s;
-  width: 100%;
-  min-height: 36px;
-}
-
-.context-btn:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.dropdown-arrow {
-  font-size: 10px;
-  opacity: 0.6;
-  transition: transform 0.2s;
-  flex-shrink: 0;
-}
-.dropdown-arrow.open {
-  transform: rotate(180deg);
-}
-
-.context-menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: 6px;
-  z-index: 1000;
-  max-height: 300px;
-  overflow-y: auto;
-}
-.context-menu.hidden {
-  display: none;
-}
-
-.context-item {
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  transition: background 0.15s;
-  font-size: 13px;
-  color: var(--ink);
-}
-.context-item:hover {
-  background: var(--indigo-50);
-}
-.context-item.active {
-  background: var(--indigo-100);
-  font-weight: 500;
-}
-.context-item .badge {
-  font-size: 10px;
-  padding: 2px 8px;
-  background: var(--surface-3);
-  border-radius: var(--radius-pill);
-  color: var(--ink-2);
-  white-space: nowrap;
-}
-.context-item .icon {
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.context-divider {
-  height: 1px;
-  background: var(--line);
-  margin: 4px 8px;
-}
-
+/* ===== CONTA DO USUÁRIO ===== */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 12px;
 }
+
 .user-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
+  gap: 8px;
   color: rgba(255,255,255,0.65);
+  font-size: 12px;
 }
-.user-badge .name {
-  max-width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+
 .role-pill {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: var(--radius-pill);
   font-weight: 600;
   letter-spacing: 0.04em;
-  flex-shrink: 0;
 }
 .role-pill.admin  { background: var(--amber-500); color: var(--indigo-900); }
-.role-pill.member { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
 .role-pill.super-admin { background: #8B5CF6; color: #fff; }
-.role-pill.coordinator { background: #3B82F6; color: #fff; }
+.role-pill.coordinator { background: var(--indigo-600); color: #fff; }
+.role-pill.member { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+
+.account-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.account-btn:hover { background: rgba(255,255,255,0.16); border-color: var(--amber-400); }
+
+.account-avatar {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.account-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 10px;
+  z-index: 1000;
+}
+.account-menu.hidden { display: none; }
+
+.account-selector {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.account-menu-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+
+.account-menu-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.account-menu-logout {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--red-text);
+  cursor: pointer;
+  transition: background 0.14s;
+}
+.account-menu-logout:hover { background: var(--red-bg); }
+
+
 
 .super-admin-only { display: none; }
+.admin-only { display: none; }
 .coordinator-only { display: none; }
+
+/* ===== CONTEXTO ATUAL (indicador de comunidade selecionada) ===== */
+.header-center {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.context-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.9);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.context-btn:hover { background: rgba(255,255,255,0.16); border-color: var(--amber-400); }
+.context-btn .context-clear {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+.context-btn:not(.is-filtered) .context-clear { display: none; }
+.context-btn.is-filtered { border-color: var(--amber-400); background: rgba(245,158,11,0.16); }
 
 /* ===== NAV ===== */
 nav {
@@ -547,6 +550,7 @@ main {
   flex-wrap: wrap;
   gap: 8px;
 }
+.card-title-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
 /* ===== STATS ===== */
 .stats-row {
@@ -607,16 +611,29 @@ main {
   border-radius: var(--radius-lg);
   padding: 16px;
   cursor: pointer;
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s, background 0.15s;
+  position: relative;
 }
 .community-card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
+.community-card:focus-visible {
+  outline: 3px solid var(--indigo-600);
+  outline-offset: 2px;
+}
+.community-card.is-selected {
+  border-color: var(--indigo-600);
+  background: var(--indigo-50);
+  box-shadow: var(--shadow-md);
+}
 .community-card .name {
   font-weight: 600;
   font-size: 15px;
   color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .community-card .info {
   font-size: 12px;
@@ -633,6 +650,21 @@ main {
   background: var(--surface-3);
   padding: 2px 10px;
   border-radius: var(--radius-pill);
+}
+.selected-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--indigo-600);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.02em;
+}
+.all-communities-card {
+  border-style: dashed;
 }
 
 /* ===== TABLE ===== */
@@ -890,14 +922,14 @@ tr:hover td { background: var(--indigo-50); }
   color: var(--ink-2);
 }
 
-/* ===== BIRTHDAYS ===== */
+
 /* ===== BIRTHDAYS ===== */
 .month-section {
-  margin-bottom: 12px;
-  border: 1px solid var(--line);
+  margin-bottom: 10px;
+  border: 1px solid var(--indigo-100);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--surface);
+  background: var(--indigo-50);
   box-shadow: var(--shadow-xs);
 }
 .month-header {
@@ -909,23 +941,23 @@ tr:hover td { background: var(--indigo-50); }
   user-select: none;
   transition: background 0.15s;
 }
-.month-header:hover { background: var(--surface-3); }
+.month-header:hover { background: var(--indigo-100); }
 .month-toggle-icon {
   font-size: 11px;
-  color: var(--ink-3);
+  color: var(--indigo-600);
   transition: transform 0.2s ease;
   flex-shrink: 0;
 }
 .month-toggle-icon.open { transform: rotate(90deg); }
 .month-name {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--indigo-900);
   letter-spacing: -0.01em;
 }
 .month-count {
-  background: var(--amber-500);
+  background: var(--indigo-700);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -940,7 +972,8 @@ tr:hover td { background: var(--indigo-50); }
 }
 .month-content {
   padding: 4px 16px 16px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--indigo-100);
+  background: var(--surface);
 }
 .month-content.collapsed { display: none; }
 
@@ -959,6 +992,10 @@ tr:hover td { background: var(--indigo-50); }
   align-items: center;
   gap: 12px;
   box-shadow: var(--shadow-xs);
+}
+.birthday-card.mirim {
+  border-color: var(--indigo-400);
+  background: var(--indigo-50);
 }
 .bday-day {
   background: var(--indigo-900);
@@ -983,6 +1020,8 @@ tr:hover td { background: var(--indigo-50); }
   color: var(--ink-2);
   margin-top: 1px;
 }
+
+
 
 /* ===== SACRAMENTOS ===== */
 .sacramentos-grid {
@@ -1128,6 +1167,15 @@ tr:hover td { background: var(--indigo-50); }
 
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
 #campo-codigo-dizimista { margin-top: 8px; }
@@ -1135,13 +1183,20 @@ tr:hover td { background: var(--indigo-50); }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  header { padding: 0 10px; height: auto; min-height: 56px; gap: 4px; }
+  header { padding: 8px 12px; height: auto; min-height: 56px; gap: 4px; flex-wrap: wrap; }
   header .logo { font-size: 1rem; }
-  .header-center { min-width: 100px; max-width: 200px; }
-  .context-btn { font-size: 12px; padding: 4px 10px; min-height: 32px; }
-  .context-menu { max-height: 250px; }
-  .context-item { font-size: 12px; padding: 8px 12px; }
-  
+   .user-badge { font-size: 11px; }
+  .user-badge .name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ .header-center {
+    order: 3;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+  .context-btn { max-width: none; width: 100%; justify-content: center; }
+    .account-menu { right: 0; left: auto; }
+
+
   nav { padding: 0 8px; }
   .nav-tab { padding: 8px 10px; font-size: 12px; }
   
@@ -1172,7 +1227,6 @@ tr:hover td { background: var(--indigo-50); }
   .sacramentos-view-grid { grid-template-columns: 1fr; }
   
   .login-box { padding: 24px 16px; }
-  .user-badge .name { max-width: 60px; }
 }
 
 @media (max-width: 480px) {
@@ -1199,11 +1253,11 @@ tr:hover td { background: var(--indigo-50); }
 <body>
 
 <!-- TOAST CONTAINER -->
-<div id="toast-container"></div>
+<div id="toast-container" role="status" aria-live="polite"></div>
 
 <!-- CONFIRM DIALOG -->
 <div id="confirm-overlay" class="hidden">
-  <div id="confirm-box">
+  <div id="confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
     <h3 id="confirm-title">Confirmar ação</h3>
     <p id="confirm-message">Tem certeza?</p>
     <div id="confirm-actions">
@@ -1223,13 +1277,13 @@ tr:hover td { background: var(--indigo-50); }
     </div>
     <h1>Átrio</h1>
     <p class="sub">Gestão Paroquial</p>
-    <div id="login-error" class="alert alert-error hidden"></div>
+    <div id="login-error" class="alert alert-error hidden" role="alert"></div>
     <div class="field-group" style="text-align:left">
-      <label>Acesso</label>
+      <label for="inp-user">Acesso</label>
       <input type="text" id="inp-user" placeholder="Usuário ou Email" autocomplete="username" />
     </div>
     <div class="field-group" style="text-align:left">
-      <label>Senha</label>
+      <label for="inp-pass">Senha</label>
       <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"
         onkeydown="if(event.key==='Enter') doLogin();" />
     </div>
@@ -1245,63 +1299,78 @@ tr:hover td { background: var(--indigo-50); }
 
 <!-- APP -->
 <div id="app">
-  <header>
-    <div class="logo">Átrio<span>·</span></div>
-    
-    <!-- Seletor de Contexto (Paróquia/Comunidade) -->
-    <div class="header-center">
-      <div class="context-selector">
-        <button class="context-btn" onclick="toggleContextMenu()" aria-label="Selecionar contexto">
-          <span id="current-context">🏛️ Carregando...</span>
-          <span class="dropdown-arrow" id="context-arrow">▼</span>
-        </button>
-        <div class="context-menu hidden" id="context-menu" role="menu">
-          <!-- Preenchido dinamicamente -->
-        </div>
-      </div>
-    </div>
-    
-    <div class="header-right">
-      <div class="user-badge">
-        <span class="name" id="header-user-name">—</span>
-        <span id="header-role-pill" class="role-pill admin">Admin</span>
-      </div>
-      <button class="btn btn-ghost" style="color:rgba(255,255,255,0.6);font-size:13px;padding:4px 10px;" onclick="logout()" aria-label="Sair">Sair</button>
-    </div>
-  </header>
+ 
+<header>
+  <div class="logo">Átrio<span>·</span></div>
   
-<nav role="tablist">
-  <button class="nav-tab active" role="tab" onclick="showPage('dashboard')">Painel</button>
-  <button class="nav-tab" role="tab" onclick="showPage('comunidades')">Comunidades</button>
-  <button class="nav-tab" role="tab" onclick="showPage('people')">Pessoas</button>
-  <button class="nav-tab" role="tab" onclick="showPage('birthdays')">Aniversários</button>
-  <button class="nav-tab admin-only" role="tab" onclick="showPage('users')">Usuários</button>
-  <button class="nav-tab" role="tab" onclick="showPage('pendentes')">Pendentes</button>
-  <button class="nav-tab admin-only" role="tab" onclick="showPage('import')">Importar</button>
-  <button class="nav-tab admin-only" role="tab" onclick="exportToJSON()">Exportar</button>
+  <!-- No header, depois do logo -->
+  <div class="header-center">
+    <button type="button" class="context-btn" id="current-context-display" onclick="handleContextBadgeClick()"
+      title="Comunidade atualmente selecionada. Clique para ver todas as comunidades.">
+      <span aria-hidden="true">🏛️</span>
+      <span id="current-context-label">Todas as comunidades</span>
+      <span class="context-clear" aria-hidden="true">✕ limpar</span>
+    </button>
+    <span id="context-live-region" class="visually-hidden" role="status" aria-live="polite"></span>
+  </div>
+
+  <div class="header-right">
+    <div class="user-badge">
+      <span class="name" id="header-user-name">—</span>
+      <span id="header-role-pill" class="role-pill admin">Admin</span>
+    </div>
+    
+    <div class="account-selector">
+      <button class="account-btn" onclick="toggleAccountMenu()" aria-label="Menu da conta" aria-haspopup="true" aria-expanded="false" id="account-btn">
+        <span class="account-avatar" id="account-avatar">?</span>
+      </button>
+      <div class="account-menu hidden" id="account-menu" role="menu">
+        <div class="account-menu-info">
+          <span class="account-menu-name" id="account-menu-name">—</span>
+          <span class="role-pill" id="account-role-pill">Admin</span>
+        </div>
+        <button class="account-menu-logout" onclick="logout()" role="menuitem">Sair</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<nav role="tablist" aria-label="Seções do sistema">
+  <button class="nav-tab active" role="tab" aria-selected="true" id="tab-dashboard" aria-controls="page-dashboard" onclick="showPage('dashboard')">Painel</button>
+  <button class="nav-tab" role="tab" aria-selected="false" id="tab-comunidades" aria-controls="page-comunidades" data-roles="SUPER_ADMIN,ADMIN" onclick="showPage('comunidades')">Comunidades</button>
+  <button class="nav-tab" role="tab" aria-selected="false" id="tab-people" aria-controls="page-people" onclick="showPage('people')">Pessoas</button>
+  <button class="nav-tab" role="tab" aria-selected="false" id="tab-birthdays" aria-controls="page-birthdays" onclick="showPage('birthdays')">Aniversários</button>
+  <button class="nav-tab" role="tab" aria-selected="false" id="tab-users" aria-controls="page-users" data-roles="SUPER_ADMIN,ADMIN" onclick="showPage('users')">Usuários</button>
+  <button class="nav-tab" role="tab" aria-selected="false" id="tab-pendentes" aria-controls="page-pendentes" data-roles="SUPER_ADMIN,ADMIN,COORDENADOR" onclick="showPage('pendentes')">Pendentes</button>
+  <button class="nav-tab" role="tab" aria-selected="false" id="tab-import" aria-controls="page-import" data-roles="SUPER_ADMIN" onclick="showPage('import')">Importar</button>
+  <button class="nav-tab" role="tab" data-roles="SUPER_ADMIN,ADMIN" onclick="exportToJSON()">Exportar</button>
 </nav>
   
   <main>
 
     <!-- DASHBOARD -->
-    <div class="page active" id="page-dashboard">
+    <div class="page active" id="page-dashboard" role="tabpanel" aria-labelledby="tab-dashboard">
       <!-- Dashboard da Paróquia/Comunidade selecionada -->
       <div id="dashboard-content"></div>
     </div>
 
     <!-- COMUNIDADES -->
-    <div class="page" id="page-comunidades">
+    <div class="page" id="page-comunidades" role="tabpanel" aria-labelledby="tab-comunidades">
       <div class="card">
         <div class="card-title">
           <span>Comunidades da Paróquia</span>
-          <button class="btn btn-primary" onclick="openOrgModal()">+ Nova Comunidade</button>
+          <div class="card-title-actions">
+            <button class="btn btn-sm btn-outline" onclick="selectContext('paroquia', null)">🏛️ Ver todas as comunidades</button>
+            <button class="btn btn-primary" onclick="openOrgModal()">+ Nova Comunidade</button>
+          </div>
         </div>
         <div id="comunidades-list"></div>
       </div>
     </div>
 
     <!-- PEOPLE -->
-    <div class="page" id="page-people">
+    <div class="page" id="page-people" role="tabpanel" aria-labelledby="tab-people">
       <div class="card">
         <div class="card-title">
           <span id="people-title">Pessoas</span>
@@ -1309,15 +1378,16 @@ tr:hover td { background: var(--indigo-50); }
         </div>
         
         <div class="search-bar">
+          <label for="search-input" class="visually-hidden">Buscar pessoas</label>
           <input type="text" id="search-input" placeholder="Buscar por nome, código, telefone..." oninput="onSearchInput()" />
           <button class="btn btn-sm btn-outline" onclick="toggleAdvFilters()">Filtros</button>
         </div>
 
-        <div class="filter-row" id="quick-filters">
-          <button class="btn btn-sm btn-outline filter-btn active" id="filter-todos" onclick="setFilter('todos')">Todos</button>
-          <button class="btn btn-sm btn-outline filter-btn" id="filter-ativos" onclick="setFilter('ativos')">Ativos</button>
-          <button class="btn btn-sm btn-outline filter-btn" id="filter-inativos" onclick="setFilter('inativos')">Inativos</button>
-          <button class="btn btn-sm btn-outline filter-btn" id="filter-dizimistas" onclick="setFilter('dizimistas')">Dizimistas</button>
+        <div class="filter-row" id="quick-filters" role="group" aria-label="Filtros rápidos de pessoas">
+          <button class="btn btn-sm btn-outline filter-btn active" id="filter-todos" aria-pressed="true" onclick="setFilter('todos')">Todos</button>
+          <button class="btn btn-sm btn-outline filter-btn" id="filter-ativos" aria-pressed="false" onclick="setFilter('ativos')">Ativos</button>
+          <button class="btn btn-sm btn-outline filter-btn" id="filter-inativos" aria-pressed="false" onclick="setFilter('inativos')">Inativos</button>
+          <button class="btn btn-sm btn-outline filter-btn" id="filter-dizimistas" aria-pressed="false" onclick="setFilter('dizimistas')">Dizimistas</button>
           <span id="filter-chips"></span>
         </div>
 
@@ -1325,10 +1395,10 @@ tr:hover td { background: var(--indigo-50); }
           <table>
             <thead>
               <tr>
-                <th onclick="toggleSort('nomeCompleto')">Nome <span id="sort-nomeCompleto">⬇</span></th>
-                <th onclick="toggleSort('dataNascimento')">Nascimento <span id="sort-dataNascimento"></span></th>
-                <th onclick="toggleSort('endereco')">Endereço <span id="sort-endereco"></span></th>
-                <th onclick="toggleSort('codigoDizimista')">Código <span id="sort-codigoDizimista"></span></th>
+                <th><button class="btn-ghost btn-sm" style="padding:0;font:inherit;color:inherit;font-weight:600;" onclick="toggleSort('nomeCompleto')">Nome <span id="sort-nomeCompleto">⬇</span></button></th>
+                <th><button class="btn-ghost btn-sm" style="padding:0;font:inherit;color:inherit;font-weight:600;" onclick="toggleSort('dataNascimento')">Nascimento <span id="sort-dataNascimento"></span></button></th>
+                <th><button class="btn-ghost btn-sm" style="padding:0;font:inherit;color:inherit;font-weight:600;" onclick="toggleSort('endereco')">Endereço <span id="sort-endereco"></span></button></th>
+                <th><button class="btn-ghost btn-sm" style="padding:0;font:inherit;color:inherit;font-weight:600;" onclick="toggleSort('codigoDizimista')">Código <span id="sort-codigoDizimista"></span></button></th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -1347,11 +1417,13 @@ tr:hover td { background: var(--indigo-50); }
     </div>
 
     <!-- BIRTHDAYS -->
-    <div class="page" id="page-birthdays">
+    <div class="page" id="page-birthdays" role="tabpanel" aria-labelledby="tab-birthdays">
       <div class="card">
         <div class="card-title">Aniversariantes</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+          <label for="birthday-year-filter" class="visually-hidden">Ano</label>
           <select id="birthday-year-filter" style="padding:8px 12px;border:1.5px solid var(--line);border-radius:var(--radius-md);font-size:13px;" onchange="renderBirthdays()"></select>
+          <label for="birthday-dizimista-filter" class="visually-hidden">Filtrar dizimistas</label>
           <select id="birthday-dizimista-filter" style="padding:8px 12px;border:1.5px solid var(--line);border-radius:var(--radius-md);font-size:13px;" onchange="renderBirthdays()">
             <option value="dizimistas">Apenas dizimistas</option>
             <option value="todos">Todos</option>
@@ -1362,7 +1434,7 @@ tr:hover td { background: var(--indigo-50); }
     </div>
 
     <!-- USERS -->
-    <div class="page" id="page-users">
+    <div class="page" id="page-users" role="tabpanel" aria-labelledby="tab-users">
       <div class="card">
         <div class="card-title">
           <span>Usuários do Sistema</span>
@@ -1383,7 +1455,7 @@ tr:hover td { background: var(--indigo-50); }
           </table>
         </div>
         <div id="users-empty" class="empty-state hidden">
-          <div class="es-icon">👤</div>
+          <div class="es-icon"></div>
           <h3>Nenhum usuário cadastrado</h3>
           <p>Clique em "Novo Usuário" para começar.</p>
         </div>
@@ -1391,7 +1463,7 @@ tr:hover td { background: var(--indigo-50); }
     </div>
 
     <!-- PENDENTES -->
-    <div class="page" id="page-pendentes">
+    <div class="page" id="page-pendentes" role="tabpanel" aria-labelledby="tab-pendentes">
       <div class="card">
         <div class="card-title">Cadastros pendentes de aprovação</div>
         <div id="pendentes-list"></div>
@@ -1399,17 +1471,17 @@ tr:hover td { background: var(--indigo-50); }
     </div>
 
     <!-- IMPORT -->
-    <div class="page" id="page-import">
+    <div class="page" id="page-import" role="tabpanel" aria-labelledby="tab-import">
       <div class="card">
         <div class="card-title">Importar Planilha Excel</div>
         <p style="font-size:13px;color:var(--ink2);margin-bottom:16px;">Faça upload de uma planilha <strong>.xlsx</strong> ou <strong>.xls</strong>.</p>
-        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Selecionar arquivo para importar" onclick="document.getElementById('file-input').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('file-input').click();}">
           <div class="drop-icon">📂</div>
           <p><strong>Clique para selecionar</strong> ou arraste o arquivo aqui</p>
           <p style="font-size:12px;margin-top:4px;">.xlsx · .xls</p>
         </div>
         <input type="file" id="file-input" accept=".xlsx,.xls" style="display:none" onchange="handleFileImport(this)" />
-        <div id="import-result" class="hidden" style="margin-top:12px;"></div>
+        <div id="import-result" class="hidden" style="margin-top:12px;" role="status" aria-live="polite"></div>
       </div>
       <div class="card">
         <div class="card-title">Modelo de planilha</div>
@@ -1423,39 +1495,39 @@ tr:hover td { background: var(--indigo-50); }
 
 <!-- MODAL PESSOA -->
 <div class="modal-overlay hidden" id="modal-overlay">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
       <h2 id="modal-title">Novo cadastro</h2>
-      <button class="close-btn" onclick="closeModal()">×</button>
+      <button class="close-btn" onclick="closeModal()" aria-label="Fechar">×</button>
     </div>
     <div class="form-grid">
       <div class="field-group full">
-        <label>Nome completo <span style="color:var(--accent)">*</span></label>
+        <label for="f-nome">Nome completo <span style="color:var(--accent)">*</span></label>
         <input type="text" id="f-nome" placeholder="Ex: João Silva" />
         <span class="field-error" id="err-nome">Preencha o nome.</span>
       </div>
       <div class="field-group">
-        <label>Data de nascimento <span style="color:var(--accent)">*</span></label>
+        <label for="f-nasc">Data de nascimento <span style="color:var(--accent)">*</span></label>
         <input type="date" id="f-nasc" />
         <span class="field-error" id="err-nasc">Data inválida ou futura.</span>
       </div>
       <div class="field-group">
-        <label>Telefone</label>
+        <label for="f-tel">Telefone</label>
         <input type="tel" id="f-tel" placeholder="(21) 99999-9999" maxlength="15" oninput="phoneMask(this)" />
       </div>
       <div class="field-group">
-        <label>Endereço</label>
+        <label for="f-endereco">Endereço</label>
         <input type="text" id="f-endereco" placeholder="Ex: Rua das Flores, 123" />
       </div>
       <div class="field-group">
-        <label>Bairro</label>
+        <label for="f-bairro">Bairro</label>
         <input type="text" id="f-bairro" placeholder="Ex: Centro" />
       </div>
     
       
       <!-- Campo de organização (apenas admin) -->
       <div class="field-group full" id="campo-organization" style="display:none;">
-        <label>Comunidade (vínculo oficial)</label>
+        <label for="f-organization-id">Comunidade (vínculo oficial)</label>
         <select id="f-organization-id">
           <option value="">Selecione uma comunidade</option>
         </select>
@@ -1465,7 +1537,7 @@ tr:hover td { background: var(--indigo-50); }
       </div>
       
       <div class="field-group">
-        <label>Estado Civil</label>
+        <label for="f-estadoCivil">Estado Civil</label>
         <select id="f-estadoCivil">
           <option value="Solteiro">Solteiro(a)</option>
           <option value="Casado">Casado(a)</option>
@@ -1476,11 +1548,11 @@ tr:hover td { background: var(--indigo-50); }
       <div id="conjuge-fields" style="display:none;" class="full">
         <div class="form-grid">
           <div class="field-group">
-            <label>Nome do cônjuge</label>
+            <label for="f-conjuge-nome">Nome do cônjuge</label>
             <input type="text" id="f-conjuge-nome" placeholder="Nome completo" />
           </div>
           <div class="field-group">
-            <label>Nasc. cônjuge</label>
+            <label for="f-conjuge-data">Nasc. cônjuge</label>
             <input type="date" id="f-conjuge-data" />
           </div>
         </div>
@@ -1496,7 +1568,7 @@ tr:hover td { background: var(--indigo-50); }
         <h3 style="font-family:var(--font-serif);font-size:1rem;font-weight:400;margin-bottom:12px;color:var(--ink);">Vida Espiritual</h3>
         <div class="form-grid">
           <div class="field-group">
-            <label>É batizado(a)?</label>
+            <label for="f-batizado">É batizado(a)?</label>
             <select id="f-batizado">
               <option value="true">Sim, sou batizado(a)</option>
               <option value="false" selected>Não sou batizado(a)</option>
@@ -1504,7 +1576,7 @@ tr:hover td { background: var(--indigo-50); }
             </select>
           </div>
           <div class="field-group">
-            <label>Participa da Catequese?</label>
+            <label for="f-catequese">Participa da Catequese?</label>
             <select id="f-catequese">
               <option value="true">Sim, participo</option>
               <option value="false" selected>Não participo</option>
@@ -1532,14 +1604,14 @@ tr:hover td { background: var(--indigo-50); }
             </div>
           </div>
           <div class="field-group">
-            <label>Confessa-se regularmente?</label>
+            <label for="f-confessa">Confessa-se regularmente?</label>
             <select id="f-confessa">
               <option value="true">Sim</option>
               <option value="false" selected>Não</option>
             </select>
           </div>
           <div class="field-group">
-            <label>Frequência nas Missas</label>
+            <label for="f-frequencia-missa">Frequência nas Missas</label>
             <select id="f-frequencia-missa">
               <option value="Diaria">Diariamente</option>
               <option value="Semanal">Semanalmente</option>
@@ -1551,18 +1623,18 @@ tr:hover td { background: var(--indigo-50); }
       </div>
 
       <div class="field-group full">
-        <label>Movimentos e Pastorais</label>
+        <label for="f-obs">Movimentos e Pastorais</label>
         <textarea id="f-obs" rows="2" placeholder="Ex: Liturgia, Coral, Catequese (separar por vírgula)"></textarea>
       </div>
       <div class="field-group">
-        <label>É dizimista?</label>
+        <label for="f-ehDizimista">É dizimista?</label>
         <select id="f-ehDizimista" onchange="toggleCampoCodigo()">
           <option value="true">Sim, é dizimista</option>
           <option value="false">Não é dizimista</option>
         </select>
       </div>
       <div class="field-group" id="campo-codigo-dizimista" style="display:none;">
-        <label>Código do dizimista</label>
+        <label for="f-codigo-dizimista">Código do dizimista</label>
         <input type="text" id="f-codigo-dizimista" placeholder="Gerado automaticamente" />
         <button type="button" class="btn btn-sm btn-outline" onclick="gerarCodigoDizimista()" style="margin-top:8px;">Gerar código</button>
       </div>
@@ -1576,26 +1648,26 @@ tr:hover td { background: var(--indigo-50); }
 
 <!-- MODAL USUÁRIO -->
 <div class="modal-overlay hidden" id="user-modal">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="user-modal-title">
     <div class="modal-header">
       <h2 id="user-modal-title">Novo Usuário</h2>
-      <button class="close-btn" onclick="closeUserModal()">×</button>
+      <button class="close-btn" onclick="closeUserModal()" aria-label="Fechar">×</button>
     </div>
     <div class="form-grid">
       <div class="field-group full">
-        <label>Nome completo <span style="color:var(--accent)">*</span></label>
+        <label for="fu-nome">Nome completo <span style="color:var(--accent)">*</span></label>
         <input type="text" id="fu-nome" placeholder="Ex: João Silva" />
       </div>
       <div class="field-group">
-        <label>Email <span style="color:var(--accent)">*</span></label>
+        <label for="fu-email">Email <span style="color:var(--accent)">*</span></label>
         <input type="email" id="fu-email" placeholder="joao@email.com" />
       </div>
       <div class="field-group">
-        <label>Username <span style="color:var(--accent)">*</span></label>
+        <label for="fu-username">Username <span style="color:var(--accent)">*</span></label>
         <input type="text" id="fu-username" placeholder="joaosilva" />
       </div>
       <div class="field-group">
-        <label>Papel/Role <span style="color:var(--accent)">*</span></label>
+        <label for="fu-role">Papel/Role <span style="color:var(--accent)">*</span></label>
         <select id="fu-role">
           <option value="SUPER_ADMIN">Super Admin</option>
           <option value="ADMIN">Admin</option>
@@ -1604,7 +1676,7 @@ tr:hover td { background: var(--indigo-50); }
         </select>
       </div>
       <div class="field-group full" id="campo-user-organization">
-        <label>Comunidade (para Coordenador e Líder)</label>
+        <label for="fu-organization-id">Comunidade (para Coordenador e Líder)</label>
         <select id="fu-organization-id">
           <option value="">Selecione uma comunidade</option>
         </select>
@@ -1622,24 +1694,24 @@ tr:hover td { background: var(--indigo-50); }
 
 <!-- MODAL COMUNIDADE -->
 <div class="modal-overlay hidden" id="org-modal">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="org-modal-title">
     <div class="modal-header">
       <h2 id="org-modal-title">Nova Comunidade</h2>
-      <button class="close-btn" onclick="closeOrgModal()">×</button>
+      <button class="close-btn" onclick="closeOrgModal()" aria-label="Fechar">×</button>
     </div>
     <div class="form-grid">
       <div class="field-group full">
-        <label>Nome da Comunidade <span style="color:var(--accent)">*</span></label>
+        <label for="fo-nome">Nome da Comunidade <span style="color:var(--accent)">*</span></label>
         <input type="text" id="fo-nome" placeholder="Ex: Capela São Sebastião" />
       </div>
       <div class="field-group full">
-        <label>Coordenador (usuário existente)</label>
+        <label for="fo-coordenador-id">Coordenador (usuário existente)</label>
         <select id="fo-coordenador-id">
           <option value="">Selecione um coordenador</option>
         </select>
       </div>
       <div class="field-group full">
-        <label>Próximo Código Dizimista</label>
+        <label for="fo-codigo-inicial">Próximo Código Dizimista</label>
         <input type="number" id="fo-codigo-inicial" placeholder="10000" value="10000" />
         <div style="font-size:11px;color:var(--ink-3);margin-top:4px;">
           Número inicial para a sequência de códigos dizimistas desta comunidade.
@@ -1655,7 +1727,7 @@ tr:hover td { background: var(--indigo-50); }
 
 <!-- MODAL VIEW -->
 <div class="modal-overlay hidden" id="view-modal">
-  <div class="modal" style="max-width:540px;">
+  <div class="modal" style="max-width:540px;" role="dialog" aria-modal="true" aria-labelledby="view-modal-content">
     <div id="view-modal-content"></div>
   </div>
 </div>
@@ -1670,19 +1742,71 @@ let currentUser = null;
 let allPeople = [];
 let allUsers = [];
 let allOrganizations = [];
-let allParoquias = [];
-let currentContext = { type: 'paroquia', id: null, name: 'Todas as comunidades' };
+// Contexto padrão: SEMPRE inicia mostrando todas as comunidades juntas.
+const DEFAULT_CONTEXT = { type: 'paroquia', id: null, name: 'Todas as comunidades' };
+let currentContext = { ...DEFAULT_CONTEXT };
 let editId = null;
 let editUserId = null;
 let editOrgId = null;
 let currentFilter = 'todos';
 let currentPage = 1;
+let lastFilteredTotal = 0;
 const ITEMS_PER_PAGE = 15;
 let advFilters = {};
 let sortField = 'nomeCompleto';
 let sortOrder = 'asc';
 const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-let contextMenuOpen = false;
+let accountMenuOpen = false;
+
+
+const PAGE_PERMISSIONS = {
+  comunidades: ['SUPER_ADMIN', 'ADMIN'],
+  users: ['SUPER_ADMIN', 'ADMIN'],
+  pendentes: ['SUPER_ADMIN', 'ADMIN', 'COORDENADOR'],
+  import: ['SUPER_ADMIN'],
+};
+
+function canAccessPage(pageId) {
+  const allowed = PAGE_PERMISSIONS[pageId];
+  if (!allowed) return true; 
+  return allowed.includes(currentUser?.role);
+}
+
+function applyNavPermissions() {
+  document.querySelectorAll('.nav-tab[data-roles]').forEach(btn => {
+    const roles = btn.dataset.roles.split(',');
+    btn.style.display = roles.includes(currentUser?.role) ? '' : 'none';
+  });
+}
+
+function showPage(id) {
+  // Guarda de navegação: bloqueia acesso direto (ex: chamado via console),
+  // não só o item do menu.
+  if (!canAccessPage(id)) {
+    toast('Você não tem permissão para acessar esta página.', 'error');
+    return;
+  }
+
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-tab[role='tab']").forEach(t => {
+    t.classList.remove("active");
+    t.setAttribute('aria-selected', 'false');
+  });
+  document.getElementById("page-" + id)?.classList.add("active");
+
+  const targetTab = document.getElementById('tab-' + id);
+  if (targetTab) {
+    targetTab.classList.add('active');
+    targetTab.setAttribute('aria-selected', 'true');
+  }
+
+  if (id === "people") renderTable();
+  if (id === "birthdays") { buildYearFilter(); renderBirthdays(); }
+  if (id === "dashboard") renderDashboard();
+  if (id === "comunidades") renderComunidades();
+  if (id === "pendentes") carregarPendentes();
+}
+
 
 // ===== WAKE UP BACKEND =====
 function wakeUpBackend() {
@@ -1727,6 +1851,28 @@ function confirmDialog(title, message, okLabel = 'Confirmar', danger = true) {
     cancelBtn.onclick = () => cleanup(false);
   });
 }
+
+// ===== TOGGLE ACCOUNT MENU =====
+
+function toggleAccountMenu() {
+  accountMenuOpen = !accountMenuOpen;
+  const menu = document.getElementById('account-menu');
+  const btn = document.getElementById('account-btn');
+  if (menu) {
+    menu.classList.toggle('hidden', !accountMenuOpen);
+  }
+  if (btn) {
+    btn.setAttribute('aria-expanded', String(accountMenuOpen));
+  }
+}
+
+// Fechar menu ao clicar fora
+document.addEventListener('click', function(e) {
+  const selector = document.querySelector('.account-selector');
+  if (selector && !selector.contains(e.target) && accountMenuOpen) {
+    toggleAccountMenu();
+  }
+});
 
 // ===== PHONE MASK =====
 function phoneMask(el) {
@@ -1817,9 +1963,7 @@ async function loadAllData() {
   }
   if (isAdmin || isCoordinator) {
     await loadOrganizationsList();
-    await loadParoquiasList();
   }
-  updateContextMenu();
   renderDashboard();
   renderComunidades();
 }
@@ -1852,15 +1996,6 @@ async function loadOrganizationsList() {
   }
 }
 
-async function loadParoquiasList() {
-  const result = await apiRequest('/paroquias');
-  if (result.ok) {
-    allParoquias = result.data;
-    updateContextMenu();
-  }
-}
-
-
 async function loadOrganizationsSelect() {
   const result = await apiRequest('/organizations');
   if (result.ok && result.data.length > 0) {
@@ -1882,58 +2017,79 @@ async function loadOrganizationsSelect() {
   }
 }
 
-// ===== CONTEXT MENU =====
-function toggleContextMenu() {
-  contextMenuOpen = !contextMenuOpen;
-  const menu = document.getElementById('context-menu');
-  const arrow = document.getElementById('context-arrow');
-  menu.classList.toggle('hidden', !contextMenuOpen);
-  arrow.classList.toggle('open', contextMenuOpen);
+// ===== CONTEXTO (comunidade selecionada) =====
+
+// Mantém o badge/contexto sincronizado sempre que a lista de comunidades
+// é recarregada (ex: nome de uma comunidade foi editado, ou a comunidade
+// selecionada foi excluída).
+function updateContextMenu() {
+  if (currentContext.type === 'comunidade' && currentContext.id) {
+    const org = allOrganizations.find(o => o.id === currentContext.id);
+    if (org) {
+      currentContext.name = org.nome;
+    } else {
+      // A comunidade selecionada não existe mais: volta para "todas".
+      currentContext = { ...DEFAULT_CONTEXT };
+    }
+  }
+  updateContextDisplay();
 }
 
-function selectContext(type, id, name) {
-  currentContext = { type, id, name };
-  document.getElementById('current-context').textContent = name;
-  toggleContextMenu();
+// Atualiza o indicador visual (badge no cabeçalho) de qual comunidade
+// está selecionada. Também anuncia a mudança para leitores de tela.
+function updateContextDisplay() {
+  const btn = document.getElementById('current-context-display');
+  const label = document.getElementById('current-context-label');
+  const live = document.getElementById('context-live-region');
+  const isAll = currentContext.type === 'paroquia' || !currentContext.id;
+
+  if (label) {
+    label.textContent = isAll ? 'Todas as comunidades' : currentContext.name;
+  }
+  if (btn) {
+    const icon = btn.querySelector('span[aria-hidden="true"]');
+    if (icon) icon.textContent = isAll ? '' : '';
+    btn.classList.toggle('is-filtered', !isAll);
+    btn.title = isAll
+      ? 'Mostrando todas as comunidades.'
+      : `Mostrando apenas: ${currentContext.name}. Clique para ver todas as comunidades.`;
+  }
+  if (live) {
+    live.textContent = isAll
+      ? 'Agora mostrando todas as comunidades.'
+      : `Agora mostrando apenas a comunidade ${currentContext.name}.`;
+  }
+}
+
+// Clique no badge do cabeçalho: se houver um filtro ativo, limpa (volta
+// para "todas as comunidades"). Se já estiver em "todas", não faz nada.
+function handleContextBadgeClick() {
+  if (currentContext.type === 'comunidade' && currentContext.id) {
+    selectContext('paroquia', null);
+    toast('Mostrando todas as comunidades.', 'info');
+  }
+}
+
+// Define a comunidade (ou "todas") como contexto ativo do sistema.
+// Recebe apenas o id — o nome é sempre derivado de allOrganizations,
+// evitando problemas de sincronização e de caracteres especiais em
+// atributos onclick.
+function selectContext(type, id) {
+  if (type === 'comunidade' && id) {
+    const org = allOrganizations.find(o => o.id === id);
+    currentContext = { type: 'comunidade', id, name: org ? org.nome : 'Comunidade' };
+  } else {
+    currentContext = { ...DEFAULT_CONTEXT };
+  }
+
+  currentPage = 1;
+  updateContextDisplay();
   renderDashboard();
   renderTable();
   renderComunidades();
   renderBirthdays();
-  updateContextMenu();
 }
 
-function updateContextMenu() {
-  const menu = document.getElementById('context-menu');
-  if (!menu) return;
-  
-  let html = '';
-  
-  // Opção Paróquia (todas as comunidades)
-  const isParoquiaActive = currentContext.type === 'paroquia';
-  html += `
-    <div class="context-item ${isParoquiaActive ? 'active' : ''}" onclick="selectContext('paroquia', null, '🏛️ Paróquia Matriz')">
-      <span><span class="icon">🏛️</span> Paróquia Matriz</span>
-      <span class="badge">Todas as comunidades</span>
-    </div>
-  `;
-  
-  if (allOrganizations.length > 0) {
-    html += `<div class="context-divider"></div>`;
-    allOrganizations.forEach(org => {
-      const isActive = currentContext.type === 'comunidade' && currentContext.id === org.id;
-      const pessoasCount = org._count?.pessoas || 0;
-      const coordNome = org.coordenador?.nome || 'Sem coordenador';
-      html += `
-        <div class="context-item ${isActive ? 'active' : ''}" onclick="selectContext('comunidade', '${org.id}', ' ${org.nome}')">
-          <span><span class="icon"></span> ${org.nome}</span>
-          <span class="badge">${pessoasCount} pessoas</span>
-        </div>
-      `;
-    });
-  }
-  
-  menu.innerHTML = html;
-}
 
 // ===== DASHBOARD =====
 function renderDashboard() {
@@ -1965,11 +2121,15 @@ function renderDashboard() {
   const adultos = calc(p => { const a=age(p); return a!=null && a>=16 && a<=60; });
   const idosos = calc(p => { const a=age(p); return a!=null && a>60; });
   
-  const contextName = currentContext.type === 'paroquia' ? 'Paróquia Matriz' : currentContext.name;
+  const contextName = (currentContext.type === 'paroquia' || !currentContext.id) ? 'Todas as comunidades' : currentContext.name;
+  const isFiltered = currentContext.type === 'comunidade' && currentContext.id;
   
   container.innerHTML = `
     <div class="card">
-      <div class="card-title"> Dashboard - ${contextName}</div>
+      <div class="card-title">
+        <span>Painel — ${esc(contextName)}</span>
+        ${isFiltered ? `<button class="btn btn-sm btn-outline" onclick="selectContext('paroquia', null)">🏛️ Ver todas as comunidades</button>` : ''}
+      </div>
       <div class="stats-row">
         <div class="stat-card"><div class="stat-label">Total de pessoas</div><div class="stat-value stat-accent">${total}</div></div>
         <div class="stat-card"><div class="stat-label">Aniversariantes este mês</div><div class="stat-value">${thisMonth}</div></div>
@@ -2021,29 +2181,42 @@ function renderComunidades() {
     return;
   }
   
-  // Filtrar comunidades pelo contexto
-  let comunidades = allOrganizations;
-  if (currentContext.type === 'comunidade' && currentContext.id) {
-    comunidades = comunidades.filter(c => c.id === currentContext.id);
-  }
-  
+  const isAllSelected = currentContext.type === 'paroquia' || !currentContext.id;
+
   container.innerHTML = `
     <div class="community-grid">
-      ${comunidades.map(c => {
+      <div class="community-card all-communities-card ${isAllSelected ? 'is-selected' : ''}"
+        role="button" tabindex="0"
+        aria-pressed="${isAllSelected}"
+        aria-current="${isAllSelected ? 'true' : 'false'}"
+        onclick="selectContext('paroquia', null)"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectContext('paroquia', null);}">
+        <div class="name">🏛️ Todas as comunidades ${isAllSelected ? '<span class="selected-chip">✓ Selecionada</span>' : ''}</div>
+        <div class="info">Mostra os dados de todas as comunidades juntas.</div>
+        <div class="stats">
+          <span>${allPeople.length} pessoas no total</span>
+        </div>
+      </div>
+      ${allOrganizations.map(c => {
         const pessoasCount = c._count?.pessoas || 0;
         const coordNome = c.coordenador?.nome || 'Sem coordenador';
         const isActive = currentContext.type === 'comunidade' && currentContext.id === c.id;
         return `
-          <div class="community-card" onclick="selectContext('comunidade', '${c.id}', ' ${c.nome}')" style="${isActive ? 'border-color:var(--indigo-600);background:var(--indigo-50);' : ''}">
-            <div class="name">${esc(c.nome)}</div>
-            <div class="info">👤 Coordenador: ${esc(coordNome)}</div>
+          <div class="community-card ${isActive ? 'is-selected' : ''}"
+            role="button" tabindex="0"
+            aria-pressed="${isActive}"
+            aria-current="${isActive ? 'true' : 'false'}"
+            onclick="selectContext('comunidade', '${c.id}')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectContext('comunidade', '${c.id}');}">
+            <div class="name">${esc(c.nome)} ${isActive ? '<span class="selected-chip">✓ Selecionada</span>' : ''}</div>
+            <div class="info">Coordenador: ${esc(coordNome)}</div>
             <div class="stats">
               <span>${pessoasCount} pessoas</span>
               <span>Código: ${c.proximoCodigoDizimista || '—'}</span>
             </div>
             <div style="margin-top:8px;display:flex;gap:6px;">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();editOrganization('${c.id}')">✏️</button>
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();selectContext('comunidade', '${c.id}', ' ${c.nome}');showPage('people')">Ver pessoas</button>
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();editOrganization('${c.id}')">✏️ Editar</button>
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();selectContext('comunidade', '${c.id}');showPage('people')">Ver pessoas</button>
             </div>
           </div>
         `;
@@ -2093,6 +2266,7 @@ function renderTable() {
   updateSortIcons();
   
   const total = filtered.length;
+  lastFilteredTotal = total;
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
   const items = sorted.slice(start, start + ITEMS_PER_PAGE);
 
@@ -2103,8 +2277,9 @@ function renderTable() {
   const empty = document.getElementById('people-empty');
   
   // Atualizar título
-  const contextName = currentContext.type === 'paroquia' ? 'Todas as comunidades' : currentContext.name;
-  document.getElementById('people-title').textContent = `Pessoas - ${contextName}`;
+  const contextName = (currentContext.type === 'paroquia' || !currentContext.id) ? 'Todas as comunidades' : currentContext.name;
+  const peopleTitle = document.getElementById('people-title');
+  if (peopleTitle) peopleTitle.textContent = `Pessoas - ${contextName}`;
 
   if (items.length === 0) {
     if (tbody) tbody.innerHTML = '';
@@ -2212,8 +2387,9 @@ function renderPagination(total) {
 }
 
 function changePage(p) {
-  const total = allPeople.length; 
-  const max = Math.ceil(total / ITEMS_PER_PAGE);
+  // Usa o total já filtrado (contexto + filtro + busca), não o total geral
+  // de pessoas, para não permitir navegar para páginas vazias/inexistentes.
+  const max = Math.ceil(lastFilteredTotal / ITEMS_PER_PAGE);
   if (p < 1 || p > max) return;
   currentPage = p;
   renderTable();
@@ -2266,8 +2442,15 @@ function updateSortIcons() {
 function setFilter(f) {
   currentFilter = f;
   currentPage = 1;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('filter-' + f)?.classList.add('active');
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  const activeBtn = document.getElementById('filter-' + f);
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+    activeBtn.setAttribute('aria-pressed', 'true');
+  }
   renderTable();
 }
 
@@ -2310,7 +2493,7 @@ function viewPerson(id) {
         <div class="view-status" style="color:${statusColor}">● ${statusTxt}</div>
         ${p.codigoDizimista ? `<div style="font-size:12px;color:var(--ink2);margin-top:4px;">Código: ${p.codigoDizimista}</div>` : ''}
       </div>
-      <button class="close-btn" onclick="document.getElementById('view-modal').classList.add('hidden')">×</button>
+      <button class="close-btn" onclick="document.getElementById('view-modal').classList.add('hidden')" aria-label="Fechar">×</button>
     </div>
 
     <div class="view-section">
@@ -2450,6 +2633,13 @@ function openModal(id = null) {
   }
   
   loadOrganizationsSelect().then(() => {
+    // Se um cadastro está sendo criado a partir de uma comunidade
+    // selecionada, pré-seleciona essa comunidade no formulário.
+    if (!id && isAdmin && currentContext.type === 'comunidade' && currentContext.id) {
+      const orgSelect = document.getElementById('f-organization-id');
+      if (orgSelect) orgSelect.value = currentContext.id;
+    }
+
     if (id) {
       const p = allPeople.find(x => x.id == id);
       if (!p) { toast('Pessoa não encontrada.', 'error'); return; }
@@ -2501,7 +2691,7 @@ function addFilhoField(nome = '', data = '') {
   div.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;';
   div.innerHTML = `<input type="text" placeholder="Nome do filho" value="${esc(nome)}" style="flex:2;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;background:#fff;outline:none;" class="filho-nome">
     <input type="date" value="${data}" style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;background:#fff;outline:none;" class="filho-data">
-    <button type="button" class="btn btn-sm btn-outline" onclick="this.parentElement.remove()">✖</button>`;
+    <button type="button" class="btn btn-sm btn-outline" onclick="this.parentElement.remove()" aria-label="Remover filho">✖</button>`;
   document.getElementById('filhos-list').appendChild(div);
 }
 
@@ -2611,21 +2801,21 @@ async function savePerson() {
   if (ehDizimista && !codigoDizimista) { toast('Para dizimistas, é necessário um código.', 'error'); return; }
   
   const data = {
-    nomeCompleto: nome,
+    nomeCompleto: nome.toUpperCase(),
     dataNascimento: nasc,
     status: 'ativo',
     ...(tel && { telefone: tel }),
-    ...(endereco && { endereco: endereco }),
-    ...(bairro && { bairro: bairro }),
+    ...(endereco && { endereco: endereco.toUpperCase() }),
+    ...(bairro && { bairro: bairro.toUpperCase() }),
     ...(ec && { estadoCivil: ec }),
     ...(orgId && { organizationId: orgId }),  
     ehDizimista: ehDizimista,
     ...(codigoDizimista && { codigoDizimista: codigoDizimista }),
     ...espiritual,
-    ...(conjugeNome && { conjuge: { nome: conjugeNome, dataNascimento: conjugeData || null } }),
+    ...(conjugeNome && { conjuge: { nome: conjugeNome.toUpperCase(), dataNascimento: conjugeData || null } }),
     ...(filhos.length > 0 && { filhos: filhos }),
-    ...(textoCompleto && { movimentosPastorais: textoCompleto }),
-    ...(textoCompleto && { observacoes: textoCompleto }),
+    ...(textoCompleto && { movimentosPastorais: textoCompleto.toUpperCase() }),
+    ...(textoCompleto && { observacoes: textoCompleto.toUpperCase() }),
   };
   
   Object.keys(data).forEach(key => {
@@ -2958,12 +3148,13 @@ function renderBirthdays() {
         </div>
       </div>
       <div class="birthday-grid month-content ${isOpen ? '' : 'collapsed'}" id="month-content-${mi}">
-        ${byMonth[mi].map(p => {
+       ${byMonth[mi].map(p => {
           const today = mi === cm && p._day === cd;
-          return `<div class="birthday-card" style="${today ? 'border-color:var(--amber-500);background:#fffbeb;' : ''}">
+          const mirimClass = p._mirim ? ' mirim' : '';
+          return `<div class="birthday-card${mirimClass}" style="${today ? 'border-color:var(--amber-500);background:#fffbeb;' : ''}">
             <div class="bday-day" style="${today ? 'background:var(--amber-500);' : ''}">${p._day}</div>
             <div>
-              <div class="bday-name">${esc(p.nomeCompleto)}</div>
+              <div class="bday-name">${esc(p.nomeCompleto)}${p._mirim ? ' <span class="badge-mirim">Mirim</span>' : ''}</div>
               <div class="bday-age">${p._idade} anos${today ? ' 🎉' : ''}</div>
             </div>
           </div>`;
@@ -2979,10 +3170,21 @@ function toggleMonth(mi) {
   const content = document.getElementById(`month-content-${mi}`);
   const icon = document.getElementById(`month-icon-${mi}`);
   if (!content) return;
+
   const willOpen = content.classList.contains('collapsed');
-  content.classList.toggle('collapsed', !willOpen);
-  icon?.classList.toggle('open', willOpen);
-  if (willOpen) _openMonths.add(mi); else _openMonths.delete(mi);
+
+  // Fecha todos os meses antes de abrir o clicado — só um aberto por vez.
+  _openMonths.forEach(openIdx => {
+    document.getElementById(`month-content-${openIdx}`)?.classList.add('collapsed');
+    document.getElementById(`month-icon-${openIdx}`)?.classList.remove('open');
+  });
+  _openMonths.clear();
+
+  if (willOpen) {
+    content.classList.remove('collapsed');
+    icon?.classList.add('open');
+    _openMonths.add(mi);
+  }
 }
 
 function copyMonthList(mi, withDate) {
@@ -2990,13 +3192,14 @@ function copyMonthList(mi, withDate) {
   if (!pessoas.length) { toast('Nenhum aniversariante neste mês.', 'info'); return; }
 
   const lines = pessoas.map(p => {
-    const nomeMaiusculo = (p.nomeCompleto || '').toUpperCase();
-    if (withDate) {
-      const diaFmt = String(p._day).padStart(2, '0');
-      const mesFmt = String(mi + 1).padStart(2, '0');
-      return `${p.nomeCompleto} - ${diaFmt}/${mesFmt}`;
-    }
-    return nomeMaiusculo;
+   const sufixoMirim = p._mirim ? ' (MIRIM)' : '';
+const nomeMaiusculo = (p.nomeCompleto || '').toUpperCase() + sufixoMirim;
+if (withDate) {
+  const diaFmt = String(p._day).padStart(2, '0');
+  const mesFmt = String(mi + 1).padStart(2, '0');
+  return `${p.nomeCompleto}${sufixoMirim} - ${diaFmt}/${mesFmt}`;
+}
+return nomeMaiusculo;
   });
 
   const texto = lines.join('\n');
@@ -3019,21 +3222,24 @@ async function processExcelFile(file) {
     document.head.appendChild(s);
     await new Promise(res => s.onload = res);
   }
-  
+
+  const organizationIdDoContexto =
+    currentContext.type === 'comunidade' ? currentContext.id : null;
+
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
       const wb = XLSX.read(e.target.result, { type: 'binary' });
       const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
-      
-      let added = 0, errors = 0;
+
+      let added = 0, errors = 0, semComunidade = 0;
       const errorDetails = [];
-      
+
       for (const [index, row] of rows.entries()) {
         try {
           const nome = (row['Nome'] || row['nome'] || '').toString().trim();
           if (!nome) { errors++; errorDetails.push(`Linha ${index+2}: Nome vazio`); continue; }
-          
+
           const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString().trim();
           let dataNascimento = null;
           if (nascRaw) {
@@ -3043,32 +3249,49 @@ async function processExcelFile(file) {
             }
           }
           if (!dataNascimento) { errors++; errorDetails.push(`Linha ${index+2}: Data inválida`); continue; }
-          
+
           const pessoaData = {
             nomeCompleto: nome,
             dataNascimento: dataNascimento,
             status: 'ativo',
             ehDizimista: true,
           };
-          
+
           const codigo = (row['Código dizimista'] || '').toString().trim();
           if (codigo) pessoaData.codigoDizimista = codigo;
-          
+
           const conjuge = (row['Conjuge'] || '').toString().trim();
           if (conjuge) pessoaData.conjuge = { nome: conjuge, dataNascimento: null };
+
+          const comunidadeTexto = (row['comunidade'] || row['Comunidade'] || '').toString().trim();
           
-          const comunidade = (row['comunidade'] || row['Comunidade'] || '').toString().trim();
-          if (comunidade) pessoaData.comunidadeContribui = comunidade;
-          
+          if (organizationIdDoContexto) {
+            pessoaData.organizationId = organizationIdDoContexto;
+            pessoaData.comunidadeContribui = currentContext.name || comunidadeTexto;
+          } else if (comunidadeTexto) {
+            const orgEncontrada = allOrganizations.find(
+              o => o.nome.trim().toLowerCase() === comunidadeTexto.toLowerCase()
+            );
+            if (orgEncontrada) {
+              pessoaData.organizationId = orgEncontrada.id;
+              pessoaData.comunidadeContribui = orgEncontrada.nome;
+            } else {
+              semComunidade++;
+              errorDetails.push(`Linha ${index+2}: comunidade "${comunidadeTexto}" não encontrada — pessoa importada sem vínculo oficial.`);
+            }
+          } else {
+            semComunidade++;
+          }
+
           const endereco = (row['Endereço'] || row['Endereco'] || '').toString().trim();
           if (endereco) pessoaData.endereco = endereco;
-          
+
           const bairro = (row['Bairro'] || '').toString().trim();
           if (bairro) pessoaData.bairro = bairro;
-          
+
           const telefone = (row['Telefone'] || '').toString().trim();
           if (telefone) pessoaData.telefone = telefone;
-          
+
           const resp = await fetch(`${API_URL}/pessoas`, {
             method: 'POST',
             headers: {
@@ -3077,25 +3300,26 @@ async function processExcelFile(file) {
             },
             body: JSON.stringify(pessoaData)
           });
-          
+
           if (resp.ok) added++;
           else { errors++; errorDetails.push(`Linha ${index+2}: ${await resp.text()}`); }
-          
+
         } catch (err) {
           errors++;
           errorDetails.push(`Linha ${index+2}: ${err.message}`);
         }
       }
-      
+
       await loadAllData();
       const res = document.getElementById('import-result');
       res.classList.remove('hidden');
       res.innerHTML = `<div class="alert alert-${errors > 0 ? 'error' : 'success'}">
         <strong>${added} importadas!</strong> ${errors > 0 ? `${errors} erros.` : ''}
-        ${errorDetails.slice(0,3).join('<br>')}
+        ${semComunidade > 0 ? `<br>${semComunidade} sem vínculo oficial de comunidade.` : ''}
+        ${errorDetails.slice(0,5).join('<br>')}
       </div>`;
-      setTimeout(() => res.classList.add('hidden'), 8000);
-      
+      setTimeout(() => res.classList.add('hidden'), 10000);
+
     } catch (err) {
       toast('Erro ao processar: ' + err.message, 'error');
     }
@@ -3254,6 +3478,10 @@ async function doLogin() {
       };
       
       sessionStorage.setItem('user', JSON.stringify(currentUser));
+
+      // Toda nova sessão começa mostrando TODAS as comunidades juntas.
+      currentContext = { ...DEFAULT_CONTEXT };
+      updateContextDisplay();
       
       applyRole();
       document.getElementById('login-screen').style.display = 'none';
@@ -3292,50 +3520,53 @@ function logout() {
   currentUser = null;
   sessionStorage.removeItem('token');
   allPeople = [];
+  allUsers = [];
+  allOrganizations = [];
+  currentContext = { ...DEFAULT_CONTEXT };
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   document.getElementById('inp-user').value = '';
   document.getElementById('inp-pass').value = '';
 }
 
+
 function applyRole() {
   const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
   const isAdmin = currentUser?.role === 'ADMIN' || isSuperAdmin;
   const isCoordinator = currentUser?.role === 'COORDENADOR';
 
-  document.getElementById('header-user-name').textContent = currentUser?.name || '';
+  const nameDisplay = document.getElementById('header-user-name');
+  if (nameDisplay) nameDisplay.textContent = currentUser?.name || '';
+
   const pill = document.getElementById('header-role-pill');
-  pill.textContent = getRoleLabel(currentUser?.role);
-  pill.className = 'role-pill ' + (isSuperAdmin ? 'super-admin' : isAdmin ? 'admin' : isCoordinator ? 'coordinator' : 'member');
-    
-  // SUPER_ADMIN only
-  document.querySelectorAll('.super-admin-only').forEach(el => {
-    el.style.display = isSuperAdmin ? '' : 'none';
-  });
-  
-  document.querySelectorAll('.admin-only').forEach(el => {
-    el.style.display = isAdmin ? '' : 'none';
-  });
-  
-  document.querySelectorAll('.coordinator-only').forEach(el => {
-    el.style.display = (isAdmin || isCoordinator) ? '' : 'none';
-  });
+  if (pill) {
+    pill.textContent = getRoleLabel(currentUser?.role);
+    pill.className = 'role-pill ' + (isSuperAdmin ? 'super-admin' : isAdmin ? 'admin' : isCoordinator ? 'coordinator' : 'member');
+  }
+
+  const avatar = document.getElementById('account-avatar');
+  if (avatar) {
+    const iniciais = (currentUser?.name || '?')
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(p => p[0]?.toUpperCase())
+      .join('');
+    avatar.textContent = iniciais || '?';
+  }
+
+  const menuName = document.getElementById('account-menu-name');
+  if (menuName) menuName.textContent = currentUser?.name || '';
+
+  const menuPill = document.getElementById('account-role-pill');
+  if (menuPill) {
+    menuPill.textContent = getRoleLabel(currentUser?.role);
+    menuPill.className = 'role-pill ' + (isSuperAdmin ? 'super-admin' : isAdmin ? 'admin' : isCoordinator ? 'coordinator' : 'member');
+  }
+
+  applyNavPermissions();
 }
 
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
-  document.getElementById("page-" + id)?.classList.add("active");
-  const map = { dashboard: 0, comunidades: 1, people: 2, birthdays: 3, users: 4, pendentes: 5, import: 6 };
-  const tabs = document.querySelectorAll(".nav-tab");
-  if (tabs[map[id]]) tabs[map[id]].classList.add("active");
-  
-  if (id === "people") renderTable();
-  if (id === "birthdays") { buildYearFilter(); renderBirthdays(); }
-  if (id === "dashboard") renderDashboard();
-  if (id === "comunidades") renderComunidades();
-  if (id === "pendentes") carregarPendentes();
-}
 
 // ===== UTILS =====
 function esc(s) {
@@ -3355,6 +3586,7 @@ function formatDate(s) {
 // ===== EVENTS =====
 document.addEventListener('DOMContentLoaded', () => {
   wakeUpBackend();
+  updateContextDisplay();
 
   // Drop zone
   const dz = document.getElementById('drop-zone');
@@ -3396,15 +3628,8 @@ document.addEventListener('DOMContentLoaded', () => {
       closeOrgModal();
     }
   });
-  
-  // Fechar context menu ao clicar fora
-  document.addEventListener('click', function(e) {
-    const selector = document.querySelector('.context-selector');
-    if (selector && !selector.contains(e.target) && contextMenuOpen) {
-      toggleContextMenu();
-    }
-  });
 });
+
 
 // ===== RESIZE =====
 let resizeTimeout;
