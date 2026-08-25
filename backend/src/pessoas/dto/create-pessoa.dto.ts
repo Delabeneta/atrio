@@ -8,21 +8,25 @@ import {
   IsEnum,
   ValidateNested,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import { EstadoCivil, FrequenciaMissa } from '@prisma/client';
 
 class ConjugeDto {
-  @Transform(({ value }) => value?.toUpperCase())
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   nome!: string;
 
   @IsDateString()
   @IsOptional()
-  dataNascimento!: string;
+  dataNascimento?: string;
 }
 
 class FilhoDto {
-  @Transform(({ value }) => value?.toUpperCase())
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   nome!: string;
 
@@ -31,7 +35,9 @@ class FilhoDto {
 }
 
 export class CreatePessoaDto {
-  @Transform(({ value }) => value?.toUpperCase())
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   nomeCompleto!: string;
 
@@ -42,15 +48,21 @@ export class CreatePessoaDto {
   @IsOptional()
   email?: string;
 
+  @Transform(({ value }) => (typeof value === 'string' ? value : undefined))
   @IsString()
   @IsOptional()
   telefone?: string;
 
-  @Transform(({ value }) => value?.toUpperCase())
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   @IsOptional()
   bairro?: string;
 
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   @IsOptional()
   endereco?: string;
@@ -63,6 +75,9 @@ export class CreatePessoaDto {
   @IsOptional()
   organizationId?: string;
 
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   @IsOptional()
   comunidadeContribui?: string;
@@ -115,7 +130,6 @@ export class CreatePessoaDto {
   @IsOptional()
   codigoDizimista?: string;
 
-  @Transform(({ value }) => value?.toUpperCase())
   @ValidateNested()
   @Type(() => ConjugeDto)
   @IsOptional()
@@ -126,16 +140,22 @@ export class CreatePessoaDto {
   @IsOptional()
   filhos?: FilhoDto[];
 
-  @Transform(({ value }) => value?.toUpperCase())
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   @IsOptional()
   movimentosPastorais?: string;
 
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.toUpperCase() : value,
+  )
   @IsString()
   @IsOptional()
   observacoes?: string;
 
   @IsString()
+  @IsOptional()
   status?: string;
 
   @IsString()
