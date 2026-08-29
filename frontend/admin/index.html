@@ -1361,7 +1361,7 @@ tr:hover td { background: var(--indigo-50); }
         <div class="card-title">
           <span>Comunidades da Paróquia</span>
           <div class="card-title-actions">
-            <button class="btn btn-sm btn-outline" onclick="selectContext('paroquia', null)">🏛️ Ver todas as comunidades</button>
+            <button class="btn btn-sm btn-outline" onclick="selectContext('paroquia', null)">Ver todas as comunidades</button>
             <button class="btn btn-primary" onclick="openOrgModal()">+ Nova Comunidade</button>
           </div>
         </div>
@@ -2128,7 +2128,7 @@ function renderDashboard() {
     <div class="card">
       <div class="card-title">
         <span>Painel — ${esc(contextName)}</span>
-        ${isFiltered ? `<button class="btn btn-sm btn-outline" onclick="selectContext('paroquia', null)">🏛️ Ver todas as comunidades</button>` : ''}
+        ${isFiltered ? `<button class="btn btn-sm btn-outline" onclick="selectContext('paroquia', null)"> Ver todas as comunidades</button>` : ''}
       </div>
       <div class="stats-row">
         <div class="stat-card"><div class="stat-label">Total de pessoas</div><div class="stat-value stat-accent">${total}</div></div>
@@ -2158,7 +2158,7 @@ function renderDashboard() {
     </div>
     
     <div class="card">
-      <div class="card-title">📋 Últimos cadastros</div>
+      <div class="card-title">Últimos cadastros</div>
       <div id="recent-list">${ativos.length === 0 ? '<p style="color:var(--ink2);font-size:14px;">Nenhum cadastro ainda.</p>' :
         [...ativos].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,5).map(p => `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);">
@@ -2301,7 +2301,7 @@ function renderTable() {
       const statusText = isInativo ? '(Inativo)' : (isPendente ? '(Pendente)' : '');
       
       const actionsHtml = (canEdit || canDelete) ? `<td><div class="actions">
-        <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')" title="Ver">👁️</button>
+        <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')" title="Ver">📋</button>
         ${canEdit ? `<button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')" title="Editar">✏️</button>` : ''}
         ${canInactivate ? (p.status === 'ativo' 
           ? `<button class="btn btn-sm btn-danger" onclick="inativarPerson('${p.id}')" title="Inativar">🔴</button>`
@@ -3381,19 +3381,19 @@ async function carregarPendentes() {
         <div>
           <div style="font-weight:600;">${esc(p.nomeCompleto)}</div>
           <div style="font-size:12px;color:var(--ink2);">
-            📅 ${formatDate(p.dataNascimento)} | 📞 ${p.telefone || '—'}
+            ${formatDate(p.dataNascimento)} | ${p.telefone || '—'}
           </div>
           <div style="font-size:12px;color:var(--ink2);">
-            🏛️ ${p.comunidadeParticipa || 'Sem comunidade'}
+            ${p.comunidadeParticipa || 'Sem comunidade'}
           </div>
           <div style="font-size:11px;color:var(--ink-3);margin-top:2px;">
-            🕐 Cadastrado em: ${new Date(p.createdAt).toLocaleDateString('pt-BR')}
+            Cadastrado em: ${new Date(p.createdAt).toLocaleDateString('pt-BR')}
           </div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="btn btn-sm btn-green" onclick="aprovarPendente('${p.id}', true)"> Aprovar</button>
           <button class="btn btn-sm btn-danger" onclick="aprovarPendente('${p.id}', false)"> Rejeitar</button>
-          <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')">👁️ Ver</button>
+          <button class="btn btn-sm btn-outline" onclick="viewPerson('${p.id}')">📋 Ver</button>
         </div>
       </div>
     </div>
