@@ -1307,7 +1307,7 @@ tr:hover td { background: var(--indigo-50); }
   <div class="header-center">
     <button type="button" class="context-btn" id="current-context-display" onclick="handleContextBadgeClick()"
       title="Comunidade atualmente selecionada. Clique para ver todas as comunidades.">
-      <span aria-hidden="true">🏛️</span>
+      <span aria-hidden="true"></span>
       <span id="current-context-label">Todas as comunidades</span>
       <span class="context-clear" aria-hidden="true">✕ limpar</span>
     </button>
@@ -1888,7 +1888,7 @@ function validateDate(dateStr) {
   if (!dateStr) return false;
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return false;
-  if (d.getFullYear() < 1900) return false;
+  if (d.getFullYear() < 1899) return false;
   if (d > new Date()) return false;
   return true;
 }
@@ -2142,7 +2142,7 @@ function renderDashboard() {
     </div>
     
     <div class="card">
-      <div class="card-title">🎂 Aniversariantes de hoje</div>
+      <div class="card-title">Aniversariantes de hoje</div>
       <div id="today-list">${today === 0 ? '<p style="color:var(--ink2);font-size:14px;">Nenhum aniversariante hoje.</p>' : 
         ativos.filter(p => byDate(p, cm, cd)).map(p => {
           const a = age(p);
@@ -2177,7 +2177,7 @@ function renderComunidades() {
   if (!container) return;
   
   if (allOrganizations.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="es-icon">🏛️</div><h3>Nenhuma comunidade cadastrada</h3><p>Clique em "Nova Comunidade" para começar.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="es-icon"></div><h3>Nenhuma comunidade cadastrada</h3><p>Clique em "Nova Comunidade" para começar.</p></div>`;
     return;
   }
   
@@ -2191,7 +2191,7 @@ function renderComunidades() {
         aria-current="${isAllSelected ? 'true' : 'false'}"
         onclick="selectContext('paroquia', null)"
         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectContext('paroquia', null);}">
-        <div class="name">🏛️ Todas as comunidades ${isAllSelected ? '<span class="selected-chip">✓ Selecionada</span>' : ''}</div>
+        <div class="name">Todas as comunidades ${isAllSelected ? '<span class="selected-chip">✓ Selecionada</span>' : ''}</div>
         <div class="info">Mostra os dados de todas as comunidades juntas.</div>
         <div class="stats">
           <span>${allPeople.length} pessoas no total</span>
@@ -2215,7 +2215,7 @@ function renderComunidades() {
               <span>Código: ${c.proximoCodigoDizimista || '—'}</span>
             </div>
             <div style="margin-top:8px;display:flex;gap:6px;">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();editOrganization('${c.id}')">✏️ Editar</button>
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();editOrganization('${c.id}')">Editar </button>
               <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();selectContext('comunidade', '${c.id}');showPage('people')">Ver pessoas</button>
             </div>
           </div>
@@ -2353,7 +2353,7 @@ function renderTable() {
                 ${p.status === 'pendente' ? `<span class="badge badge-warning" style="margin-left:6px;">Pendente</span>` : ''}
               </div>
               <div class="person-card-meta">
-                ${idade ? `<span>🎂 ${formatDate(p.dataNascimento)} (${idade}a)</span>` : ''}
+                ${idade ? `<span> ${formatDate(p.dataNascimento)} (${idade}a)</span>` : ''}
                 ${p.endereco || p.bairro ? `<span> ${esc(p.endereco||p.bairro)}</span>` : ''}
                 ${p.codigoDizimista ? `<span>Cód: ${p.codigoDizimista}</span>` : ''}
               </div>
@@ -2590,8 +2590,8 @@ function viewPerson(id) {
   if (isAdmin) {
     html += `
       <div class="view-actions">
-        <button class="btn btn-sm btn-outline" onclick="document.getElementById('view-modal').classList.add('hidden'); openModal('${p.id}')">✏️ Editar</button>
-        <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')">📄 Gerar PDF</button>
+        <button class="btn btn-sm btn-outline" onclick="document.getElementById('view-modal').classList.add('hidden'); openModal('${p.id}')">Editar</button>
+        <button class="btn btn-sm btn-outline" onclick="generatePDF('${p.id}')">Gerar PDF</button>
       </div>
     `;
   }
@@ -3163,7 +3163,7 @@ function renderBirthdays() {
     </div>`;
   }).join('');
 
-  container.innerHTML = html || `<div class="empty-state"><div class="es-icon">🎂</div><h3>Nenhum aniversariante</h3></div>`;
+  container.innerHTML = html || `<div class="empty-state"><div class="es-icon"></div><h3>Nenhum aniversariante</h3></div>`;
 }
 
 function toggleMonth(mi) {
@@ -3232,7 +3232,7 @@ async function processExcelFile(file) {
       const wb = XLSX.read(e.target.result, { type: 'binary' });
       const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
 
-      let added = 0, errors = 0, semComunidade = 0;
+      let added = 0, updated = 0, errors = 0, skipped = 0;
       const errorDetails = [];
 
       for (const [index, row] of rows.entries()) {
@@ -3250,6 +3250,16 @@ async function processExcelFile(file) {
           }
           if (!dataNascimento) { errors++; errorDetails.push(`Linha ${index+2}: Data inválida`); continue; }
 
+          const codigoDizimista = (row['Código dizimista'] || '').toString().trim();
+          
+          let pessoaExistente = null;
+          if (codigoDizimista && organizationIdDoContexto) {
+            const result = await apiRequest(`/pessoas?codigo=${codigoDizimista}&organizationId=${organizationIdDoContexto}`);
+            if (result.ok && result.data.length > 0) {
+              pessoaExistente = result.data[0];
+            }
+          }
+
           const pessoaData = {
             nomeCompleto: nome,
             dataNascimento: dataNascimento,
@@ -3257,6 +3267,7 @@ async function processExcelFile(file) {
             ehDizimista: true,
           };
 
+          // Campos opcionais
           const codigo = (row['Código dizimista'] || '').toString().trim();
           if (codigo) pessoaData.codigoDizimista = codigo;
 
@@ -3276,11 +3287,14 @@ async function processExcelFile(file) {
               pessoaData.organizationId = orgEncontrada.id;
               pessoaData.comunidadeContribui = orgEncontrada.nome;
             } else {
-              semComunidade++;
-              errorDetails.push(`Linha ${index+2}: comunidade "${comunidadeTexto}" não encontrada — pessoa importada sem vínculo oficial.`);
+              skipped++;
+              errorDetails.push(`Linha ${index+2}: comunidade "${comunidadeTexto}" não encontrada — pessoa ignorada.`);
+              continue;
             }
           } else {
-            semComunidade++;
+            skipped++;
+            errorDetails.push(`Linha ${index+2}: sem comunidade definida — pessoa ignorada.`);
+            continue;
           }
 
           const endereco = (row['Endereço'] || row['Endereco'] || '').toString().trim();
@@ -3292,17 +3306,59 @@ async function processExcelFile(file) {
           const telefone = (row['Telefone'] || '').toString().trim();
           if (telefone) pessoaData.telefone = telefone;
 
-          const resp = await fetch(`${API_URL}/pessoas`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            },
-            body: JSON.stringify(pessoaData)
-          });
+          let resp;
 
-          if (resp.ok) added++;
-          else { errors++; errorDetails.push(`Linha ${index+2}: ${await resp.text()}`); }
+          if (pessoaExistente) {
+            const updateData = {};
+            
+            // Só atualiza se o campo estiver vazio no banco e preenchido na planilha
+            if (!pessoaExistente.telefone && telefone) updateData.telefone = telefone;
+            if (!pessoaExistente.endereco && endereco) updateData.endereco = endereco;
+            if (!pessoaExistente.bairro && bairro) updateData.bairro = bairro;
+            if (!pessoaExistente.conjuge && conjuge) updateData.conjuge = { nome: conjuge, dataNascimento: null };
+            
+            // Se não há nada para atualizar, pula
+            if (Object.keys(updateData).length === 0) {
+              skipped++;
+              errorDetails.push(`Linha ${index+2}: ${nome} - sem alterações (dados já completos)`);
+              continue;
+            }
+
+            resp = await fetch(`${API_URL}/pessoas/${pessoaExistente.id}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+              },
+              body: JSON.stringify(updateData)
+            });
+
+            if (resp.ok) {
+              updated++;
+              console.log(` Atualizado: ${nome} (código: ${codigoDizimista})`);
+            } else {
+              errors++;
+              errorDetails.push(`Linha ${index+2}: erro ao atualizar ${nome}`);
+            }
+          } else {
+            //  CRIA NOVA PESSOA
+            resp = await fetch(`${API_URL}/pessoas`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+              },
+              body: JSON.stringify(pessoaData)
+            });
+
+            if (resp.ok) {
+              added++;
+              console.log(` Importado: ${nome} (código: ${codigoDizimista || 'novo'})`);
+            } else {
+              errors++;
+              errorDetails.push(`Linha ${index+2}: erro ao importar ${nome}`);
+            }
+          }
 
         } catch (err) {
           errors++;
@@ -3313,9 +3369,14 @@ async function processExcelFile(file) {
       await loadAllData();
       const res = document.getElementById('import-result');
       res.classList.remove('hidden');
+      
+      let message = `<strong>${added} importadas!</strong>`;
+      if (updated > 0) message += ` <strong>${updated} atualizadas!</strong>`;
+      if (skipped > 0) message += ` <span style="color:var(--ink-3);">${skipped} ignoradas (sem alterações).</span>`;
+      if (errors > 0) message += ` ${errors} erros.`;
+      
       res.innerHTML = `<div class="alert alert-${errors > 0 ? 'error' : 'success'}">
-        <strong>${added} importadas!</strong> ${errors > 0 ? `${errors} erros.` : ''}
-        ${semComunidade > 0 ? `<br>${semComunidade} sem vínculo oficial de comunidade.` : ''}
+        ${message}
         ${errorDetails.slice(0,5).join('<br>')}
       </div>`;
       setTimeout(() => res.classList.add('hidden'), 10000);
