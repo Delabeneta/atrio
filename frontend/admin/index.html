@@ -1888,7 +1888,7 @@ function validateDate(dateStr) {
   if (!dateStr) return false;
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return false;
-  if (d.getFullYear() < 1899) return false;
+  if (d.getFullYear() < 1900) return false;
   if (d > new Date()) return false;
   return true;
 }
@@ -3103,6 +3103,8 @@ function buildYearFilter() {
 let _birthdayMonthsData = [];
 let _openMonths = new Set();
 
+
+
 function renderBirthdays() {
   const container = document.getElementById('birthday-content');
   if (!container) return;
@@ -3154,7 +3156,10 @@ function renderBirthdays() {
           return `<div class="birthday-card${mirimClass}" style="${today ? 'border-color:var(--amber-500);background:#fffbeb;' : ''}">
             <div class="bday-day" style="${today ? 'background:var(--amber-500);' : ''}">${p._day}</div>
             <div>
-              <div class="bday-name">${esc(p.nomeCompleto)}${p._mirim ? ' <span class="badge-mirim">Mirim</span>' : ''}</div>
+              <!-- ✅ ADICIONADO onclick para abrir o modal da pessoa -->
+              <div class="bday-name" onclick="viewPerson('${p.id}')" style="cursor:pointer;color:var(--ink);hover:color:var(--indigo-600);">
+                ${esc(p.nomeCompleto)}${p._mirim ? ' <span class="badge-mirim">Mirim</span>' : ''}
+              </div>
               <div class="bday-age">${p._idade} anos${today ? ' 🎉' : ''}</div>
             </div>
           </div>`;
@@ -3163,7 +3168,7 @@ function renderBirthdays() {
     </div>`;
   }).join('');
 
-  container.innerHTML = html || `<div class="empty-state"><div class="es-icon"></div><h3>Nenhum aniversariante</h3></div>`;
+  container.innerHTML = html || `<div class="empty-state"><div class="es-icon">🎂</div><h3>Nenhum aniversariante</h3></div>`;
 }
 
 function toggleMonth(mi) {
@@ -3240,15 +3245,83 @@ async function processExcelFile(file) {
           const nome = (row['Nome'] || row['nome'] || '').toString().trim();
           if (!nome) { errors++; errorDetails.push(`Linha ${index+2}: Nome vazio`); continue; }
 
-          const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString().trim();
-          let dataNascimento = null;
-          if (nascRaw) {
-            const partes = nascRaw.split('/');
-            if (partes.length === 3) {
-              dataNascimento = `${partes[2]}-${partes[1].padStart(2,'0')}-${partes[0].padStart(2,'0')}`;
-            }
-          }
-          if (!dataNascimento) { errors++; errorDetails.push(`Linha ${index+2}: Data inválida`); continue; }
+         
+              const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString().trim();
+              let dataNascimento = null;
+
+              if (nascRaw) {
+                let partes = nascRaw.split('/');
+                if (partes.length === 3) {
+                  const dia = partes[0].padStart(2, '0');
+                  const mes = partes[1].padStart(2, '0');
+                  let ano = partes[2];
+                  
+                  if (ano.length === 2) {
+                    ano = parseInt(ano) < 30 ? `20${ano}` : `19${ano}`;
+                  }
+                  
+                  if (ano.length === 4 && parseInt(ano) > 1900 && parseInt(ano) < 2100) {
+                    dataNascimento = `${ano}-${mes}-${dia}`;
+                  }
+                }
+                
+                if (!dataNascimento) {
+                  partes = nascRaw.split('-');
+                  if (partes.length === 3) {
+                    const dia = partes[0].padStart(2, '0');
+                    const mes = partes[1].padStart(2, '0');
+                    let ano = partes[2];
+                    
+                    if (ano.length === 2) {
+                      ano = parseInt(ano) < 30 ? `20${ano}` : `19${ano}`;
+                    }
+                    
+                    if (ano.length === 4 && parseInt(ano) > 1900 && parseInt(ano) < 2100) {
+                      dataNascimento = `${ano}-${mes}-${dia}`;
+                    }
+                  }
+                }
+                
+                if (!dataNascimento) {
+                  const d = new Date(nascRaw);
+                  if (!isNaN(d.getTime())) {
+                    const ano = d.getFullYear();
+                    const mes = String(d.getMonth() + 1).padStart(2, '0');
+                    const dia = String(d.getDate()).padStart(2, '0');
+                    if (ano > 1900 && ano < 2100) {
+                      dataNascimento = `${ano}-${mes}-${dia}`;
+                    }
+                  }
+                }
+                
+                if (!dataNascimento) {
+                  const num = parseFloat(nascRaw);
+                  if (!isNaN(num) && num > 1 && num < 50000) {
+                    const dataSerial = new Date(1900, 0, num - 1);
+                    if (!isNaN(dataSerial.getTime())) {
+                      const ano = dataSerial.getFullYear();
+                      const mes = String(dataSerial.getMonth() + 1).padStart(2, '0');
+                      const dia = String(dataSerial.getDate()).padStart(2, '0');
+                      if (ano > 1900 && ano < 2100) {
+                        dataNascimento = `${ano}-${mes}-${dia}`;
+                      }
+                    }
+                  }
+                }
+              }
+
+              if (!dataNascimento) {
+                errors++;
+                errorDetails.push(`Linha ${index+2}: Data inválida "${nascRaw}"`);
+                continue;
+              }
+
+              const dataObj = new Date(dataNascimento);
+              if (dataObj > new Date()) {
+                errors++;
+                errorDetails.push(`Linha ${index+2}: Data futura "${dataNascimento}"`);
+                continue;
+              }
 
           const codigoDizimista = (row['Código dizimista'] || '').toString().trim();
           
