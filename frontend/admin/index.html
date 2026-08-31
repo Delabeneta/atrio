@@ -1888,7 +1888,7 @@ function validateDate(dateStr) {
   if (!dateStr) return false;
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return false;
-  if (d.getFullYear() < 1900) return false;
+  if (d.getFullYear() < 1400) return false;
   if (d > new Date()) return false;
   return true;
 }
@@ -3220,6 +3220,7 @@ return nomeMaiusculo;
 // ===== IMPORT =====
 window.handleFileImport = function(inp) { if (inp.files?.[0]) processExcelFile(inp.files[0]); };
 
+
 async function processExcelFile(file) {
   if (!window.XLSX) {
     const s = document.createElement('script');
@@ -3237,7 +3238,7 @@ async function processExcelFile(file) {
       const wb = XLSX.read(e.target.result, { type: 'binary' });
       const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
 
-      let added = 0, updated = 0, errors = 0, skipped = 0;
+      let added = 0, errors = 0, semComunidade = 0;
       const errorDetails = [];
 
       for (const [index, row] of rows.entries()) {
@@ -3245,93 +3246,15 @@ async function processExcelFile(file) {
           const nome = (row['Nome'] || row['nome'] || '').toString().trim();
           if (!nome) { errors++; errorDetails.push(`Linha ${index+2}: Nome vazio`); continue; }
 
-         
-              const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString().trim();
-              let dataNascimento = null;
-
-              if (nascRaw) {
-                let partes = nascRaw.split('/');
-                if (partes.length === 3) {
-                  const dia = partes[0].padStart(2, '0');
-                  const mes = partes[1].padStart(2, '0');
-                  let ano = partes[2];
-                  
-                  if (ano.length === 2) {
-                    ano = parseInt(ano) < 30 ? `20${ano}` : `19${ano}`;
-                  }
-                  
-                  if (ano.length === 4 && parseInt(ano) > 1900 && parseInt(ano) < 2100) {
-                    dataNascimento = `${ano}-${mes}-${dia}`;
-                  }
-                }
-                
-                if (!dataNascimento) {
-                  partes = nascRaw.split('-');
-                  if (partes.length === 3) {
-                    const dia = partes[0].padStart(2, '0');
-                    const mes = partes[1].padStart(2, '0');
-                    let ano = partes[2];
-                    
-                    if (ano.length === 2) {
-                      ano = parseInt(ano) < 30 ? `20${ano}` : `19${ano}`;
-                    }
-                    
-                    if (ano.length === 4 && parseInt(ano) > 1900 && parseInt(ano) < 2100) {
-                      dataNascimento = `${ano}-${mes}-${dia}`;
-                    }
-                  }
-                }
-                
-                if (!dataNascimento) {
-                  const d = new Date(nascRaw);
-                  if (!isNaN(d.getTime())) {
-                    const ano = d.getFullYear();
-                    const mes = String(d.getMonth() + 1).padStart(2, '0');
-                    const dia = String(d.getDate()).padStart(2, '0');
-                    if (ano > 1900 && ano < 2100) {
-                      dataNascimento = `${ano}-${mes}-${dia}`;
-                    }
-                  }
-                }
-                
-                if (!dataNascimento) {
-                  const num = parseFloat(nascRaw);
-                  if (!isNaN(num) && num > 1 && num < 50000) {
-                    const dataSerial = new Date(1900, 0, num - 1);
-                    if (!isNaN(dataSerial.getTime())) {
-                      const ano = dataSerial.getFullYear();
-                      const mes = String(dataSerial.getMonth() + 1).padStart(2, '0');
-                      const dia = String(dataSerial.getDate()).padStart(2, '0');
-                      if (ano > 1900 && ano < 2100) {
-                        dataNascimento = `${ano}-${mes}-${dia}`;
-                      }
-                    }
-                  }
-                }
-              }
-
-              if (!dataNascimento) {
-                errors++;
-                errorDetails.push(`Linha ${index+2}: Data inválida "${nascRaw}"`);
-                continue;
-              }
-
-              const dataObj = new Date(dataNascimento);
-              if (dataObj > new Date()) {
-                errors++;
-                errorDetails.push(`Linha ${index+2}: Data futura "${dataNascimento}"`);
-                continue;
-              }
-
-          const codigoDizimista = (row['Código dizimista'] || '').toString().trim();
-          
-          let pessoaExistente = null;
-          if (codigoDizimista && organizationIdDoContexto) {
-            const result = await apiRequest(`/pessoas?codigo=${codigoDizimista}&organizationId=${organizationIdDoContexto}`);
-            if (result.ok && result.data.length > 0) {
-              pessoaExistente = result.data[0];
+          const nascRaw = (row['Data de nascimento'] || row['nascimento'] || '').toString().trim();
+          let dataNascimento = null;
+          if (nascRaw) {
+            const partes = nascRaw.split('/');
+            if (partes.length === 3) {
+              dataNascimento = `${partes[2]}-${partes[1].padStart(2,'0')}-${partes[0].padStart(2,'0')}`;
             }
           }
+          if (!dataNascimento) { errors++; errorDetails.push(`Linha ${index+2}: Data inválida`); continue; }
 
           const pessoaData = {
             nomeCompleto: nome,
@@ -3340,7 +3263,6 @@ async function processExcelFile(file) {
             ehDizimista: true,
           };
 
-          // Campos opcionais
           const codigo = (row['Código dizimista'] || '').toString().trim();
           if (codigo) pessoaData.codigoDizimista = codigo;
 
@@ -3360,14 +3282,11 @@ async function processExcelFile(file) {
               pessoaData.organizationId = orgEncontrada.id;
               pessoaData.comunidadeContribui = orgEncontrada.nome;
             } else {
-              skipped++;
-              errorDetails.push(`Linha ${index+2}: comunidade "${comunidadeTexto}" não encontrada — pessoa ignorada.`);
-              continue;
+              semComunidade++;
+              errorDetails.push(`Linha ${index+2}: comunidade "${comunidadeTexto}" não encontrada — pessoa importada sem vínculo oficial.`);
             }
           } else {
-            skipped++;
-            errorDetails.push(`Linha ${index+2}: sem comunidade definida — pessoa ignorada.`);
-            continue;
+            semComunidade++;
           }
 
           const endereco = (row['Endereço'] || row['Endereco'] || '').toString().trim();
@@ -3379,59 +3298,17 @@ async function processExcelFile(file) {
           const telefone = (row['Telefone'] || '').toString().trim();
           if (telefone) pessoaData.telefone = telefone;
 
-          let resp;
+          const resp = await fetch(`${API_URL}/pessoas`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            },
+            body: JSON.stringify(pessoaData)
+          });
 
-          if (pessoaExistente) {
-            const updateData = {};
-            
-            // Só atualiza se o campo estiver vazio no banco e preenchido na planilha
-            if (!pessoaExistente.telefone && telefone) updateData.telefone = telefone;
-            if (!pessoaExistente.endereco && endereco) updateData.endereco = endereco;
-            if (!pessoaExistente.bairro && bairro) updateData.bairro = bairro;
-            if (!pessoaExistente.conjuge && conjuge) updateData.conjuge = { nome: conjuge, dataNascimento: null };
-            
-            // Se não há nada para atualizar, pula
-            if (Object.keys(updateData).length === 0) {
-              skipped++;
-              errorDetails.push(`Linha ${index+2}: ${nome} - sem alterações (dados já completos)`);
-              continue;
-            }
-
-            resp = await fetch(`${API_URL}/pessoas/${pessoaExistente.id}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-              },
-              body: JSON.stringify(updateData)
-            });
-
-            if (resp.ok) {
-              updated++;
-              console.log(` Atualizado: ${nome} (código: ${codigoDizimista})`);
-            } else {
-              errors++;
-              errorDetails.push(`Linha ${index+2}: erro ao atualizar ${nome}`);
-            }
-          } else {
-            //  CRIA NOVA PESSOA
-            resp = await fetch(`${API_URL}/pessoas`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-              },
-              body: JSON.stringify(pessoaData)
-            });
-
-            if (resp.ok) {
-              added++;
-              console.log(` Importado: ${nome} (código: ${codigoDizimista || 'novo'})`);
-            } else {
-              errors++;
-              errorDetails.push(`Linha ${index+2}: erro ao importar ${nome}`);
-            }
-          }
+          if (resp.ok) added++;
+          else { errors++; errorDetails.push(`Linha ${index+2}: ${await resp.text()}`); }
 
         } catch (err) {
           errors++;
@@ -3442,14 +3319,9 @@ async function processExcelFile(file) {
       await loadAllData();
       const res = document.getElementById('import-result');
       res.classList.remove('hidden');
-      
-      let message = `<strong>${added} importadas!</strong>`;
-      if (updated > 0) message += ` <strong>${updated} atualizadas!</strong>`;
-      if (skipped > 0) message += ` <span style="color:var(--ink-3);">${skipped} ignoradas (sem alterações).</span>`;
-      if (errors > 0) message += ` ${errors} erros.`;
-      
       res.innerHTML = `<div class="alert alert-${errors > 0 ? 'error' : 'success'}">
-        ${message}
+        <strong>${added} importadas!</strong> ${errors > 0 ? `${errors} erros.` : ''}
+        ${semComunidade > 0 ? `<br>${semComunidade} sem vínculo oficial de comunidade.` : ''}
         ${errorDetails.slice(0,5).join('<br>')}
       </div>`;
       setTimeout(() => res.classList.add('hidden'), 10000);
@@ -3468,6 +3340,7 @@ window.downloadTemplate = function() {
   XLSX.utils.book_append_sheet(wb, ws, 'Dizimistas');
   XLSX.writeFile(wb, 'modelo_dizimistas.xlsx');
 };
+
 
 // ===== PDF =====
 async function generatePDF(id) {
